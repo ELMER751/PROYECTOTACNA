@@ -7,7 +7,6 @@ include_once('header.php');
  $ultimo_codigo = mysqli_query($conexion, "SELECT MAX(CODI) AS ultimo_codigo FROM condiciones");
  $ultimo_codigo = mysqli_fetch_assoc($ultimo_codigo);
  $ultimo_codigo = $ultimo_codigo["ultimo_codigo"];
- mysqli_close($conexion);
 ?>
 <!DOCTYPE html>
     <html>
@@ -16,7 +15,7 @@ include_once('header.php');
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-            <link rel="stylesheet" href="Css/loginnn.css">
+            
             <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -26,8 +25,8 @@ include_once('header.php');
                 <form id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']); ?>">
                     <h1>IDENTIFICACIÓN DE LA UNIDAD Y CONDUCTOR</h1>
                     <div class="input-box">
-                        <p>Código :</p>
-                        <input id="CODIGO" type="text" name="CODIGO" placeholder="Código" value="<?php echo $ultimo_codigo+1?>" required onkeypress="return handleEnter(event, 'DESC')" readonly >
+                        <p>Liquidación :</p>
+                        <input id="LIQUI" type="text" name="LIQUI" placeholder="Liquidación"  required readonly >
                     </div>
                     <div class="input-box">
                         <p>Descripción :</p>
@@ -49,10 +48,10 @@ include_once('header.php');
                         <label for="miCheck">SSDSA</label>
                     </div>
                     <div class="input-box">
-                        <button type="submit" name="guardar_tp" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="70px" height="70px"></button>
-                        <button type="submit" name="busqueda" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/buscar.png" alt="image 2" width="70px" height="70px"></button>
-                        <button type="submit" name="refrescar" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/eliminar.png" alt="Image 3" width="70px" height="70px"></button>
-                        <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="70px" height="70px"></button>
+                        <button type="submit" name="guardar_tp" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="50px" height="50px"></button>
+                        <button type="submit" name="busqueda" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/buscar.png" alt="image 2" width="50px" height="50px"></button>
+                        <button type="submit" name="refrescar" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/eliminar.png" alt="Image 3" width="50px" height="50px"></button>
+                        <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="50px" height="50px"></button>
                     </div>
                 </form>
             </div>
