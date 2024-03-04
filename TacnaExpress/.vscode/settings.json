@@ -1,0 +1,6 @@
+{
+    "open-php-html-js-in-browser.customHost": "localhost",
+    "open-php-html-js-in-browser.documentRootFolder": "http://localhost",
+    "open-php-html-js-in-browser.selectedBrowser": "Chrome",
+    "open-php-html-js-in-browser.urlToOpen": "http://localhost/"
+}

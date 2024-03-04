@@ -1,0 +1,70 @@
+<?php
+// Establecer conexión con la base de datos
+include_once('includes/acceso.php');
+$conexion = connect_db();
+
+// Obtener la lista de tablas en la base de datos
+$resultado_tablas = $conexion->query("SHOW TABLES");
+$tablas = array();
+while ($fila_tabla = $resultado_tablas->fetch_row()) {
+    $tablas[] = $fila_tabla[0];
+}
+
+// Construir el formulario de selección de tabla
+echo '<form method="post">';
+echo '<select name="tabla">';
+foreach ($tablas as $tabla) {
+    echo '<option value="' . $tabla . '">' . $tabla . '</option>';
+}
+echo '</select>';
+echo '<input type="submit" value="Buscar">';
+echo '</form>';
+
+// Si se ha enviado el formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tabla_seleccionada = $_POST["tabla"];
+
+    // Obtener la lista de campos para la tabla seleccionada
+    $resultado_campos = $conexion->query("SHOW COLUMNS FROM " . $tabla_seleccionada);
+    $campos = array();
+    while ($fila_campo = $resultado_campos->fetch_assoc()) {
+        $campos[] = $fila_campo['Field'];
+    }
+
+    // Construir el formulario de búsqueda
+    echo '<form method="post">';
+    foreach ($campos as $campo) {
+        echo '<input type="text" name="' . $campo . '" placeholder="' . $campo . '">';
+    }
+    echo '<input type="submit" value="Busca">';
+    echo '</form>';
+
+    // Construir y ejecutar la consulta SQL
+    $query = "SELECT * FROM " . $tabla_seleccionada;
+    if (!empty($_POST)) {
+        $condiciones = array();
+        foreach ($campos as $campo) {
+            if (!empty($_POST[$campo])) {
+                $valor = $conexion->real_escape_string($_POST[$campo]);
+                $condiciones[] = $campo . " LIKE '%" . $valor . "%'";
+            }
+        }
+        if (!empty($condiciones)) {
+            $query .= " WHERE " . implode(" OR ", $condiciones);
+        }
+    }
+
+    $resultado_consulta = $conexion->query($query);
+
+    // Construir la tabla de resultados
+    echo '<table>';
+    while ($fila_resultado = $resultado_consulta->fetch_assoc()) {
+        echo '<tr>';
+        foreach ($fila_resultado as $valor) {
+            echo '<td>' . $valor . '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '</table>';
+}
+?>

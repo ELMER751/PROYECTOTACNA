@@ -1,0 +1,130 @@
+//MENSAJE EN JS
+
+function mostrarMensaje(mensaje) {
+                    var mensajeElemento = document.createElement('div'); // Crear un nuevo elemento div
+                    mensajeElemento.textContent = mensaje; // Agregar el texto del mensaje al elemento
+                    mensajeElemento.style.position = 'fixed'; // Establecer posición fija para que aparezca en la pantalla
+                    mensajeElemento.style.top = '50%'; // Alinear verticalmente en el centro
+                    mensajeElemento.style.left = '50%'; // Alinear horizontalmente en el centro
+                    mensajeElemento.style.transform = 'translate(-50%, -50%)'; // Centrar el mensaje
+                    mensajeElemento.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'; // Color de fondo oscuro
+                    mensajeElemento.style.color = '#fff'; // Color del texto blanco
+                    mensajeElemento.style.padding = '20px'; // Agregar relleno alrededor del texto
+                    mensajeElemento.style.borderRadius = '10px'; // Agregar bordes redondeados
+                    mensajeElemento.style.zIndex = '9999'; // Asegurarse de que el mensaje aparezca encima de otros elementos
+                    mensajeElemento.style.fontFamily = 'Arial, sans-serif'; // Establecer la fuente del texto
+                    mensajeElemento.style.fontSize = '16px';
+                    document.body.appendChild(mensajeElemento); // Agregar el elemento al cuerpo del documento
+                    // Eliminar el mensaje después de unos segundos
+                    
+                    setTimeout(function() {
+                        document.body.removeChild(mensajeElemento);
+                    }, 3000); // 3000 milisegundos = 3 segundos
+                }
+/// para obviar required
+document.getElementById('Nombre').removeAttribute('required');
+document.getElementById('Razon_social').removeAttribute('required');
+//// para poner el ai en 1
+ALTER TABLE tu_tabla AUTO_INCREMENT = 1;
+
+Crear MODIFICA CLIENTES
+
+
+<?php
+		$tabla =$_GET['tabla'];
+		?>
+		<script>
+			$(document).ready(function() {
+				var tabla = '<?php echo $tabla; ?>';
+				$.ajax({
+					type: 'POST',
+					url: 'buscar.php',
+					data: {tabla:tabla},
+					success: function(response) {
+						console.log('Variable tabla enviada correctamente ' + tabla);
+					},
+					error: function() {
+						console.error('Error al enviar la variable tabla');
+					}
+				});
+			});
+            function tabla(tabla)
+{
+	var tabla = 'sd';
+				$.ajax({
+					type: 'POST',
+					url: 'buscar.php',
+					data: {tabla:tabla},
+					success: function(response) {
+						console.log('Variable tabla enviada correctamente ' + tabla);
+					},
+					error: function() {
+						console.error('Error al enviar la variable tabla');
+					}
+				});
+}
+		</script>
+
+
+
+
+<?php
+    include_once('includes/acceso.php');
+    $conexion = connect_db();
+    //$tabla = $_POST['_tabla'];
+    global $tabla;
+    $query = "SELECT * FROM $tabla";
+    echo "El valor de la tabla es: " . $tabla;
+    $resultado_consulta = $conexion->query($query);
+    $resultado_consul = $conexion->query($query);
+    // Obtener la lista de campos para la tabla seleccionada
+    $resultado_campos = $conexion->query("SHOW COLUMNS FROM $tabla");
+    $campos = array();
+    if(isset($_POST['_dato']))
+    {
+        $q=$conexion->real_escape_string($_POST['_dato']);
+        while ($fila_campo = $resultado_campos->fetch_assoc()) 
+        {
+            $campos[] = $fila_campo['Field'];
+        }
+        $condiciones = array();
+        foreach ($campos as $campo) 
+        {
+            $condiciones[] = "$campo LIKE '%$q%'";
+        }
+        $query = "SELECT * FROM fmclinic WHERE " .implode(" OR ", $condiciones);
+        //$query = "SELECT * FROM fmclinic WHERE ='$condiciones'" ;
+    }
+
+    $resultado = $conexion->query($query);
+    if($resultado->num_rows > 0)
+    {
+        while ($fila_campo = $resultado_campos->fetch_assoc()) {
+            $campos[] = $fila_campo['Field'];
+        }
+        // Construir la tabla de resultados dinámicamente
+        echo '<table>';
+        echo '<tr>';
+            foreach ($campos as $campo) 
+            {
+                echo '<th>' . $campo . '</th>';
+            }
+        echo '</tr>';
+        while ($fila_resultado = $resultado_consulta->fetch_assoc()) 
+        {
+            echo '<tr>';
+            foreach ($campos as $campo) {
+                echo '<td>' . $fila_resultado[$campo] . '</td>';
+            }
+            $jaladato = $resultado_consul->fetch_row();
+            $id = $jaladato[0];
+            echo '<td><a class="btn btn-info add-new" href="camiones_modifica.php?codigo='.$id.'">SELECCIONAR</a></td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+    }
+    else
+    {
+        echo "No se encontraron coincidencias con sus criterios de búsqueda.";
+    }
+?>
