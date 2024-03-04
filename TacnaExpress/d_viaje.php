@@ -24,7 +24,7 @@ include_once('header.php');
         <body>
             <div class="wrapper">
                 <form id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']); ?>">
-                    <h1>TIPOS DE PAGO</h1>
+                    <h1>IDENTIFICACIÓN DE LA UNIDAD Y CONDUCTOR</h1>
                     <div class="input-box">
                         <p>Código :</p>
                         <input id="CODIGO" type="text" name="CODIGO" placeholder="Código" value="<?php echo $ultimo_codigo+1?>" required onkeypress="return handleEnter(event, 'DESC')" readonly >
@@ -46,7 +46,7 @@ include_once('header.php');
                     </div>
                     <div>
                         <input type="checkbox" name="miCheck" id="miCheck">
-                        <label for="miCheck">Activo</label>
+                        <label for="miCheck">SSDSA</label>
                     </div>
                     <div class="input-box">
                         <button type="submit" name="guardar_tp" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="70px" height="70px"></button>
