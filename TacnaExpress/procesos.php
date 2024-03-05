@@ -448,6 +448,7 @@ else if (isset($_POST['registra']))
     $act = isset($_POST["miCheck"]) && $_POST["miCheck"] === "on" ? 1 : 0;
     $nivel = isset($_POST["Nivel"]) && $_POST["Nivel"] === "1" ? 1 : 0;
     $cede = $_POST['Sede'];
+    $cede = "0" . $cede;
     echo "El valor del checkbox es: " . $act . "<br>";
     echo "El valor del select es: " . $nivel;
     $nom= $_POST['Nombre'];
@@ -498,6 +499,7 @@ else if(isset($_POST['modificar_empleado']))
     $dni= $_POST['DNI'];
     $bre= $_POST['Brevete'];
     $cede= $_POST['Sede'];
+    $cede = "0" . $cede;
     $modifica = $usua->modi_usuario($id,$user,$pas,$nom,$nivel,$act,$ocu,$dni,$bre,$cede);
     if($modifica) {
         echo"

@@ -14,6 +14,7 @@ $conexion = connect_db();
 $cliente = new Registro();
 $cliente->conectar_db($conexion);
 $datos=$cliente->consulta($codigo);
+$resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,14 +58,20 @@ $datos=$cliente->consulta($codigo);
             <option value="0" style="background-color: black; color: white;" <?php if ($datos['NIVEL'] == 0) echo 'selected' ; ?>>Operador</option>
         </select>
         <select name="Sede" style="flex: 1; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px; margin-right: 10px;">
-            <option value="01" style="background-color: black; color: white;" <?php if ($datos['CEDE'] == '01') echo 'selected'; ?>>Arequipa</option>
-            <option value="02" style="background-color: black; color: white;" <?php if ($datos['CEDE'] == '02') echo 'selected'; ?>>Tacna</option>
-            <option value="03" style="background-color: black; color: white;" <?php if ($datos['CEDE'] == '03') echo 'selected'; ?>>Ilo</option>
-            <option value="04" style="background-color: black; color: white;" <?php if ($datos['CEDE'] == '04') echo 'selected'; ?>>Moquegua</option>
-            <option value="05" style="background-color: black; color: white;" <?php if ($datos['CEDE'] == '05') echo 'selected'; ?>>Juliaca</option>
-            <option value="06" style="background-color: black; color: white;" <?php if ($datos['CEDE'] == '06') echo 'selected'; ?>>Puno</option>
-            <option value="07" style="background-color: black; color: white;" <?php if ($datos['CEDE'] == '07') echo 'selected'; ?>>Cusco</option>
-        </select>
+                <?php
+                    // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
+                    if ($resultado) {
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            echo "<option value='" . $fila['CODIGO'] . "' style='background-color: black; color: white;' " . ($fila['CODIGO'] == $datos['CEDE'] ? 'selected' : '') . ">" . $fila['DESTINO'] . "</option>";
+                        }
+                        // Liberar el resultado
+                        mysqli_free_result($resultado);
+                    } else {
+                        // Si la consulta falla, mostrar un mensaje de error
+                        echo "Error al ejecutar la consulta: " . mysqli_error($conexion);
+                    }
+                ?>
+            </select>
     </div>
     <div class="input-box <?php echo !empty($datos['OCUPACION']) ? 'filled' : ''; ?>">
         <input id="Ocupacion" type="text" name="Ocupacion" placeholder="Ocupación" value="<?php echo $datos['OCUPACION']?>" required>
