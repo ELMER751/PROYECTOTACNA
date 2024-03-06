@@ -31,7 +31,38 @@
     <form method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']);?>">
         <h1> Registrar Empleado </h1>
         <div class="input-box">
-            <input id="Nombre_d_Usuario" type="text" name="Nombre_d_Usuario" placeholder=" Nombre de Usuario " maxlength="3" required oninput="this.value = this.value.toUpperCase()">
+            <input id="Nombre_d_Usuario" type="text" name="Nombre_d_Usuario" placeholder="Nombre de Usuario" maxlength="3" required oninput="this.value = this.value.toUpperCase()" onkeypress="verificarUsuario(event)">
+<div class="input-box" id="mensaje"></div>
+    <script>
+        function verificarUsuario(event) {
+    // Verificar si se presionó la tecla Enter (código ASCII 13)
+            if (event.keyCode === 13) {
+                event.preventDefault(); // Evitar el envío del formulario
+                var nombreUsuario = document.getElementById("Nombre_d_Usuario").value;
+
+                // Realizar la solicitud AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "verifica.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var respuesta = xhr.responseText;
+                        if (respuesta === "El nombre de usuario ya existe en la tabla") {
+                            // Si el usuario existe, borra el campo y da el foco
+                            alert(respuesta); // Mostrar respuesta en una alerta (solo para depuración)
+                            document.getElementById("Nombre_d_Usuario").value = "";
+                            document.getElementById("Nombre_d_Usuario").focus();
+                        } else {
+                            // Si el usuario no existe, solo da el foco
+                            document.getElementById("Nombre").focus();
+                        }
+                    }
+                };
+                xhr.send("Nombre_d_Usuario=" + nombreUsuario);
+                return false; // Evitar la propagación del evento
+            }
+        }
+    </script>
         </div>
         <div class="input-box">
             <input id="Nombre" type="text" name="Nombre" placeholder=" Nombre/Apellido" required oninput="this.value = this.value.toUpperCase()">
@@ -61,7 +92,7 @@
             </select>
         </div>
         <div class="input-box">
-            <input id="Ocupacion" type="text" name="Ocupacion" placeholder="Ocupación" required>
+            <input id="Ocupacion" type="text" name="Ocupacion" placeholder="Ocupación" required oninput="this.value = this.value.toUpperCase()">
         </div>
         <div class="input-box">
             <input id="DNI" type="text" name="DNI" placeholder="DNI" required>

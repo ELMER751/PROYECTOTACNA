@@ -392,6 +392,12 @@ else if(isset($_POST['busqueda']))
         $titulo = "TIPO DE PAGOS";
         header("location: busca_prueba.php?tabla=$tabla&titulo=$titulo");
     }
+    else if($pagina_anterior === "/TacnaExpress/d_")
+    {
+        $tabla = "";
+        $titulo = "";
+        header("location: busca_prueba.php?tabla=$tabla&titulo=$titulo");
+    }
 }
 else if(isset($_GET['codigo']))
 {

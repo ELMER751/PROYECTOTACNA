@@ -47,7 +47,7 @@ $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
         <input id="Nombre_d_Usuario" type="text" name="Nombre_d_Usuario" placeholder="Nombre de Usuario" maxlength="3" value="<?php echo $datos['USUARIO']?>" readonly>
     </div>
     <div class="input-box <?php echo !empty($datos['NOMBRES']) ? 'filled' : ''; ?>">
-        <input id="Nombre" type="text" name="Nombre" placeholder="Nombre/Apellido" value="<?php echo $datos['NOMBRES']?>" required>
+        <input id="Nombre" type="text" name="Nombre" placeholder="Nombre/Apellido" value="<?php echo $datos['NOMBRES']?>" oninput="this.value = this.value.toUpperCase()" required>
     </div>
     <div class="input-box <?php echo !empty($datos['PASSWORD']) ? 'filled' : ''; ?>">
         <input id="Contraseñaa" type="password" name="Contraseñaa" placeholder="Contraseña" value="<?php echo $datos['PASSWORD']?>" required>
@@ -74,7 +74,7 @@ $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
             </select>
     </div>
     <div class="input-box <?php echo !empty($datos['OCUPACION']) ? 'filled' : ''; ?>">
-        <input id="Ocupacion" type="text" name="Ocupacion" placeholder="Ocupación" value="<?php echo $datos['OCUPACION']?>" required>
+        <input id="Ocupacion" type="text" name="Ocupacion" placeholder="Ocupación" value="<?php echo $datos['OCUPACION']?>" oninput="this.value = this.value.toUpperCase()" required>
     </div>
     <div class="input-box <?php echo !empty($datos['DNI']) ? 'filled' : ''; ?>">
         <input id="DNI" type="text" name="DNI" placeholder="DNI" value="<?php echo $datos['DNI']?>" maxlength = "8" required>

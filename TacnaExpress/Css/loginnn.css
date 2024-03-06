@@ -33,6 +33,30 @@ padding: 30px 40px;
   align-items: center;
   margin: 30px 0;
 }
+
+.wrapper .entrada {
+  display: flex; /* Mostrar los elementos de entrada y selección en una fila */
+  align-items: center;
+  margin: 30px 0;
+}
+.wrapper .entrada input
+ {
+  display: flex;
+  size: 7;
+  flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
+  height: 50px;
+  background: white;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #080808;
+  padding: 20px 45px 20px 20px;
+}
+.wrapper .entrada input[readonly] {
+  color: rgb(202, 156, 156); /* Cambia el color del texto a rojo */
+}
 /* Cambiar color al pasar el ratón por encima */
 .wrapper .input-box select:hover {
     background-color: lightblue;
