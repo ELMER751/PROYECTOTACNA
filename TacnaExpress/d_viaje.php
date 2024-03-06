@@ -148,7 +148,7 @@ if (!isset($_SESSION["username"])) {
                         <input id="PARTIDA" type="text" name="PARTIDA" placeholder="PARTIDA" value ="<?php echo $partida;?>" required readonly >
                     </div>
                     <div style="display: flex;">
-                        <button type="submit" name="guardar_tp" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="70px" height="70px"></button>
+                        <button type="submit" name="guardar_datosfijos" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="70px" height="70px"></button>
                         <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="70px" height="70px"></button>
                     </div>
                 </form>
