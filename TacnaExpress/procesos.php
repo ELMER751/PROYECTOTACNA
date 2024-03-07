@@ -1,6 +1,10 @@
 <?php
-
-    if (isset($_POST['guardar'])){
+session_start();
+    if (!isset($_SESSION["username"])) {
+        header("Location: ingresar_sesion.php");
+        exit();
+        }
+    if(isset($_POST['guardar'])){
             header("location: camiones_nuevo.php");
         }
     else if (isset($_POST['js'])){
@@ -611,18 +615,69 @@
             </script>";
         }
     }
-    else if(isset($_POST['guardar_datosfijos']));
+    else if(isset($_POST['guardar_datosfijos']))
     {
         include_once('includes/acceso.php');
         include_once('Clases/Datos_Fijos.php');
         $conexion = connect_db();
-        $tc->conectar_db($conexion);
-        if()
+        $df = new Datos_Fijos;
+        $df->conectar_db($conexion);
+        $fecha_transaccion = $_POST['FECHA'];
+        $liquidacion = $_POST['LIQUI'];
+        $codigo_camion = $_POST['CAMION']; 
+        $codigo_chofer = $_POST['CHOFER'];
+        $codigo_copiloto = $_POST['COPI'];
+        $codigo_liquidador = $_POST['LIQUIDADOR'];
+        $fecha_partida = $_POST['FECHA_PARTIDA'];
+        $hora_partida = $_POST['HORA'];
+        $direccion_partida = $_POST['PARTIDA'];
+        $direccion_llegada_ilo = null;
+        $direccion_llegada_moq = null;
+        $direccion_llegada_tacna = null;
+        $licencia = $_POST['LICE'];
+        $user = $_SESSION["username"];
+        $cede = mysqli_query($conexion, "SELECT * FROM fuser WHERE USUARIO = '$user'");
+        $cede = mysqli_fetch_assoc($cede);
+        $cede = $cede['CEDE'];
+        $busca = $df->buscar($liquidacion);
+        if($busca)
         {
-            
+            $dato_fijo = $df->modificar_datosfijos($fecha_transaccion, $liquidacion, $codigo_camion, $codigo_chofer, $codigo_copiloto, $codigo_liquidador, $fecha_partida, $hora_partida, $direccion_partida, $direccion_llegada_ilo, $direccion_llegada_moq, $direccion_llegada_tacna, $licencia, $cede);
+            if($dato_fijo)
+            {
+                echo "<script>
+                alert('Se Modifico Con Éxito');
+                window.location.href = 'espresstacna.php';
+                </script>";
+            }
+            else
+            {
+                echo "<script>
+                alert('Hubo un Error Inesperado Volver A Intentar');
+                window.history.back();
+                </script>";
+            }
+        }
+        else
+        {
+            $dato_fijo = $df->datos_fijos($fecha_transaccion, $liquidacion, $codigo_camion, $codigo_chofer, $codigo_copiloto, $codigo_liquidador, $fecha_partida, $hora_partida, $direccion_partida, $direccion_llegada_ilo, $direccion_llegada_moq, $direccion_llegada_tacna, $licencia, $cede);
+            if($dato_fijo)
+            {
+                echo "<script>
+                alert('Se Registro Con Éxito');
+                window.location.href = 'espresstacna.php';
+                </script>";
+            }
+            else
+            {
+                echo "<script>
+                alert('Hubo un Error Inesperado Volver A Intentar');
+                window.history.back();
+                </script>";
+            }
         }
     }
-    else{ 
+    else{
         echo "Intente de nuevo, algo sucedio mal <a class = 'nav-link' href = 'espresstacna.php'>Volver</a>";
     }
 

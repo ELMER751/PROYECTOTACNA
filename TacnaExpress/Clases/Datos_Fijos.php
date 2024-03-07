@@ -30,33 +30,39 @@ class Datos_Fijos
 			$res = mysqli_query($this->con, $sql);
 			$return = mysqli_fetch_array($res );
 			return $return ;
-		}/// MODIFICAR 
-		public function nueva_ruta($id,$destino,$abre,$dire){
-			$sql = "insert into ruta(CODIGO,DESTINO,ABREVIATURA,DIRECCION) values ('$id','$destino','$abre','$dire')";
+		}
+		public function datos_fijos($fecha_transaccion, $liquidacion, $codigo_camion, $codigo_chofer, $codigo_copiloto, $codigo_liquidador, $fecha_partida, $hora_partida, $direccion_partida, $direccion_llegada_ilo, $direccion_llegada_moq, $direccion_llegada_tacna, $licencia, $cede) {
+			$sql = "INSERT INTO datos_fijos (FEC_TRANS, LIQUIDACION, CODIGO_CAMION, CODIGO_CHOFER, CODIGO_COPILOTO, CODIGO_LIQUIDADOR, FECHA_PARTIDA, HORA_PARTIDA, DIRECCION_PARTIDA, DIRECCION_LLEGADA_ILO, DIRECCION_LLEGADA_MOQ, DIRECCION_LLEGADA_TACNA, LIC, CEDE) VALUES ('$fecha_transaccion', '$liquidacion', '$codigo_camion', '$codigo_chofer', '$codigo_copiloto', '$codigo_liquidador', '$fecha_partida', '$hora_partida', '$direccion_partida', '$direccion_llegada_ilo', '$direccion_llegada_moq', '$direccion_llegada_tacna', '$licencia', '$cede')";
 			$res = mysqli_query($this->con, $sql);
-			if($res){
+			if ($res) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-
-		}	
-		public function modifica_ruta($id,$destino,$abre,$dire){
-			$sql = "update ruta set
-			DESTINO='$destino',
-            ABREVIATURA='$abre',
-            DIRECCION='$dire'
-			where CODIGO='$id'";
-			
+		}
+		public function modificar_datosfijos($fecha_transaccion, $liquidacion, $codigo_camion, $codigo_chofer, $codigo_copiloto, $codigo_liquidador, $fecha_partida, $hora_partida, $direccion_partida, $direccion_llegada_ilo, $direccion_llegada_moq, $direccion_llegada_tacna, $licencia, $cede) {
+			$sql = "UPDATE datos_fijos SET 
+			FEC_TRANS='$fecha_transaccion',  
+			CODIGO_CAMION='$codigo_camion', 
+			CODIGO_CHOFER='$codigo_chofer', 
+			CODIGO_COPILOTO='$codigo_copiloto', 
+			CODIGO_LIQUIDADOR='$codigo_liquidador', 
+			FECHA_PARTIDA='$fecha_partida', 
+			HORA_PARTIDA='$hora_partida',
+			DIRECCION_PARTIDA='$direccion_partida', 
+			DIRECCION_LLEGADA_ILO='$direccion_llegada_ilo', 
+			DIRECCION_LLEGADA_MOQ='$direccion_llegada_moq', 
+			DIRECCION_LLEGADA_TACNA='$direccion_llegada_tacna', 
+			LIC='$licencia', 
+			CEDE='$cede' 
+			WHERE LIQUIDACION='$liquidacion'";
 			$res = mysqli_query($this->con, $sql);
-			if($res){
+			if ($res) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-
-		}	
-			
+		}
 		public function borrar($id){
 			$sql = "DELETE FROM ruta WHERE CODIGO=$id";
 			$res = mysqli_query($this->con, $sql);

@@ -21,9 +21,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="ingresar_sesion.php">Iniciar sesión</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="registra_usuario.php">Registrarse</a>
-                    </li>
                 </ul>
             </div>  
         </div>
