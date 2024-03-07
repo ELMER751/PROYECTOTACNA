@@ -87,7 +87,10 @@ session_start();
           ?>
         </select>    
         <label for="N° Doc">N° Doc :</label>
+        <input id="NDOC" type="text" name="NDOC" placeholder="" required>
+        <button type="submit" name="guar" class="boton"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
         <label for="fec.Emisión">fec.Emisión</label>
+        <input id="FECHA" type="date" name="FECHA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" required size="7">
         <label for="TRANS">I.G.V % </label>
          
       </div>
