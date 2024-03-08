@@ -1,5 +1,4 @@
 <?php
-//include_once('header.php');
 session_start();
 if (!isset($_SESSION["username"])) {
     header("Location: ingresar_sesion.php");
@@ -11,39 +10,37 @@ if (!isset($_SESSION["username"])) {
 		<title>BUSCA</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<!-- ESTILOS -->
+		<link href="Css/logi.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<!-- SCRIPTS JS-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	</head>
 	<body>
-		<?php
-			global $tabla;
-			$tabla = $_GET['tabla'];
-			global $titulo;
-			$titulo = $_GET['titulo'] ?? '';
-			$response = $_GET['response'] ?? '';
-		?>
 		<header>
 			<div class="alert alert-info">
-				<h4 >BUSCAR <?php echo "$titulo";?></h4>
+			<h2>BUSCA CAMIONES</h2>
 			</div>
 		</header>
+		<?php
+			global $tabla;
+			$tabla = $_GET['tabla'] ?? 'camiones';	
+		?>
 		<section>
 			<input type="text" name="busqueda" id="busqueda" placeholder="Buscar..." autofocus>
-        </section>
-		
+		</section>
+
 		<section id="tabla_resultado">
 			<?php
 			$pagina=urlencode($_SERVER['PHP_SELF']);
 			include 'buscar.php';
 			?>
 		</section>
+
 		<section>
-			<?php if($response === "A"){?>
-			<?php } else{?>
-				<a style="background-color: green; border: 0px solid white;" class="btn btn-info add-new" href="javascript:history.back()">VOLVER</a>
-			<?php
-			}?>
+			<a style="background-color: green; border: 0px solid white;" class="btn btn-info add-new" href="javascript:history.go(-1)">VOLVER</a>
 		</section>
+
 		<script>
 			$(document).ready(function(){
 				// Captura el evento keyup en el campo de búsqueda
@@ -52,7 +49,6 @@ if (!isset($_SESSION["username"])) {
 					var valorBusqueda = $(this).val();
 					var tabla = '<?php echo $tabla; ?>';
 					var pagina='<?php echo urlencode($_SERVER['PHP_SELF']);?>';
-					var titulo='<?php echo $titulo;?>';
 					// Realiza la búsqueda solo si el valor no está vacío
 					if(valorBusqueda != ""){
 						// Realiza la búsqueda mediante AJAX
@@ -60,11 +56,10 @@ if (!isset($_SESSION["username"])) {
 							url: 'buscar.php',
 							type: 'POST',
 							dataType: 'html',
-							data: { busqueda: valorBusqueda, tabla: tabla, pagina: pagina, titulo: titulo },
+							data: { busqueda: valorBusqueda, tabla: tabla, pagina: pagina },
 							success: function(response){
 								console.log('Variable tabla enviada correctamente ' + tabla);
 								console.log('Variable tabla enviada correctamente ' + pagina);
-								console.log('Variable tabla enviada correctamente ' + titulo);
 								// Actualiza la sección de resultados con la respuesta del servidor
 								$('#tabla_resultado').html(response);
 							}

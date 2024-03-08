@@ -9,8 +9,6 @@ global $titulo;
 function obtener_registros($dato, $tabla) {
     //echo "nombre $tabla";
     global $conexion;
-    global $pagina;
-    global $titulo;
     // Lógica para obtener los registros de la base de datos
     if (isset($_POST['busqueda']))
     {
@@ -18,7 +16,7 @@ function obtener_registros($dato, $tabla) {
     }
     else
     {
-        $query = "SELECT * FROM $tabla LIMIT 10";
+        $query = "SELECT * FROM $tabla";
     }
     //echo "$query";
     $resultado = $conexion->query($query);
@@ -31,10 +29,6 @@ function obtener_registros($dato, $tabla) {
         $fila_campo = $resultado->fetch_assoc();
         $campos = array_keys($fila_campo);
         $tabla_html .= '<tr class="bg-primary">';
-        if($titulo === "")
-            {
-                $tabla_html .= '<th>ACCIÓN</th>';
-            }
         foreach ($campos as $campo) {
             $tabla_html .= '<th>' . $campo . '</th>';
         }
@@ -45,16 +39,14 @@ function obtener_registros($dato, $tabla) {
         mysqli_data_seek($resultado, 0);
 
         while ($fila_resultado = $resultado->fetch_assoc()) {
-            $jaladato = $resultado_consul->fetch_row();
-            $id = $jaladato[0];
             $tabla_html .= '<tr style="background-color: LightCyan;">';
-            if($titulo === "")
-            {
-                $tabla_html .= '<td><a style = "border: 0px solid white;" class="btn btn-info add-new" href="tp_modifica.php?codigo='.$id.'">SELECCIONAR</a></td>';
-            }
             foreach ($campos as $campo) {
                 $tabla_html .= '<td>' . $fila_resultado[$campo] . '</td>';
             }
+            $jaladato = $resultado_consul->fetch_row();
+            $id = $jaladato[0];
+            global $pagina;
+            global $titulo;
             if ($titulo === "CLIENTES")
             {
                 $tabla_html .= '<td><a style = "border: 0px solid white;" class="btn btn-info add-new" href="Cmodifica_cliente.php?codigo='.$id.'">MODIFICAR</a><p></p><a style="background-color: red; border: 0px solid white;" class="btn btn-info add-new" href="procesos.php?codigo='.$id.'&pag='.$titulo.'">ELIMINAR</a></td>';

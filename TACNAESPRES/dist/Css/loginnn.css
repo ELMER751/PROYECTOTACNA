@@ -15,31 +15,20 @@ body {
   background-size: cover;
 }
 .wrapper {
-  align-items: center; /* Centrar elementos horizontalmente */
-  background: rgb(0, 0, 0);
-  color: #fff;
-  border-radius: 10px;
-  padding: 30px 40px;
-  display: inline-flex;
-  flex-direction: column; /* Alinear los elementos en una columna */
+display: flex;
+align-items: center; /* Centrar elementos horizontalmente */
+background: rgb(0, 0, 0);
+color: #fff;
+border-radius: 10px;
+padding: 30px 40px;
+}
 
-}
-.wrapper .contenido {
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-}
-.formulario{
-  display: block;
-  background-color: #494646;
-}
 .wrapper h1 {
   font-size: 36px;
   text-align: center;
 }
 
 .wrapper .input-box {
-  display:flex;
-  border: 2px solid rgba(255, 255, 255, 0.2);
   display: flex; /* Mostrar los elementos de entrada y selección en una fila */
   align-items: center;
   margin: 30px 0;
@@ -165,4 +154,3 @@ body {
 .register-link p a:hover {
   text-decoration: underline;
 }
-

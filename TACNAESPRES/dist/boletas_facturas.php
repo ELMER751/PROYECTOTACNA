@@ -46,7 +46,7 @@ session_start();
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="Css/boleta.css">
+    <link rel="stylesheet" href="Css/sd.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -55,11 +55,9 @@ session_start();
 
 </head>
 <body>
-  <div class="wrapper">
-    <form class ="formulario" id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']); ?>">
-    <h1>Generación de Documentos</h1>
-  <div class="contenido">
-    <div class="contenido">
+  <div class="container">
+    <form class="form" id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']); ?>">
+      <div class="campo">
         <label for="CONDI">Condición :</label>
         <select name="CONDI" id="CONDI">
           <option value="">-- SELECCIONE --</option>
@@ -89,40 +87,24 @@ session_start();
           ?>
         </select>    
         <label for="N° Doc">N° Doc :</label>
-        <input id="NDOC" type="text" name="NDOC" placeholder="" required style="width: 12ch;">
-        <button type="submit" class="btn" onclick="mostrarInterfaz()"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
-          <div id="interfazBusqueda" style="display: none;">
-            <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A" width="600" height="400" frameborder="0"></iframe>
-          </div>
+        <input id="NDOC" type="text" name="NDOC" placeholder="" required>
+        <button type="submit" name="guar" class="boton"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
         <label for="fec.Emisión">fec.Emisión</label>
         <input id="FECHA" type="date" name="FECHA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" required size="7">
         <label for="TRANS">I.G.V % </label>
-        <input id="IGV" type="number" name="IGV"  value ="<?php echo $igv;?>" oninput="validarIGV(this)" required style="width: 7.5ch;" max="100">
-        <div class="contenido">
-          <div class="contenido" style="display: inline-block">
-            <label>Remitente</label>
-            <li>
-              <label for="N° Doc">RUC/DNI :</label>
-              <input id="NDOC" type="text" name="NDOC" placeholder="" required>
-              <button type="submit" name="guar" class="btn"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
-            </li>
-            <li>
-              <a>hola</a>
-            </li>
-          </div>
-        </div>
+         
       </div>
-      <div class="contenido">
+      <div class="campo">
         <label for="FECHA">Fecha en Curso :</label>
         <input id="FECHA" type="text" name="FECHA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" required readonly size="7">
       </div>
-      <div class="contenido">
+      <div class="campo">
         <label for="CAMION">Camión :</label>
         <select name="CAMION" id="CAMION">
            
         </select>
       </div>
-      <div class="contenido">
+      <div class="campo">
         <label for="CHOFER">Chofer :</label>
         <select name="CHOFER" id="CHOFER" onchange="change_chofer()">
           <option value="" <?php if($busca['CODIGO_CHOFER'] == "") echo 'selected' ; ?>>-- SELECCIONE --</option>
@@ -187,27 +169,14 @@ session_start();
         <input id="PARTIDA" type="text" name="PARTIDA" placeholder="PARTIDA" value ="<?php echo $partida;?>" required readonly >
       </div>
       <div>
-        <button type="submit" name="guardar_datosfijos" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
-        <button type="submit" name="refrescar" class="btn"><img id="image" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
-        <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
+        <button type="submit" name="guardar_datosfijos" class="boton"><img id="image" src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
+        <button type="submit" name="refrescar" class="boton"><img id="image" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
+        <button type="submit" name="volver" class="boton" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
       </div>
     </form>
   </div>
-</div>
     
                 <script>
-                    function mostrarInterfaz() {
-                      event.preventDefault(); // Evitar el envío del formulario por defecto
-                      document.getElementById("interfazBusqueda").style.display = "block";
-                      
-                    }
-
-                    
-                    function validarIGV(input) {
-                      if (input.value > 100) {
-                        input.value = 100; // Limita el valor máximo a 99
-                      }
-                    }
                     function handleEnter(event, nextFieldId) {
                         if (event.keyCode === 13) { // Verifica si la tecla presionada es Enter
                             event.preventDefault(); // Evita que el formulario se envíe automáticamente

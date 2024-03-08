@@ -20,11 +20,10 @@ if (!isset($_SESSION["username"])) {
 			$tabla = $_GET['tabla'];
 			global $titulo;
 			$titulo = $_GET['titulo'] ?? '';
-			$response = $_GET['response'] ?? '';
 		?>
 		<header>
 			<div class="alert alert-info">
-				<h4 >BUSCAR <?php echo "$titulo";?></h4>
+				<h2>BUSCAR</h2>
 			</div>
 		</header>
 		<section>
@@ -38,11 +37,7 @@ if (!isset($_SESSION["username"])) {
 			?>
 		</section>
 		<section>
-			<?php if($response === "A"){?>
-			<?php } else{?>
-				<a style="background-color: green; border: 0px solid white;" class="btn btn-info add-new" href="javascript:history.back()">VOLVER</a>
-			<?php
-			}?>
+		<a style="background-color: green; border: 0px solid white;" class="btn btn-info add-new" href="javascript:history.go(-1)">VOLVER</a>
 		</section>
 		<script>
 			$(document).ready(function(){
