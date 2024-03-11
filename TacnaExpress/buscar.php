@@ -48,9 +48,20 @@ function obtener_registros($dato, $tabla) {
             $jaladato = $resultado_consul->fetch_row();
             $id = $jaladato[0];
             $tabla_html .= '<tr style="background-color: LightCyan;">';
-            if($titulo === "")
-            {
-                $tabla_html .= '<td><a style = "border: 0px solid white;" class="btn btn-info add-new" href="tp_modifica.php?codigo='.$id.'">SELECCIONAR</a></td>';
+            if ($titulo === "") {
+                $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(' . $id . ');">SELECCIONAR</a></td>';
+                ?>
+                    <script>
+                    function seleccionarDocumento(id) {
+                        var currentPage = document.location.pathname;
+                        var buscaUrl = currentPage.substring(currentPage.lastIndexOf('/') + 1, currentPage.length);
+                        var url = buscaUrl + '?codigo=' + id;
+                        window.parent.postMessage({ id: id }, window.location.origin), // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
+                        window.parent.cerrarInterfaz(); // Cierra la interfaz de búsqueda en la página principal
+                        
+                    }
+                    </script>
+                <?php
             }
             foreach ($campos as $campo) {
                 $tabla_html .= '<td>' . $fila_resultado[$campo] . '</td>';

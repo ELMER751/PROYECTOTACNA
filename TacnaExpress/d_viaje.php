@@ -98,11 +98,11 @@ session_start();
                                 ?>   
                             </select>
                         </div>
-                        <div class="input-box">
+                        <div class="entrada">
                             <p>Licencia :</p>
                             <input id="LICE" type="text" name="LICE" placeholder="Licencia" value = "<?php echo $busca['LIC'];?>" required readonly>
                         </div>
-                        <div style="display: flex;">
+                        <div class="input-box">
                             <p>Copiloto :</p>
                             <select name="COPI"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
                             <option value="" <?php if($busca['CODIGO_COPILOTO'] == "") echo 'selected' ; ?>>-- SELECCIONE --</option>
@@ -236,7 +236,7 @@ session_start();
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
                                     if ($resultado) {
                                         while ($fila = mysqli_fetch_assoc($resultado)) {
-                                            echo "<option value='" . $fila['CAMIONX'] . "' style='background-color: black; color: white;'>" . $fila['CAMIONX'] . "</option>";
+                                            echo "<option value='" . $fila['CAMION'] . "' style='background-color: black; color: white;'>" . $fila['CAMIONX'] . "</option>";
                                         }
                                         // Liberar el resultado
                                         mysqli_free_result($resultado);
@@ -266,11 +266,11 @@ session_start();
                                 ?>   
                             </select>
                         </div>
-                        <div class="input-box">
+                        <div class="entrada">
                             <p>Licencia :</p>
                             <input id="LICE" type="text" name="LICE" placeholder="Licencia" required readonly>
                         </div>
-                        <div style="display: flex;">
+                        <div class="input-box">
                             <p>Copiloto :</p>
                             <select name="COPI"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
                             <option value="" selected>-- SELECCIONE --</option>

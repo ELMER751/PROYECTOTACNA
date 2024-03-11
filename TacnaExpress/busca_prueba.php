@@ -39,7 +39,13 @@ if (!isset($_SESSION["username"])) {
 		</section>
 		<section>
 			<?php if($response === "A"){?>
-			<?php } else{?>
+				<a style="background-color: green; border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="cerrarPagina()">VOLVER</a>
+				<script>
+					function cerrarPagina() {
+						window.parent.cerrarInterfaz();
+					}
+				</script>
+				<?php } else{?>
 				<a style="background-color: green; border: 0px solid white;" class="btn btn-info add-new" href="javascript:history.back()">VOLVER</a>
 			<?php
 			}?>

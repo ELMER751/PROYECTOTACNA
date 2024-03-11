@@ -15,7 +15,7 @@
             <form method="POST" action="ingresar.php" autocomplete="off">
                 <h1> Ingresar </h1>
                 <div class="input-box">
-                <input id="Nombre_de_Usuario"type="text" name = "Nombre_de_Usuario" placeholder="Nombre de Usuario" maxlength = "3" oninput="this.value = this.value.toUpperCase()" required>
+                <input id="Nombre_de_Usuario"type="text" name = "Nombre_de_Usuario" placeholder="Nombre de Usuario" maxlength = "3" oninput="this.value = this.value.toUpperCase()" required autofocus>
                 </div>
             <div class="input-box">
             <input id="Contraseña"type="password" name = "Contraseña" placeholder="Contraseña" required>
