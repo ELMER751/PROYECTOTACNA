@@ -21,6 +21,7 @@ if (!isset($_SESSION["username"])) {
 			global $titulo;
 			$titulo = $_GET['titulo'] ?? '';
 			$response = $_GET['response'] ?? '';
+			$codi = $_GET['codi'] ?? '';
 		?>
 		<header>
 			<div class="alert alert-info">
@@ -59,6 +60,7 @@ if (!isset($_SESSION["username"])) {
 					var tabla = '<?php echo $tabla; ?>';
 					var pagina='<?php echo urlencode($_SERVER['PHP_SELF']);?>';
 					var titulo='<?php echo $titulo;?>';
+					var codi ='<?php echo $codi;?>';
 					// Realiza la búsqueda solo si el valor no está vacío
 					if(valorBusqueda != ""){
 						// Realiza la búsqueda mediante AJAX
@@ -66,11 +68,13 @@ if (!isset($_SESSION["username"])) {
 							url: 'buscar.php',
 							type: 'POST',
 							dataType: 'html',
-							data: { busqueda: valorBusqueda, tabla: tabla, pagina: pagina, titulo: titulo },
+							data: { busqueda: valorBusqueda, tabla: tabla, pagina: pagina, titulo: titulo, codi: codi },
 							success: function(response){
 								console.log('Variable tabla enviada correctamente ' + tabla);
 								console.log('Variable tabla enviada correctamente ' + pagina);
 								console.log('Variable tabla enviada correctamente ' + titulo);
+								console.log('Variable tabla enviada correctamente ' + codi);
+								
 								// Actualiza la sección de resultados con la respuesta del servidor
 								$('#tabla_resultado').html(response);
 							}

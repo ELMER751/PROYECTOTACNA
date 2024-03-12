@@ -4,6 +4,7 @@ $conexion = connect_db();
 global $tabla;
 global $pagina;
 global $titulo;
+global $codi;
 
 // Función para obtener registros
 function obtener_registros($dato, $tabla) {
@@ -11,6 +12,7 @@ function obtener_registros($dato, $tabla) {
     global $conexion;
     global $pagina;
     global $titulo;
+    global $codi;
     // Lógica para obtener los registros de la base de datos
     if (isset($_POST['busqueda']))
     {
@@ -47,8 +49,12 @@ function obtener_registros($dato, $tabla) {
         while ($fila_resultado = $resultado->fetch_assoc()) {
             $jaladato = $resultado_consul->fetch_row();
             $id = $jaladato[0];
+            $nomb = $jaladato[1];
+            $dire = $jaladato[6];
+            $rucdni=$jaladato[5];
             $tabla_html .= '<tr style="background-color: LightCyan;">';
             if ($titulo === "") {
+                if($codi === "BUSCA1") {
                 $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(' . $id . ');">SELECCIONAR</a></td>';
                 ?>
                     <script>
@@ -62,6 +68,22 @@ function obtener_registros($dato, $tabla) {
                     }
                     </script>
                 <?php
+                }
+                else if($codi === "BUSCA2") {
+                    $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(' . $nomb . ','.$dire.','.$rucdni.');">SELECCIONAR</a></td>';
+                    ?>
+                        <script>
+                        function seleccionarDocumento(nomb,dire,rucdni1) {
+                            var currentPage = document.location.pathname;
+                            var buscaUrl = currentPage.substring(currentPage.lastIndexOf('/') + 1, currentPage.length);
+                            var url = buscaUrl + '?codigo=' + nomb + dire + rucdni1;
+                            window.parent.postMessage({ nomb: nomb, dire:dire, rucdni1:rucdni1 }, window.location.origin), // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
+                            window.parent.cerrarInterfaz(); // Cierra la interfaz de búsqueda en la página principal
+                            
+                        }
+                        </script>
+                    <?php
+                    }
             }
             foreach ($campos as $campo) {
                 $tabla_html .= '<td>' . $fila_resultado[$campo] . '</td>';
@@ -107,6 +129,9 @@ if(isset($_POST['busqueda'])) {
     global $titulo;
     if(isset($_POST['titulo'])){
     $titulo = $_POST['titulo'];}
+    global $codi;
+    if(isset($_POST['codi'])){
+    $codi = $_POST['codi'];}
     //echo "nombre $tabla";
     $q = $_POST['busqueda'];
     //echo "$q";

@@ -677,6 +677,17 @@ session_start();
             }
         }
     }
+    else if (isset($_POST["enviar"])) {
+        $opcionesSeleccionadas = $_POST["opciones"];
+        
+        // Procesar las opciones seleccionadas
+        foreach ($opcionesSeleccionadas as $opcion) {
+            // Aquí puedes realizar cualquier acción necesaria con cada opción seleccionada
+            echo "Opción seleccionada: " . $opcion . "<br>";
+            // Por ejemplo, puedes insertar las opciones en una base de datos
+            // Simplemente construye tu consulta de inserción aquí
+        }
+    } 
     else{
         echo "Intente de nuevo, algo sucedio mal <a class = 'nav-link' href = 'espresstacna.php'>Volver</a>";
     }

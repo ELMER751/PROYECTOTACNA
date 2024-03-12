@@ -28,7 +28,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <form method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']);?>">
+    <form id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']);?>">
         <h1> Registrar Empleado </h1>
         <div class="input-box">
             <input id="Nombre_d_Usuario" type="text" name="Nombre_d_Usuario" placeholder="Nombre de Usuario" maxlength="3" required oninput="this.value = this.value.toUpperCase()" onkeypress="verificarUsuario(event)">
@@ -101,6 +101,19 @@
             <input id="Brevete" type="text" name="Brevete" placeholder="Brevete" required>
         </div>
         <div>
+            <select id="miSelect"name="opciones[]" multiple >
+
+            </select>
+            <input onclick="submitFormWithoutRequired()" type="submit" value="Enviar" name="enviar">
+            <input type="text" id="nuevaOpcion" name="nuevaOpcion" readonly>
+            <button type="button" onclick="mostrarInterfaz()">Buscar</button>
+            <button type="button" onclick="agregarOpcion()">Agregar</button>
+            <button type="button" onclick="eliminarOpcion()">Eliminar</button>
+            <div id="interfazBusqueda" style="display: none;">
+                <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=EMPLE" width="600" height="400" frameborder="0"></iframe>
+            </div>
+        </div>
+        <div>
             <input type="checkbox" name="miCheck" id="miCheck">
             <label for="miCheck">Activo</label>
         </div>
@@ -112,6 +125,55 @@
         </div>
     </form>
     <script>
+        function mostrarInterfaz() {
+                      event.preventDefault(); // Evitar el envío del formulario por defecto
+                      document.getElementById("interfazBusqueda").style.display = "block";
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Obtener el formulario
+                        var form = document.getElementById('miFormulario');
+                        // Agregar un controlador de eventos para prevenir el envío del formulario cuando se presiona Enter
+                        form.addEventListener('keypress', function(event) {
+                            if (event.keyCode === 13) { // Comprobar si se presionó la tecla Enter
+                                event.preventDefault(); // Evitar el envío del formulario
+                                return false;
+                            }
+                        });
+                    });
+                    function cerrarInterfaz() {
+                        document.getElementById('interfazBusqueda').style.display = 'none';
+                    }
+                    window.addEventListener('message', function(event) {
+                            document.getElementById('nuevaOpcion').value = event.data.id ?? "";
+                            
+                        })
+
+        function agregarOpcion() {
+            var nuevaOpcion = document.getElementById('nuevaOpcion').value;
+            if(nuevaOpcion!=""){
+            var select = document.getElementById('miSelect');
+            var option = document.createElement("option");
+            option.text = nuevaOpcion;
+            option.value = nuevaOpcion;
+            select.add(option);}
+        }
+
+        function eliminarOpcion() {
+            var select = document.getElementById('miSelect');
+            for (var i = select.options.length - 1; i >= 0; i--) {
+                if (select.options[i].selected) {
+                    select.remove(i);
+                }
+            }
+        }
+        document.getElementById('miFormulario').addEventListener('submit', function() {
+            var select = document.getElementById('miSelect');
+            for (var i = 0; i < select.options.length; i++) {
+                select.options[i].selected = true;
+            }
+        });
+
         function submitFormWithoutRequired() {
             var requiredInputs = document.querySelectorAll('input[required]');
                 requiredInputs.forEach(function(input) {

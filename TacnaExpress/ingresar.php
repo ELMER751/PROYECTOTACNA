@@ -1,17 +1,11 @@
 
 <?php
 session_start();
-
-$dbhost = "localhost";
-$dbuser = "root";
-$dbpass = "";
-$dbname = "tacnaexpressbd";
-
-$conn = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname);
-
+include_once('includes/acceso.php');
+$conexion = connect_db();
 $nombre = $_POST['Nombre_de_Usuario'];
 $pass = $_POST['Contraseña'];
-$query = mysqli_query($conn, "SELECT * FROM fuser WHERE USUARIO = '".$nombre."' AND PASSWORD = '".$pass."'");
+$query = mysqli_query($conexion, "SELECT * FROM fuser WHERE USUARIO = '$nombre'");
 $nr = mysqli_num_rows($query);
 $row = mysqli_fetch_array($query);
 
@@ -19,25 +13,41 @@ $row = mysqli_fetch_array($query);
 if ($nr == 1) {
     $passs = $row['PASSWORD'];
     $ass = $row['USUARIO'];
-    if (($pass == $passs)) {
-        // Credenciales válidas, iniciar sesión
-        $_SESSION['username'] = $row['USUARIO'];
-        $_SESSION['user_id'] = $row['CODUSUARIO'];
-        header("Location: espresstacna.php");
-        exit();
+    if ($nombre === $ass) {
+        if($pass === $passs){
+            // Credenciales válidas, iniciar sesión
+            $_SESSION['username'] = $row['USUARIO'];
+            $_SESSION['user_id'] = $row['CODUSUARIO'];
+            //echo "<script>alert('Se Modifico Con Éxito');window.location.href = 'espresstacna.php';</script>";
+            header("Location: espresstacna.php");
+            exit();
+        }
+        else{
+            echo "<script>
+            alert('Contraseña Incorrecta');
+            window.history.back();
+            </script>";
+        }
     } 
+    else{
+        echo "<script>
+            alert('El Nombre de Usuario es Incorrecto');
+            window.history.back();
+            </script>";
+    }
 } 
-
 
 else if ($nr == 0) {
 
     // Usuario no encontrado
-    echo "Usuario o contraseña incorrectos. <a href='ingresar_sesion.php'>Volver a intentar</a>";  
+    echo "<script>
+    alert('Nombre de Usuario No Encontrado');
+    window.history.back();
+    </script>";
 }
 
-
 $query->close();
-$conn->close();
+$conexion->close();
 ?>
 
 
