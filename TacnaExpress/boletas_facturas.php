@@ -61,6 +61,42 @@ session_start();
                 <meta charset="UTF-8">
                 <title>Generación de Documentos</title>
             </head>
+            <style>
+              table {
+                  border-collapse: collapse;
+                  width: 100%;
+              }
+              th, td {
+                  border: 2px solid rgba(0, 0, 0, 0.897);
+                  text-align: left;
+                  padding: 8px;
+              }
+              th {
+                background-color: rgba(83, 80, 80, 0.562);
+                
+              }
+              td{
+                background-color: white;
+              }
+              
+              .eliminar:hover {
+                  /* Estilos para cuando el botón se pasea por encima */
+                  background-color: #138496;
+                  border-color: #117a8b;
+                  color: white;
+              }
+              .eliminar {
+              cursor: pointer;
+              border-radius: 5px;
+              background-color: red;
+              color: white;
+              border: 1px solid black;
+              
+              }
+              input[readonly] {
+        background-color: lightgray; /* Cambia el fondo a gris claro */
+    }
+            </style>
             <body>
               <div class="wrapper">
                 <form class ="formulario" id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']); ?>">
@@ -240,7 +276,7 @@ session_start();
                                               ?>   
                                           </select>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <input id="fechaP" type="time" name="fechaP" placeholder="Hora" value ="<?php echo $busca['HORA_PARTIDA'] ?? '';?>" required size="7">
+                      <input id="horaP" type="time" name="horaP" placeholder="Hora" value ="<?php echo $busca['HORA_PARTIDA'] ?? '';?>" required size="7">
                     </div>
                     <div class="contenido">
                       <b><a>Ingrese datos a registrar en el detalle</a></b>
@@ -249,24 +285,168 @@ session_start();
                       <a style="color:white ;border: 1px solid black; background-color: rgb(2, 12, 65); padding: 5px;">Cant</a>
                       <a style="color:white;border: 1px solid black; background-color: rgb(2, 12, 65); padding: 5px;">P.IGV</a>
                       <a style="color:white;border: 1px solid black; background-color: rgb(2, 12, 65); padding: 5px;">Total</a>
-
-
                       <br>
-                      <input id="item" type="text" name="item" onkeypress="return handleEnter(event, 'cant')" placeholder="" required style="width: 91ch;">&nbsp;&nbsp;
-                      <input id="cant" type="text" name="cant" onkeypress="return handleEnter(event, 'pigv')"oninput="validarCodigo(this)" required style="width: 5ch;">
-                      <input id="pigv" type="text" name="pigv" oninput="validarCodigo(this)" required style="width: 5ch;">
-                      <input id="total" type="text" name="total" oninput="validarCodigo(this)" required style="width: 5ch;">
-                    </div>                           
-                    <div class = "contenido" style="display: inline-block">
-                      <button type="submit" name="guardar_datosfijos" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
-                      <button type="submit" name="refrescar" class="btn"><img id="image" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
-                      <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
+                      <input id="item" type="text" name="item" onkeypress="return handleEnter(event, 'cant')" placeholder="" style="width: 91ch;">&nbsp;&nbsp;
+                      <input id="cant" type="text" name="cant" onkeypress="return handleEnter(event, 'pigv')"oninput="validarCodigo(this)" style="width: 5ch;">
+                      <input id="pigv" type="text" name="pigv" onkeypress = "return total_compra()" oninput="validarCodigo(this)" style="width: 5ch;">
+                      <input id="total" type="text" name="total" readonly oninput="validarCodigo(this)" style="width: 5ch;">
+                      <button type="button" id="btnAgregarItem" onkeypress=" btnAgregarItem.click()">Agregar </button>
+                      <br>
+                      </br>
+                      <div id="grillaContainer">
+                          <table id="grilla">
+                              <thead>
+                                  <tr>
+                                      <th>ITEM</th>
+                                      <th>Descripción</th>
+                                      <th>Cantidad</th>
+                                      <th>Precio.IGV</th>
+                                      <th>PrecioTotal</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="grillaBody">
+                                  <!-- Aquí se agregarán las filas de la grilla -->
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+                    <div>
+                      <label>Observacíon</label>
+                      <input id="observacion" type="text" name="observacion" onkeypress = "return handleEnter(event, 'pass')" style="width: 110ch;">
+                    </div>
+                      <div>
+                        <label></label>
+                      </div>
+                    <div style="display: inline-block">
+                      <div class = "contenido" style="display: inline-block">
+                        <button type="submit" name="guardar_datosfijos" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
+                        <button type="submit" name="refrescar" class="btn"><img id="image" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
+                        <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
+                      </div>
+                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                      <div class = "contenido" style="display: inline-block ">
+                      <a>USER</a>
+                      <br>
+                        <label style="font-size: 10px;">Usuario :</label>
+                        <input id="pass" type="text" name="pass" onkeypress="" required style="width: 10ch;font-size: 10px;">
+                        <input id="user" type="text" name="user"  required style="width: 10ch;font-size: 10px;" readonly>
+                        <br>
+                        <label style="font-size: 10px;">Fec/Hora :</label>
+                        <input id="fech" type="text" name="fech" required style="width: 10ch;font-size: 10px;" readonly>
+                        <input id="hor" type="text" name="hor"  required style="width: 10ch;font-size: 10px;" readonly>
+                        
+                      </div>
+                      <div class = "contenido" style="display: inline-block">
+                      <label>Sub-Total :</label>
+                      <input id="subtotal" type="text" name="subtotal" onkeypress="return handleEnter(event, 'pigv')"oninput="validarCodigo(this)" required style="width: 7ch;" readonly>
+                      <br>
+                      <label>IGV :</label>
+                      <input id="igv_venta" type="text" name="igv_venta" onkeypress = "return total_compra()" oninput="validarCodigo(this)" required style="width: 7ch;" readonly>
+                      <br>
+                      <label>Total Venta :</label>
+                      <input id="total_venta" type="text" name="total_venta" readonly oninput="validarCodigo(this)" required style="width: 7ch;" readonly>
+                      </div>
                     </div>
                   </form>
                 </div>
               </div>
                                                   
               <script>
+  
+                // Función para calcular los totales
+                    function calcularTotales() {
+                        var subtotal = 0;
+                        var igv = 0;
+                        var total_venta = 0;
+                        var ig = parseFloat(document.getElementById('IGV').value) || "0.00";
+                        // Iterar sobre las filas de la grilla
+                        var filas = document.querySelectorAll('#grilla tr');
+                        
+                        filas.forEach(function(fila) {
+                          console.log(fila)
+                            var totales = parseFloat(fila.querySelector('tr.total').innerText);
+                            total_venta += totales;
+                        });
+
+                        igv = total_venta * (ig/100); // Suponiendo que el IGV es el 18% del subtotal
+                        var subtotal = total_venta - igv;
+
+                        // Actualizar los valores en los campos de texto
+                        document.getElementById('subtotal').value = subtotal.toFixed(2) || "0.00";
+                        document.getElementById('igv_venta').value = igv.toFixed(2) || "0.00";
+                        document.getElementById('total_venta').value = total_venta.toFixed(2) || "0.00";
+                        console.log(total_venta);
+                    }
+
+                    // Llamar a la función calcularTotales cuando la página se carga y cada vez que se agrega o elimina un elemento de la grilla
+                    window.addEventListener('load', calcularTotales);
+
+                    
+                    function agregarFilaGrilla(item) {
+                      event.preventDefault(); 
+                      var grillaBody = document.getElementById('grillaBody');
+                      var newRow = grillaBody.insertRow();
+
+                      // Crear celdas y asignarles el contenido del item
+                      newRow.insertCell(0).textContent = item.orden;
+                      newRow.insertCell(1).textContent = item.descripcion;
+                      newRow.insertCell(2).textContent = item.cantidad;
+                      newRow.insertCell(3).textContent = item.precioigv;
+                      newRow.insertCell(4).textContent = item.total;
+                      // Crear celda para el botón eliminar
+                      var cellEliminar = newRow.insertCell(5);
+                      var btnEliminar = document.createElement("button");
+                      btnEliminar.textContent = "ELIMINAR";
+                      btnEliminar.className = "eliminar";
+                      
+                      btnEliminar.addEventListener("click", function() {
+                        event.preventDefault(); 
+                        eliminarFilaGrilla(this);
+                        calcularTotales();
+                      });
+                      cellEliminar.appendChild(btnEliminar);
+        
+                    }
+                      function eliminarFilaGrilla(btnEliminar) {
+                        var rowIndex = btnEliminar.parentNode.parentNode.rowIndex;
+                        document.getElementById("grilla").deleteRow(rowIndex);
+                     }
+
+                  // Evento de clic para el botón "btnAgregarItem"
+                    document.getElementById('btnAgregarItem').addEventListener('click', function() {
+                       if(document.getElementById('total').value > 0){
+                            var formData = obtenerValoresFormulario();
+                            var numeroFilas = document.getElementById('grilla').rows.length;
+
+                            // Asignar el número de filas como el valor de norden
+                            formData.orden = numeroFilas;
+                            // Llamada a la función para agregar la fila a la grilla
+                            agregarFilaGrilla(formData);
+                            limpiaritem();
+                            document.getElementById('item').focus();
+                            calcularTotales();}
+                      else{
+                        alert('Revise El Item a Ingresar');
+                        document.getElementById('item').focus();
+                      }
+                    });
+                    function limpiaritem(){
+                        document.getElementById('cant').value='';
+                        document.getElementById('item').value='';
+                        document.getElementById('pigv').value='';
+                        document.getElementById('total').value='';
+                    }
+                    // Esta función debería obtener los valores del formulario y devolverlos como un objeto
+                    function obtenerValoresFormulario() {
+                        // Aquí obtienes los valores del formulario y los devuelves como un objeto
+                        return {
+                            orden: '',
+                            cantidad: document.getElementById('cant').value,
+                            descripcion: document.getElementById('item').value,
+                            precioigv: document.getElementById('pigv').value,
+                            total: document.getElementById('total').value
+                        };
+                    }
                     function toggleCheckboxes(checkbox) {
                       var checkboxes = document.getElementsByName('Dale');
                       checkboxes.forEach(function(box) {
@@ -305,27 +485,40 @@ session_start();
                             }
                         });
                     });
-                    function cerrarInterfaz(a) {
+                    function cerrarInterfaz() {
                         document.getElementById("interfazBusqueda1").style.display = "none";
                         document.getElementById("interfazBusqueda2").style.display = "none"; 
                         document.getElementById("interfazBusqueda3").style.display = "none";
                         document.getElementById("interfazBusqueda4").style.display = "none";     
                     }
                     window.addEventListener('message', function(event) {
-                      if(event.data.id != ""){
-                            document.getElementById('NDOC').value = event.data.id ?? "";
+                        if (event.data.id !== undefined) {
+                            document.getElementById('NDOC').value = event.data.id || "";
+                        } else if (event.data.rucdni1 !== undefined && event.data.rucdni1 !== "") {
+                            document.getElementById('rucDni1').value = event.data.rucdni1 || "";
+                            document.getElementById('nomb1').value = event.data.nomb1 || "";
+                            document.getElementById('dire1').value = event.data.dire1 || "";
+                        } else if (event.data.rucdni2 !== undefined && event.data.rucdni2 !== "") {
+                            document.getElementById('rucDni2').value = event.data.rucdni2 || "";
+                            document.getElementById('nomb2').value = event.data.nomb2 || "";
+                            document.getElementById('dire2').value = event.data.dire2 || "";
+                        } else if (event.data.rucdni3 !== undefined && event.data.rucdni3 !== "") {
+                            document.getElementById('rucDni3').value = event.data.rucdni3 || "";
+                            document.getElementById('nomb3').value = event.data.nomb3 || "";
+                            document.getElementById('dire3').value = event.data.dire3 || "";
+                            document.getElementById('punto_llegada').value = event.data.dire3 || "";
                         }
-                        else if(event.data.rucdni1 != ""){
-                            document.getElementById('rucDni1').value = event.data.rucdni1 ?? "";
-                        }
-                        else if(event.data.rucdni2 != ""){
-                            document.getElementById('rucDni2').value = event.data.rucdni2 ?? "";
-                        }
-                        else if(event.data.rucdni3 != ""){
-                            document.getElementById('rucDni3').value = event.data.rucdni3 ?? "";
-                        }
-                      }
-                    );
+                    });
+
+                    function total_compra() {
+                      if (event.keyCode === 13) { // Comprobar si se presionó la tecla Enter
+                                event.preventDefault(); // Evitar el envío del formulario
+                                document.getElementById('total').value = document.getElementById('cant').value * document.getElementById('pigv').value
+                                document.getElementById('btnAgregarItem').focus();
+                                return false;
+                            }
+                    }
+                    
                     function validarIGV(input) {
                       if (input.value > 100) {
                         input.value = 100; // Limita el valor máximo a 99
