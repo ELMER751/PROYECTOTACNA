@@ -58,6 +58,7 @@ session_start();
                 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="js/funciones.js"></script>
                 <meta charset="UTF-8">
                 <title>Generación de Documentos</title>
             </head>
@@ -104,7 +105,7 @@ session_start();
                     <div class="contenido">
                       <div class="contenido">
                         <div>
-                          <label for="CONDI">Condición :</label>
+                          <label>Condición :</label>
                           <select name="CONDI" id="CONDI">
                             <option value="">-- SELECCIONE --</option>
                             <?php
@@ -118,7 +119,7 @@ session_start();
                               }
                             ?>   
                           </select>
-                          <label for="TRANS">Transacc :</label>
+                          <label>Transacc :</label>
                           <select>
                           <option value="">-- SELECCIONE --</option>
                             <?php
@@ -132,27 +133,27 @@ session_start();
                               }
                             ?>
                           </select>    
-                          <a for="N° Doc">N° Doc :</a>
+                          <a>N° Doc :</a>
                           <input id="NDOC" type="text" oninput="validarCodigo(this)" name="NDOC" placeholder="" required style="width: 12ch;" onkeypress="return handleEnter(event, 'IGV')">
                           <button type="submit" class="btn" onclick="mostrarInterfaz(1)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda1" style="display: none;">
                               <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="600" height="400" frameborder="0"></iframe>
                             </div>
-                          <label for="fec.Emisión">fec.Emisión</label>
+                          <label>fec.Emisión</label>
                           <input id="FECHA" type="date" name="FECHA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" required style="width: 12ch;">
                           <a>I.G.V % </a>
                           <input id="IGV" type="number" name="IGV"  value ="<?php echo $igv ?? '';?>" oninput="validarIGV(this)" required style="width: 7.5ch;" max="100" onkeypress="return handleEnter(event, 'rucDni1')">
                         </div>
                         <div>
-                          <label for="N° Doc">RUC/DNI :</label>
+                          <label>RUC/DNI :</label>
                           <input id="rucDni1" type="text" oninput="validarCodigo(this)" name="rucDni1" placeholder="" required >
                           <button type="submit" class="btn" onclick="mostrarInterfaz(2)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda2" style="display: none;">
                               <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA2" width="600" height="400" frameborder="0"></iframe>
                             </div>
-                          <label for="N° Doc">Señor :</label>
+                          <label>Señor :</label>
                           <input id="nomb1" type="text" name="nomb1" placeholder="" required onkeypress="return handleEnter(event, 'dire1')">
-                          <label for="N° Doc">Dirección :</label>
+                          <label>Dirección :</label>
                           <input id="dire1" type="text" name="dire1" placeholder="" required onkeypress="return handleEnter(event, 'rucDni2')">
                         </div>
                       </div>
@@ -160,7 +161,7 @@ session_start();
                         <div class="contenido" style="display: inline-block">
                           <b><a>Remitente</a></b>
                           <br>
-                            <label for="N° Doc">RUC/DNI :</label>
+                            <label>RUC/DNI :</label>
                             <input id="rucDni2" type="text" oninput="validarCodigo(this)" name="rucDni2" placeholder="" required style="width: 30ch;" >
                             <button type="submit" class="btn" onclick="mostrarInterfaz(3)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda3" style="display: none;">
@@ -176,7 +177,7 @@ session_start();
                         <div class="contenido" style="display: inline-block">
                           <b><a>Cosignatario</a></b>
                           <br>
-                            <label for="N° Doc">RUC/DNI :</label>
+                            <label>RUC/DNI :</label>
                             <input id="rucDni3" type="text" oninput="validarCodigo(this)" name="rucDni3" placeholder="" required style="width: 30ch;">
                             <button type="submit" class="btn" onclick="mostrarInterfaz(4)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda4" style="display: none;">
@@ -207,10 +208,10 @@ session_start();
                               </select>
                             <br>
                               <input type="checkbox" name="Dale" id="Dale1" onclick="toggleCheckboxes(this)">
-                              <label for="miCheck1">Destino</label>
+                              <label>Destino</label>
                             <br>
                               <input type="checkbox" name="Dale" id="Dale2" onclick="toggleCheckboxes(this)">
-                              <label for="miCheck2">Oficina</label>                 
+                              <label>Oficina</label>                 
                         </div>
                       </div>
                     <div class="contenido">
@@ -314,21 +315,21 @@ session_start();
                       <label>Observacíon</label>
                       <input id="observacion" type="text" name="observacion" onkeypress = "return handleEnter(event, 'pass')" style="width: 110ch;">
                     </div>
-                      <div>
-                        <label></label>
+                      <div id="letras" style="display: none;">
+                      <a id="total_ventaEnLetras"></a>
                       </div>
                     <div style="display: inline-block">
                       <div class = "contenido" style="display: inline-block">
-                        <button type="submit" name="guardar_datosfijos" class="btn"><img id="image" src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
-                        <button type="submit" name="refrescar" class="btn"><img id="image" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
-                        <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
+                        <button type="submit" name="guardar_venta"onkeypress="image1.click()" class="btn" id="image1" ><img src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
+                        <button type="submit" name="refrescar" class="btn" onclick="submitFormWithoutRequired()"><img id="image2" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
+                        <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image3" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
                       </div>
                      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                       <div class = "contenido" style="display: inline-block ">
                       <a>USER</a>
                       <br>
                         <label style="font-size: 10px;">Usuario :</label>
-                        <input id="pass" type="text" name="pass" onkeypress="" required style="width: 10ch;font-size: 10px;">
+                        <input id="pass" type="password" name="pass" onkeypress="confirmaruser(event)" required style="width: 10ch;font-size: 10px;" >
                         <input id="user" type="text" name="user"  required style="width: 10ch;font-size: 10px;" readonly>
                         <br>
                         <label style="font-size: 10px;">Fec/Hora :</label>
@@ -349,34 +350,82 @@ session_start();
                     </div>
                   </form>
                 </div>
-              </div>
-                                                  
+              </div>                                   
               <script>
-  
-                // Función para calcular los totales
-                    function calcularTotales() {
-                        var subtotal = 0;
-                        var igv = 0;
-                        var total_venta = 0;
-                        var ig = parseFloat(document.getElementById('IGV').value) || "0.00";
-                        // Iterar sobre las filas de la grilla
-                        var filas = document.querySelectorAll('#grilla tr');
-                        
-                        filas.forEach(function(fila) {
-                          console.log(fila)
-                            var totales = parseFloat(fila.querySelector('tr.total').innerText);
-                            total_venta += totales;
-                        });
+                
+                function confirmaruser(event){
+                  if (event.keyCode === 13) {
+                    event.preventDefault(); // Evitar el envío del formulario
+                    var pass = document.getElementById("pass").value;
 
-                        igv = total_venta * (ig/100); // Suponiendo que el IGV es el 18% del subtotal
-                        var subtotal = total_venta - igv;
+                    // Realizar la solicitud AJAX
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "verifica.php", true);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.respuesta === "Contraseña correcta") {
+                                // Si el usuario existe, borra el campo y da el foco
+                                alert(response.respuesta); // Mostrar respuesta en una alerta (solo para depuración)
+                                document.getElementById("user").value = response.user || "";
+                                document.getElementById("fech").value = document.getElementById("FECHA").value;
+                                document.getElementById("hor").value = "<?php date_default_timezone_set('America/Lima'); echo date('H:i:s');?>";
+                                document.getElementById("image1").focus();
+                              } else {
+                                alert(response.respuesta);
+                                // Si el usuario no existe, solo da el foco
+                                document.getElementById("pass").focus();
+                                document.getElementById("pass").value = "";
+                                document.getElementById("user").value = "";
+                                document.getElementById("fech").value = "";
+                                document.getElementById("hor").value = "";
+                                
+                            }
+                        }
+                    };
+                    xhr.send("pass=" + pass);
+                    return false; // Evitar la propagación del evento
+                  }
+                }
+                
+                function calcularTotales() {
+                    var subtotal = 0;
+                    var igv = 0;
+                    var total_venta = 0;
+                    var ig = parseFloat(document.getElementById('IGV').value) || 0.00; // Utiliza 0.00 como valor predeterminado si el campo está vacío o no es un número
 
-                        // Actualizar los valores en los campos de texto
-                        document.getElementById('subtotal').value = subtotal.toFixed(2) || "0.00";
-                        document.getElementById('igv_venta').value = igv.toFixed(2) || "0.00";
-                        document.getElementById('total_venta').value = total_venta.toFixed(2) || "0.00";
-                        console.log(total_venta);
-                    }
+                    // Obtener todas las filas de la tabla
+                    var filas = document.querySelectorAll('#grilla tbody tr');
+
+                    // Iterar sobre las filas y sumar los valores de la columna 4
+                    filas.forEach(function(fila) {
+                        var valorColumna = parseFloat(fila.cells[4].innerText.trim());
+                        if (!isNaN(valorColumna)) {
+                            total_venta += valorColumna;
+                        }
+                    });
+                    igv = total_venta * (ig / 100); // Calcula el IGV
+                    subtotal = total_venta - igv; // Calcula el subtotal
+                    // Actualizar los valores en los campos de texto
+                    document.getElementById('subtotal').value = subtotal.toFixed(2);
+                    document.getElementById('igv_venta').value = igv.toFixed(2);
+                    document.getElementById('total_venta').value = total_venta.toFixed(2);
+                    console.log(total_venta);
+                    var montoEnLetras = EnLetras(total_venta, "S/.");
+                    console.log(montoEnLetras);
+                    document.getElementById('total_ventaEnLetras').textContent = montoEnLetras;
+                    mostrarletra();
+                }
+                function mostrarletra(){
+                  var letra = document.getElementById('total_venta').value
+                  if(letra>0){
+                    document.getElementById("letras").style.display = "block";
+                  }
+                  else{
+                    document.getElementById("letras").style.display = "none";
+                  }
+                };
 
                     // Llamar a la función calcularTotales cuando la página se carga y cada vez que se agrega o elimina un elemento de la grilla
                     window.addEventListener('load', calcularTotales);
@@ -541,8 +590,14 @@ session_start();
                         document.getElementById('miFormulario').submit();
                     }
                     function validarCodigo(input) {
-                        // Eliminar caracteres no numéricos
-                        input.value = input.value.replace(/\D/g, '');
+                        // Eliminar caracteres no numéricos excepto el punto decimal
+                        input.value = input.value.replace(/[^\d.]/g, '');
+
+                        // Asegurarse de que solo haya un punto decimal
+                        var puntos = input.value.match(/\./g);
+                        if (puntos !== null && puntos.length > 1) {
+                            input.value = input.value.substring(0, input.value.lastIndexOf('.'));
+                        }
                     }
                     function change_chofer() {
                         var seleccion = document.getElementById("miSelector").value;
@@ -572,51 +627,6 @@ session_start();
                         var dniruc = document.getElementById('rucDni').value;
                       }
                     }   
-
-                    function ApiRucDni(dniruc) 
-                    { 
-                        var transacc = document.getElementById('transacc').value;
-                        var xhr = new XMLHttpRequest();
-                        var URLDNI = "proxy.php?numero=" + dniruc;
-                        var URLRUC = "proxy.php?numero=" + dniruc;
-                        
-                        if (dniruc === 8) {
-                            //URL = "http://api.apis.net.pe/v1/dni?numero=" + rucdni;
-                            xhr.open("GET", URLDNI, true);
-                            xhr.onreadystatechange = function() {
-                                if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 201)) {
-                                    var responseData = JSON.parse(xhr.responseText);
-                                    console.log(responseData);
-                                    var nomb = responseData.nombre || ''; 
-                                    var dire = responseData.direccion || 'Arequipa'; 
-                                } else {
-                                    console.log("NO SE ENCONTRO");
-                                }
-                            };
-                            xhr.send();
-                        } else if (ruc.length >= 11) {
-                            if (dniruc === 11) {
-                                //URL = "http://api.apis.net.pe/v1/ruc?numero=" + rucdni;
-                                xhr.open("GET", URLRUC, true);
-                                xhr.onreadystatechange = function() {
-                                    if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 201)) {
-                                        var responseData = JSON.parse(xhr.responseText);
-                                        console.log(responseData);
-                                        nomb = responseData.nombre || ''; 
-                                        dire = responseData.direccion || 'Arequipa'; 
-                                    } else {
-                                        console.log("NO SE ENCONTRO");
-                                    }
-                                };
-                                xhr.send();
-                            } else {
-                            }
-                        } 
-                        else {
-                            console.log("Consulta NO encontrada, Continúe Manualmente");
-                            return;
-                        }
-                    }
               </script>
             </body>
         </html>

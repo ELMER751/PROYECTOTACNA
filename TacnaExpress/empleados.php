@@ -26,6 +26,11 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<style>
+    #miSelect {
+      width: 530px; /* Cambia este valor según tus necesidades */
+    }
+</style>
 <body>
 <div class="wrapper">
     <form id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']);?>">
@@ -99,18 +104,23 @@
         </div>
         <div class="input-box">
             <input id="Brevete" type="text" name="Brevete" placeholder="Brevete" required>
-        </div>
-        <div>
-            <select id="miSelect"name="opciones[]" multiple >
-
-            </select>
+        </div >
+        <div class="contenido">
+            <label>Documentos</label>
+            <div>
+                <select id="miSelect"name="opciones[]" multiple style=" display: none;">        
+                </select>
+            </div>
+            <br>
+            <div>
             <input onclick="submitFormWithoutRequired()" type="submit" value="Enviar" name="enviar">
             <input type="text" id="nuevaOpcion" name="nuevaOpcion" readonly>
             <button type="button" onclick="mostrarInterfaz()">Buscar</button>
             <button type="button" onclick="agregarOpcion()">Agregar</button>
             <button type="button" onclick="eliminarOpcion()">Eliminar</button>
+            </div>
             <div id="interfazBusqueda" style="display: none;">
-                <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=EMPLE" width="600" height="400" frameborder="0"></iframe>
+                <iframe src="busca_prueba.php?tabla=vftge2007&response=A&codi=EMPLE" width="600" height="400" frameborder="0"></iframe>
             </div>
         </div>
         <div>
@@ -126,28 +136,38 @@
     </form>
     <script>
         function mostrarInterfaz() {
-                      event.preventDefault(); // Evitar el envío del formulario por defecto
-                      document.getElementById("interfazBusqueda").style.display = "block";
-                    }
+        event.preventDefault(); // Evitar el envío del formulario por defecto
+        document.getElementById("interfazBusqueda").style.display = "block";
+      }
 
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Obtener el formulario
-                        var form = document.getElementById('miFormulario');
-                        // Agregar un controlador de eventos para prevenir el envío del formulario cuando se presiona Enter
-                        form.addEventListener('keypress', function(event) {
-                            if (event.keyCode === 13) { // Comprobar si se presionó la tecla Enter
-                                event.preventDefault(); // Evitar el envío del formulario
-                                return false;
-                            }
-                        });
-                    });
-                    function cerrarInterfaz() {
-                        document.getElementById('interfazBusqueda').style.display = 'none';
-                    }
-                    window.addEventListener('message', function(event) {
-                            document.getElementById('nuevaOpcion').value = event.data.id ?? "";
-                            
-                        })
+      document.addEventListener('DOMContentLoaded', function() {
+          // Obtener el formulario
+          var form = document.getElementById('miFormulario');
+          // Agregar un controlador de eventos para prevenir el envío del formulario cuando se presiona Enter
+          form.addEventListener('keypress', function(event) {
+              if (event.keyCode === 13) { // Comprobar si se presionó la tecla Enter
+                  event.preventDefault(); // Evitar el envío del formulario
+                  return false;
+              }
+          });
+      });
+        function mostrar_select(){
+            var selectElement = document.getElementById("miSelect");
+            if (selectElement.options.length > 0){
+                document.getElementById("miSelect").style.display = "block";
+            }
+            else{
+                document.getElementById("miSelect").style.display = "none";
+            }
+            }
+
+        function cerrarInterfaz() {
+          document.getElementById('interfazBusqueda').style.display = 'none';
+      }
+        window.addEventListener('message', function(event) {
+              document.getElementById('nuevaOpcion').value = event.data.docu ?? "";
+              
+          });
 
         function agregarOpcion() {
             var nuevaOpcion = document.getElementById('nuevaOpcion').value;
@@ -156,31 +176,36 @@
             var option = document.createElement("option");
             option.text = nuevaOpcion;
             option.value = nuevaOpcion;
-            select.add(option);}
-        }
+            select.add(option);
+            console.log(option);
+            mostrar_select();
+            document.getElementById('nuevaOpcion').value="";
+            }
+      }
 
         function eliminarOpcion() {
-            var select = document.getElementById('miSelect');
-            for (var i = select.options.length - 1; i >= 0; i--) {
-                if (select.options[i].selected) {
-                    select.remove(i);
-                }
-            }
-        }
+          var select = document.getElementById('miSelect');
+          for (var i = select.options.length - 1; i >= 0; i--) {
+              if (select.options[i].selected) {
+                  select.remove(i);
+              }
+              mostrar_select();
+          }
+      }
         document.getElementById('miFormulario').addEventListener('submit', function() {
-            var select = document.getElementById('miSelect');
-            for (var i = 0; i < select.options.length; i++) {
-                select.options[i].selected = true;
-            }
-        });
+          var select = document.getElementById('miSelect');
+          for (var i = 0; i < select.options.length; i++) {
+              select.options[i].selected = true;
+          }
+      });
 
         function submitFormWithoutRequired() {
-            var requiredInputs = document.querySelectorAll('input[required]');
-                requiredInputs.forEach(function(input) {
-                input.removeAttribute('required');
-            });
-            document.getElementById('miFormulario').submit();
-        }
+          var requiredInputs = document.querySelectorAll('input[required]');
+              requiredInputs.forEach(function(input) {
+              input.removeAttribute('required');
+          });
+          document.getElementById('miFormulario').submit();
+      }
     </script>
 </body>
 </html>
