@@ -103,7 +103,7 @@
             <input id="DNI" type="text" name="DNI" placeholder="DNI" required>
         </div>
         <div class="input-box">
-            <input id="Brevete" type="text" name="Brevete" placeholder="Brevete" required>
+            <input id="Brevete" type="text" name="Brevete" placeholder="Brevete">
         </div >
         <div class="contenido">
             <label>Documentos</label>
@@ -135,7 +135,7 @@
         </div>
     </form>
     <script>
-        function mostrarInterfaz() {
+    function mostrarInterfaz() {
         event.preventDefault(); // Evitar el envío del formulario por defecto
         document.getElementById("interfazBusqueda").style.display = "block";
       }

@@ -132,7 +132,7 @@ function obtener_registros($dato, $tabla) {
                 <?php
                 }
                 else if ($codi === "EMPLE") {
-                    $docu = $jaladato[1];
+                    $docu = $jaladato[0];
                     $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $docu . '\');">SELECCIONAR</a></td>';
                 ?>
                     <script>

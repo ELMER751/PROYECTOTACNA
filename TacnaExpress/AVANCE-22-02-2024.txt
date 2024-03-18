@@ -128,8 +128,9 @@ Crear MODIFICA CLIENTES
         echo "No se encontraron coincidencias con sus criterios de búsqueda.";
     }
 ?>
-
-
+<!-- SUM()  Datatables-->
+                <script src="https://cdn.datatables.net/plug-ins/1.10.20/api/sum().js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 /////
 INSERT INTO FTGE2007 (CODI, NOMB, DIRE, FECH, FONO, ACTI, FLC, CITY, PAIS, COND, ZONA, TOLE, PLAZ, FINA, SERIE, COMC, COMC1, COMC2, MONC, PORC, PORV, MON2, MON3, TFAX, RUC, CODC, SIGLA, IDDOC, USER, ORDEN, IDVENTA) VALUES
 ('01', 'PLANILLA', NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),

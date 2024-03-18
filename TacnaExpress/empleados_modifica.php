@@ -14,7 +14,9 @@ $conexion = connect_db();
 $cliente = new Registro();
 $cliente->conectar_db($conexion);
 $datos=$cliente->consulta($codigo);
+$user=$datos['USUARIO'];
 $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
+$documentos = mysqli_query($conexion, "SELECT * FROM usuario_documento WHERE CODUSUARIO ='$user'")
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,9 +41,12 @@ $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
         font-size: 10px;
         background-color: #154360; /* Color de fondo para campos llenos */
     }
+    #miSelect {
+      width: 530px; /* Cambia este valor según tus necesidades */
+    }
 </style>
 
-<form method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']);?>">
+<form id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']);?>">
     <h1>Registrar Empleado</h1>
     <div class="input-box <?php echo !empty($datos['USUARIO']) ? 'filled' : ''; ?>">
         <input id="Nombre_d_Usuario" type="text" name="Nombre_d_Usuario" placeholder="Nombre de Usuario" maxlength="3" value="<?php echo $datos['USUARIO']?>" readonly>
@@ -71,7 +76,7 @@ $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
                         echo "Error al ejecutar la consulta: " . mysqli_error($conexion);
                     }
                 ?>
-            </select>
+        </select>
     </div>
     <div class="input-box <?php echo !empty($datos['OCUPACION']) ? 'filled' : ''; ?>">
         <input id="Ocupacion" type="text" name="Ocupacion" placeholder="Ocupación" value="<?php echo $datos['OCUPACION']?>" oninput="this.value = this.value.toUpperCase()" required>
@@ -82,6 +87,37 @@ $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
     <div class="input-box <?php echo !empty($datos['BREVETE']) ? 'filled' : ''; ?>">
         <input id="Brevete" type="text" name="Brevete" placeholder="Brevete" value="<?php echo $datos['BREVETE']?>" required>
     </div>
+    <div class="contenido">
+            <label>Documentos</label>
+            <div>
+                <select id="miSelect"name="opciones[]" multiple>        
+                    <?php
+                        // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
+                        if ($documentos) {
+                            while ($fila = mysqli_fetch_assoc($documentos)) {
+                                echo "<option value='" . $fila['CODI'] . "'>" . $fila['CODI'] . "</option>";
+                            }
+                            // Liberar el resultado
+                            mysqli_free_result($documentos);
+                        } else {
+                            // Si la consulta falla, mostrar un mensaje de error
+                            echo "Error al ejecutar la consulta: " . mysqli_error($conexion);
+                        }
+                    ?>
+                </select>
+            </div>
+            <br>
+            <div>
+            <input onclick="submitFormWithoutRequired()" type="submit" value="Enviar" name="enviar">
+            <input type="text" id="nuevaOpcion" name="nuevaOpcion" readonly>
+            <button type="button" onclick="mostrarInterfaz()">Buscar</button>
+            <button type="button" onclick="agregarOpcion()">Agregar</button>
+            <button type="button" onclick="eliminarOpcion()">Eliminar</button>
+            </div>
+            <div id="interfazBusqueda" style="display: none;">
+                <iframe src="busca_prueba.php?tabla=vftge2007&response=A&codi=EMPLE" width="600" height="400" frameborder="0"></iframe>
+            </div>
+        </div>
     <div>
         <input type="checkbox" name="miCheck" id="miCheck" <?php if ($datos['ACTI'] == 1) echo 'checked'; ?>>
         <label for="miCheck">Activo</label>
@@ -94,6 +130,69 @@ $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
     </div>
 </form>
     <script>
+        function mostrarInterfaz() {
+        event.preventDefault(); // Evitar el envío del formulario por defecto
+        document.getElementById("interfazBusqueda").style.display = "block";
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+          // Obtener el formulario
+          var form = document.getElementById('miFormulario');
+          // Agregar un controlador de eventos para prevenir el envío del formulario cuando se presiona Enter
+          form.addEventListener('keypress', function(event) {
+              if (event.keyCode === 13) { // Comprobar si se presionó la tecla Enter
+                  event.preventDefault(); // Evitar el envío del formulario
+                  return false;
+              }
+          });
+      });
+        function mostrar_select(){
+            var selectElement = document.getElementById("miSelect");
+            if (selectElement.options.length > 0){
+                document.getElementById("miSelect").style.display = "block";
+            }
+            else{
+                document.getElementById("miSelect").style.display = "none";
+            }
+            }
+
+        function cerrarInterfaz() {
+          document.getElementById('interfazBusqueda').style.display = 'none';
+      }
+        window.addEventListener('message', function(event) {
+              document.getElementById('nuevaOpcion').value = event.data.docu ?? "";
+              
+          });
+
+        function agregarOpcion() {
+            var nuevaOpcion = document.getElementById('nuevaOpcion').value;
+            if(nuevaOpcion!=""){
+            var select = document.getElementById('miSelect');
+            var option = document.createElement("option");
+            option.text = nuevaOpcion;
+            option.value = nuevaOpcion;
+            select.add(option);
+            console.log(option);
+            mostrar_select();
+            document.getElementById('nuevaOpcion').value="";
+            }
+      }
+
+        function eliminarOpcion() {
+          var select = document.getElementById('miSelect');
+          for (var i = select.options.length - 1; i >= 0; i--) {
+              if (select.options[i].selected) {
+                  select.remove(i);
+              }
+              mostrar_select();
+          }
+      }
+        document.getElementById('miFormulario').addEventListener('submit', function() {
+          var select = document.getElementById('miSelect');
+          for (var i = 0; i < select.options.length; i++) {
+              select.options[i].selected = true;
+          }
+      });
         function submitFormWithoutRequired() {
             var requiredInputs = document.querySelectorAll('input[required]');
                 requiredInputs.forEach(function(input) {

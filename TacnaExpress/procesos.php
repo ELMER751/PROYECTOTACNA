@@ -472,10 +472,13 @@ session_start();
         $conexion = connect_db();
         $oproduct = new Registro();
         $oproduct->conectar_db($conexion);
-        
+        $opcionesSeleccionadas = $_POST["opciones"] ?? '';
         $response = $oproduct->registrar_usuario($user,$pas,$nom,$nivel,$act,$ocu,$dni,$bre,$cede);
-
+    
         if($response) {
+            foreach ($opcionesSeleccionadas as $opcion) {
+                $judial=mysqli_query($conexion, "INSERT INTO usuario_documento(CODUSUARIO, CODI)values('$user','$opcion')");
+            }
             echo"
             <script>
                 alert('Se Registro Nuevo Usuario Con Exito');
@@ -509,9 +512,16 @@ session_start();
         $dni= $_POST['DNI'];
         $bre= $_POST['Brevete'];
         $cede= $_POST['Sede'];
+        $opcionesSeleccionadas = $_POST["opciones"] ?? '';
         $cede = "0" . $cede;
         $modifica = $usua->modi_usuario($id,$user,$pas,$nom,$nivel,$act,$ocu,$dni,$bre,$cede);
         if($modifica) {
+            try{
+            $judial = mysqli_query($conexion, "DELETE FROM usuario_documento WHERE CODUSUARIO = '$user'");}
+            catch (mysqli_sql_exception $e){}
+            foreach ($opcionesSeleccionadas as $opcion) {
+                $judial=mysqli_query($conexion, "INSERT INTO usuario_documento(CODUSUARIO, CODI)values('$user','$opcion')");
+            }
             echo"
             <script>
                 alert('Se Modifico Usuario Con Exito');
