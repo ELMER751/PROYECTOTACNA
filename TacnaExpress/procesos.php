@@ -687,16 +687,16 @@ session_start();
             }
         }
     }
-    else if (isset($_POST["enviar"])) {
+    else if (isset($_POST["boleto"])) {
         $opcionesSeleccionadas = $_POST["opciones"];
         
-        // Procesar las opciones seleccionadas
-        foreach ($opcionesSeleccionadas as $opcion) {
-            // Aquí puedes realizar cualquier acción necesaria con cada opción seleccionada
-            echo "Opción seleccionada: " . $opcion . "<br>";
-            // Por ejemplo, puedes insertar las opciones en una base de datos
-            // Simplemente construye tu consulta de inserción aquí
-        }
+    } 
+    else if (isset($_POST["guarda_documento"])) {
+        echo '<script>window.open("Reportes/invoice.php", "_blank");</script>';
+        echo "<script>
+        window.history.back();
+        </script>";
+        exit; 
     } 
     else{
         echo "Intente de nuevo, algo sucedio mal <a class = 'nav-link' href = 'espresstacna.php'>Volver</a>";

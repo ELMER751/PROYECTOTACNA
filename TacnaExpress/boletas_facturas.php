@@ -32,6 +32,9 @@ session_start();
     $li = mysqli_query($conexion, "SELECT * FROM FUSER WHERE OCUPACION  = 'SECRETARIA' ORDER BY NOMBRES ASC");
     $condicion = mysqli_query($conexion, "SELECT * FROM CONDICIONES WHERE TIPDOC = '2'");
     $tran = mysqli_query($conexion, "SELECT CODI, DOCUMENTO AS NOMB FROM vuserdocu WHERE CODUSUARIO = '$user' AND codi NOT IN ('98', '99')");
+    $documentos= mysqli_query($conexion,"SELECT MAX(DOC1) AS ultimo_codigo FROM fcabecer"); 
+    $documentos = mysqli_fetch_assoc($documentos);
+    $ultimo_codigo = $documentos["ultimo_codigo"];
     if (isset($liquidacion['LIQUIDACION'])) {
         $liquidacion = $liquidacion['LIQUIDACION'];
     } else {
@@ -120,7 +123,7 @@ session_start();
                             ?>   
                           </select>
                           <label>Transacc :</label>
-                          <select>
+                          <select id ="trans" onchange = "change_trans()">
                           <option value="">-- SELECCIONE --</option>
                             <?php
                               if ($tran) {
@@ -134,7 +137,7 @@ session_start();
                             ?>
                           </select>    
                           <a>N° Doc :</a>
-                          <input id="NDOC" type="text" oninput="validarCodigo(this)" name="NDOC" placeholder="" required style="width: 12ch;" onkeypress="return handleEnter(event, 'IGV')">
+                          <input id="NDOC" type="text" oninput="validarCodigo(this)" name="NDOC" value="<?php echo $ultimo_codigo+1; ?>" required style="width: 12ch;" onkeypress="return handleEnter(event, 'IGV')">
                           <button type="submit" class="btn" onclick="mostrarInterfaz(1)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda1" style="display: none;">
                               <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="600" height="400" frameborder="0"></iframe>
@@ -142,11 +145,11 @@ session_start();
                           <label>fec.Emisión</label>
                           <input id="FECHA" type="date" name="FECHA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" required style="width: 12ch;">
                           <a>I.G.V % </a>
-                          <input id="IGV" type="number" name="IGV"  value ="<?php echo $igv ?? '';?>" oninput="validarIGV(this)" required style="width: 7.5ch;" max="100" onkeypress="return handleEnter(event, 'rucDni1')">
+                          <input id="IGV" type="number" name="IGV"  value ="<?php echo $igv ?? '18';?>" oninput="validarIGV(this)" required style="width: 7.5ch;" max="100" onkeypress="return handleEnter(event, 'rucDni1')">
                         </div>
                         <div>
                           <label>RUC/DNI :</label>
-                          <input id="rucDni1" type="text" oninput="validarCodigo(this)" name="rucDni1" placeholder="" required >
+                          <input id="rucDni1" type="text" oninput="validarCodigo(this)" onkeypress="return dniruc(1)" name="rucDni1" required >
                           <button type="submit" class="btn" onclick="mostrarInterfaz(2)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda2" style="display: none;">
                               <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA2" width="600" height="400" frameborder="0"></iframe>
@@ -162,7 +165,7 @@ session_start();
                           <b><a>Remitente</a></b>
                           <br>
                             <label>RUC/DNI :</label>
-                            <input id="rucDni2" type="text" oninput="validarCodigo(this)" name="rucDni2" placeholder="" required style="width: 30ch;" >
+                            <input id="rucDni2" type="text" oninput="validarCodigo(this)" name="rucDni2" onkeypress="return dniruc(2)" required style="width: 30ch;" >
                             <button type="submit" class="btn" onclick="mostrarInterfaz(3)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda3" style="display: none;">
                               <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA3" width="600" height="400" frameborder="0"></iframe>
@@ -178,7 +181,7 @@ session_start();
                           <b><a>Cosignatario</a></b>
                           <br>
                             <label>RUC/DNI :</label>
-                            <input id="rucDni3" type="text" oninput="validarCodigo(this)" name="rucDni3" placeholder="" required style="width: 30ch;">
+                            <input id="rucDni3" type="text" oninput="validarCodigo(this)" name="rucDni3" onkeypress="return dniruc(3)" required style="width: 30ch;">
                             <button type="submit" class="btn" onclick="mostrarInterfaz(4)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda4" style="display: none;">
                               <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA4" width="600" height="400" frameborder="0"></iframe>
@@ -320,7 +323,7 @@ session_start();
                       </div>
                     <div style="display: inline-block">
                       <div class = "contenido" style="display: inline-block">
-                        <button type="submit" name="guardar_venta"onkeypress="image1.click()" class="btn" id="image1" ><img src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
+                        <button type="submit" name="guarda_documento"onclick="submitFormWithoutRequired()" onkeypress="image1.click()" class="btn" id="image1" ><img src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
                         <button type="submit" name="refrescar" class="btn" onclick="submitFormWithoutRequired()"><img id="image2" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
                         <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image3" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
                       </div>
@@ -621,12 +624,43 @@ session_start();
                         xhr.send("miSelector=" + seleccion);
                         return false;
                     }
-                    function dniruc(){
-                      event.preventDefault();
-                      if (event.keyCode === 13){
-                        var dniruc = document.getElementById('rucDni').value;
-                      }
-                    }   
+
+                    function dniruc(pro) {
+                        if (event.keyCode === 13) {
+                            event.preventDefault();
+                            var dniruc;
+                            if(pro===1){
+                            dniru = document.getElementById("rucDni1").value;}
+                            else if(pro===2){
+                            dniru = document.getElementById("rucDni2").value;}
+                            else if(pro===3){
+                            dniru = document.getElementById("rucDni3").value;}
+                            ApiRucDni(dniru)
+                                .then(function(data) {
+                                  if(pro===1){
+                                    document.getElementById('nomb1').value = data.nomb || '';
+                                    document.getElementById('dire1').value = data.dire || 'Arequipa';
+                                    document.getElementById('rucDni2').focus();
+                                    }
+                                   else  if(pro===2){
+                                    document.getElementById('nomb2').value = data.nomb || '';
+                                    document.getElementById('dire2').value = data.dire || 'Arequipa';
+                                    document.getElementById('rucDni3').focus();
+                                    }
+                                    else if(pro===3){
+                                    document.getElementById('nomb3').value = data.nomb || '';
+                                    document.getElementById('dire3').value = data.dire || 'Arequipa';
+                                    document.getElementById('punto_llegada').value = document.getElementById('dire3').value 
+                                    document.getElementById('datosDestino').focus();
+                                    }
+                                })
+                                .catch(function(error) {
+                                    console.error("Error: " + error);
+                                    document.getElementById('rucDni2').focus();
+                                });
+                        }
+                    }
+                    
               </script>
             </body>
         </html>

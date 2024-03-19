@@ -226,7 +226,8 @@ session_start();
                             <p>Liquidación :</p>
                             <input id="LIQUI" type="text" name="LIQUI" placeholder="Liquidación" value ="<?php echo $liquidacion;?>" required readonly  size="9">
                             <p>Fecha en Curso :</p>
-                            <input id="FECHA" type="text" name="FECHA" placeholder="Fecha" value ="<?php echo date('d-m-Y');?>" required readonly size="7">
+                            <input id="FECHA" type="text" name="FECHA" value ="<?php echo date('Y-m-d');?>" required readonly size="7">
+                            
                         </div>
                         <div class="input-box">
                             <p>Camión :</p>
@@ -236,7 +237,7 @@ session_start();
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
                                     if ($resultado) {
                                         while ($fila = mysqli_fetch_assoc($resultado)) {
-                                            echo "<option value='" . $fila['CAMION'] . "' style='background-color: black; color: white;'>" . $fila['CAMIONX'] . "</option>";
+                                            echo "<option value='" . $fila['CAMIONX'] . "' style='background-color: black; color: white;'>" . $fila['CAMIONX'] . "</option>";
                                         }
                                         // Liberar el resultado
                                         mysqli_free_result($resultado);

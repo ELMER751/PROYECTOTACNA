@@ -67,48 +67,39 @@ function EnLetras(monto, moneda) {
     return Pal + Gg + " CON " + decimal1;
 }
 
-function ApiRucDni(dniruc) {
-    var xhr = new XMLHttpRequest();
-    var URLDNI = "../proxy.php?numero=" + dniruc;
-    var URLRUC = "../proxy.php?numero=" + dniruc;
-    if (dniruc === 8) {
-        //URL = "http://api.apis.net.pe/v1/dni?numero=" + rucdni;
-        xhr.open("GET", URLDNI, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 201)) {
-                var responseData = JSON.parse(xhr.responseText);
-                console.log(responseData);
-                nomb = responseData.nombre || '';
-                dire = responseData.direccion || 'Arequipa';
-                return [nomb, dire];
-            } else {
-                console.log("NO SE ENCONTRO");
-                return null;
-            }
-        };
-        xhr.send();
-    } else if (ruc.length >= 11) {
-        if (dniruc === 11) {
-            //URL = "http://api.apis.net.pe/v1/ruc?numero=" + rucdni;
-            xhr.open("GET", URLRUC, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 201)) {
+function ApiRucDni(dniru) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        var URLDNI = "proxy.php?numero=" + dniru;
+        var URLRUC = "proxy.php?numero=" + dniru;
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200 || xhr.status === 201) {
                     var responseData = JSON.parse(xhr.responseText);
                     console.log(responseData);
-                    nomb = responseData.nombre || '';
-                    dire = responseData.direccion || 'Arequipa';
-                    return [nomb, dire];
+                    alert("Cliente Encontrado");
+                    var nomb = responseData.nombre || '';
+                    var dire = responseData.direccion || 'Arequipa';
+                    resolve({ nomb: nomb, dire: dire });
                 } else {
-                    console.log("NO SE ENCONTRO");
-                    return null;
+                    alert("No se encontraron datos");
+                    reject("No se encontraron datos");
                 }
-            };
-            xhr.send();
+            }
+        };
+        xhr.onerror = function() {
+            alert("Ocurrió un error en la solicitud");
+            reject("Ocurrió un error en la solicitud");
+        };
+        if (dniru.length === 8) {
+            xhr.open("GET", URLDNI, true);
+        } else if (dniru.length === 11) {
+            xhr.open("GET", URLRUC, true);
         } else {
+            alert("Consulta no válida");
+            reject("Consulta no válida");
+            return; // Salir de la función ApiRucDni después de rechazar la promesa
         }
-    }
-    else {
-        console.log("Consulta NO encontrada, Continúe Manualmente");
-        
-    }
+        xhr.send();
+    });
 }
