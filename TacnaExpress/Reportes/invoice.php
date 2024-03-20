@@ -1,5 +1,12 @@
 <?php
+	include_once('../includes/acceso.php');
+	$conexion = connect_db();
+	$datos = mysqli_query($conexion,"SELECT * FROM FUSER WHERE DNI='72663800'");
+	$datos = mysqli_fetch_assoc($datos);
+	$ruc=$datos['CODUSUARIO'] ?? '';
+	$dire = $datos['NOMBRES'] ?? '';
 
+	mysqli_close($conexion);
 	# Incluyendo librerias necesarias #
 	require "./code128.php";
 
@@ -8,7 +15,7 @@
 	$pdf->AddPage();
 
 	# Logo de la empresa formato png #
-	$pdf->Image('./img/logo.png',165,12,35,35,'PNG');
+	$pdf->Image('./img/carro.png',165,12,35,35,'PNG');
 
 	# Encabezado y datos de la empresa #
 	$pdf->SetFont('Arial','B',16);
@@ -19,7 +26,7 @@
 
 	$pdf->SetFont('Arial','',10);
 	$pdf->SetTextColor(39,39,51);
-	$pdf->Cell(150,9,iconv("UTF-8", "ISO-8859-1","RUC: 0000000000"),0,0,'L');
+	$pdf->Cell(150,9,iconv("UTF-8", "ISO-8859-1","RUC: $ruc"),0,0,'L');
 
 	$pdf->Ln(5);
 
@@ -75,7 +82,7 @@
 	$pdf->SetTextColor(39,39,51);
 	$pdf->Cell(6,7,iconv("UTF-8", "ISO-8859-1","Dir:"),0,0);
 	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(109,7,iconv("UTF-8", "ISO-8859-1","San Salvador, El Salvador, Centro America"),0,0);
+	$pdf->Cell(109,7,iconv("UTF-8", "ISO-8859-1","$dire"),0,0);
 
 	$pdf->Ln(9);
 

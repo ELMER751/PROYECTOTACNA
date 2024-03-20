@@ -8,7 +8,7 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MENU</title>
-    <link rel="stylesheet" href="Css/loginnnn.css">
+    <link rel="stylesheet" href="../emer/estilos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -27,6 +27,7 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
           min-height: 100vh;
           background: url('Css/carro.png') no-repeat;
           background-size: cover;}
+          
     </style>
     <body>
   <header>
@@ -93,12 +94,27 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
       <li><a class="dropdown-item" href="calculadora.php"><img src="img/image4.png" alt="Image 4" width="20px" height="20px"></a></li>
       <li><a class="dropdown-item" href="users.php"><img src="img/usuarios..jpg" alt="Image 5" width="20px" height="20px"></a></li>
       <li><a class="dropdown-item" href="d_viaje.php"><img src="img/image6.png" alt="Image 6" width="20px" height="20px"></a></li>
-      <li><a class="dropdown-item" href="parametros_sistema.php"><img src="img/config.jpg" alt="Image 7" width="20px" height="20px"></a></li>
-
+      <div class="boton-modal">
+        <label for="btn-modal">
+        <a><img src="img/config.jpg" alt="Image 7" width="20px" height="20px"></a>
+        </label>
+    </div>
+    
       </ul>
     </div>
   </div>
 </nav>
 </header>
+<input type="checkbox" id="btn-modal">
+<div class="container-modal">
+        <div class="content-modal">
+            <a>PARAMETROS</a>
+            <iframe src="parametros_sistema.php" width="100%" height="100%" frameborder="1"></iframe>   
+            <div class="btn-cerrar">
+                <label for="btn-modal">Cerrar</label>
+            </div>
+        </div>
+        <label for="btn-modal" class="cerrar-modal"></label>
+    </div>
         </body>
 </html>

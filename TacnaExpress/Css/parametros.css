@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+*:not(.wrapper) {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  margin: 6px;
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.wrapper {
+  margin: 6px;
+  align-items: center; /* Centrar elementos horizontalmente */
+  background: rgb(23, 16, 85);
+  color: #050505;
+  border-radius: 10px;
+  display: inline-flex;
+  flex-direction: column; /* Alinear los elementos en una columna */
+
+}
+.wrapper .contenido {
+  margin: 6px;
+  padding: 6px;
+  margin: 6px;
+  padding: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+
+
+.wrapper .contenido select {
+  margin: 6px;
+  
+}
+.wrapper .contenido label {
+  display: inline-block;
+  width: 100px; /* Ajusta el ancho según sea necesario */
+  text-align: right; /* Alinea el texto a la derecha */
+  margin-right: 5px; /* Espacio entre la etiqueta y el input */
+}
+.formulario{
+  margin: 6px;
+  padding: 6px;
+  display: inline-block;
+  background-color: #c6d4db;
+}
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+.wrapper .input-box {
+  margin: 6px;
+  padding: 6px;
+  display: flex; /* Mostrar los elementos de entrada y selección en una fila */
+  margin: 30px 0;
+}
+
+.wrapper .entrada {
+  display: flex; /* Mostrar los elementos de entrada y selección en una fila */
+  align-items: center;
+  margin: 30px 0;
+}
+.wrapper .entrada input
+ {
+  display: flex;
+  size: 7;
+  flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
+  height: 50px;
+  background: rgb(59, 57, 57);
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #080808;
+  padding: 20px 45px 20px 20px;
+}
+.wrapper .entrada input[readonly] {
+  color: rgb(202, 156, 156); /* Cambia el color del texto a rojo */
+}
+/* Cambiar color al pasar el ratón por encima */
+.wrapper .input-box select:hover {
+    background-color: rgb(57, 60, 61);
+  }
+  
+  /* Cambiar color cuando el select está enfocado */
+  .wrapper .input-box select:focus {
+    background-color: rgb(27, 26, 26);
+  }
+.wrapper .input-box select{
+    flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #161616;
+  
+}
+.wrapper .input-box input
+ {
+  flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
+  height: 50px;
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(29, 26, 26, 0.2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #000000;
+  padding: 20px 45px 20px 20px;
+}
+
+.wrapper .input-box input::placeholder {
+  color: #000000;
+}
+
+.wrapper .input-box i {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+.wrapper .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  margin: -15px 0 15px;
+}
+
+.remember-forgot label input {
+  accent-color: #000000;
+  margin-right: 3px;
+}
+
+.remember-forgot a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.remember-forgot a:hover {
+  text-decoration: underline;
+}
+
+.wrapper .btn {
+    width: 100%;
+  background:transparent;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 1px;
+  color: #333;
+  font-weight: 60;
+}
+
+.wrapper .register-link {
+  font-size: 14.5px;
+  text-align: center;
+  margin: 20px 0 15px;
+}
+
+.register-link p a {
+  color: #050505;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}
