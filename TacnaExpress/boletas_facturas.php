@@ -123,7 +123,7 @@ session_start();
                             ?>   
                           </select>
                           <label>Transacc :</label>
-                          <select id ="trans" onchange = "change_trans()">
+                          <select id ="trans" name ="trans" onchange = "change_trans()">
                           <option value="">-- SELECCIONE --</option>
                             <?php
                               if ($tran) {

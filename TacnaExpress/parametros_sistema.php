@@ -1,9 +1,12 @@
-<?php 
+<?php
+    session_start();
+    if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit();}
     include_once('includes/acceso.php');
     $conexion = connect_db();
     $documentos = mysqli_query($conexion,"SELECT * FROM vftge2007");
     $parametros = mysqli_query($conexion,"SELECT * FROM ftge2007 WHERE CODI = '14' ");
-    $parametros = mysqli_fetch_assoc($parametros); 
+    $parametros = mysqli_fetch_assoc($parametros);
+    $user = $_SESSION["username"];
 ?>
 
 <!DOCTYPE html>
@@ -29,10 +32,12 @@
               <div class="wrapper">
                 <form class ="formulario" id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']); ?>">
                     <div class="contenido">
-                        <a>Datos generales:</a>
+                        
                       <div class="contenido">
                         <div>
-                            <label>Documento :</label>
+                            <a>Datos generales:</a>
+                            <br>
+                            <a>Documento :</a>
                             <select name="docu" id ="miSelector" onchange = "change_documento()">
                                 <option value=""></option>
                                 <?php
@@ -48,9 +53,10 @@
                             </select>
                             
                             <a>N° a Generar :</a>
-                            <input id="NR" type="text" oninput="validarCodigo(this)" name="NR" required style="width: 12ch;" onkeypress="return handleEnter(event, 'enviar')">
-                            <input onclick="submitFormWithoutRequired()" type="submit" value="Enviar" name="enviar" id="enviar">
+                            <input id="NR" type="text" oninput="validarCodigo(this)" name="NR" style="width: 12ch;" onkeypress="return handleEnter(event, 'enviar')">
+                            <input onclick="submitFormWithoutRequired()" type="submit" value="Enviar" name="enviar_doc" id="enviar_doc">
                         </div>
+                            </div>
                         <div class="contenido">
                             <a>Empresa</a>
                             <div>
@@ -70,18 +76,20 @@
                                 <br>
                                 <label>País : </label>
                                 <select name="pais" id ="pais" onchange = "cargarDepartamentos()" style="width: 39.5ch;">
-                                    <option value="<?php echo $parametros['CITY'] ?? '';?>"><?php echo $parametros['PAIS'] ?? '';?></option>
+                                    <option value="<?php echo $parametros['PAIS'] ?? '';?>"><?php echo $parametros['PAIS'] ?? '';?></option>
                                     
                                 </select>
                                 <br>
+                                <?php if($user === "A"){ ?>
                                 <label>Api Rest : </label>
-                                <input type="checkbox" name="miCheck" id="miCheck" <?php if ($parametros['COMC1'] == 1) echo 'checked'; ?>>                            
+                                <input type="checkbox" name="miCheck" id="miCheck" <?php if ($parametros['COMC1'] == 1) echo 'checked'; ?>>
+                                <?php }?>                            
                             </div>
-                            <div class="input-box">
-                                <button type="submit" name="guardar_parametros" class="btn" onclick="RD()"><img id="image" src="img/aceptar.png" alt="Image 1" width="70px" height="70px"></button>
-                                <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image" src="img/eliminar.png" alt="Image 3" width="70px" height="70px"></button>
-                            </div>    
-                        </div>        
+                               
+                        </div>
+                        <div>
+                            <button type="submit" name="guardar_parametros" class="btn"><img id="image" src="img/aceptar.png" alt="Image 1" width="30px" height="30px"></button>
+                        </div>         
                         </div>
                     </div>
                   </form>
@@ -111,7 +119,7 @@
                     const selectPais = document.getElementById("pais");
                     const selectDepartamento = document.getElementById("ciudad");
                     const paisSeleccionado = selectPais.value;
-                    selectDepartamento.innerHTML = ""; // Limpiar las opciones existentes
+
 
                     // Realizar la solicitud para obtener los estados o departamentos del país seleccionado
                     fetch(`https://countriesnow.space/api/v0.1/countries/states`, {
@@ -140,6 +148,7 @@
                 }
                 window.onload = function() {
                     cargarPaises();
+                    cargarDepartamentos();
                 };
 
                 function confirmaruser(event){
@@ -187,20 +196,13 @@
                     }
                     // Esta función debería obtener los valores del formulario y devolverlos como un objeto
                     
-                    function validarIGV(input) {
-                      if (input.value > 100) {
-                        input.value = 100; // Limita el valor máximo a 99
-                      }
-                      if (input.value < 0) {
-                        input.value = 0; // Limita el valor máximo a 99
-                      }
-                    }
                     function handleEnter(event, nextFieldId) {
                         if (event.keyCode === 13) { // Verifica si la tecla presionada es Enter
                             event.preventDefault(); // Evita que el formulario se envíe automáticamente
                             document.getElementById(nextFieldId).focus(); // Cambia el foco al siguiente campo de texto
                         }
                     }
+
                     function submitFormWithoutRequired() {
                         var requiredInputs = document.querySelectorAll('input[required]');
                         requiredInputs.forEach(function(input) {
@@ -208,16 +210,7 @@
                         });
                         document.getElementById('miFormulario').submit();
                     }
-                    function validarCodigo(input) {
-                        // Eliminar caracteres no numéricos excepto el punto decimal
-                        input.value = input.value.replace(/[^\d.]/g, '');
 
-                        // Asegurarse de que solo haya un punto decimal
-                        var puntos = input.value.match(/\./g);
-                        if (puntos !== null && puntos.length > 1) {
-                            input.value = input.value.substring(0, input.value.lastIndexOf('.'));
-                        }
-                    }
                     function change_documento() {
                         var seleccion = document.getElementById("miSelector").value;
                         // Hacer algo con la selección, por ejemplo, mostrarla en la consola

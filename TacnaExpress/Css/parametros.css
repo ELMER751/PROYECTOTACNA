@@ -13,15 +13,14 @@ body {
   min-height: 100vh;
 }
 .wrapper {
-  margin: 6px;
   align-items: center; /* Centrar elementos horizontalmente */
   background: rgb(23, 16, 85);
   color: #050505;
   border-radius: 10px;
   display: inline-flex;
   flex-direction: column; /* Alinear los elementos en una columna */
-
 }
+
 .wrapper .contenido {
   margin: 6px;
   padding: 6px;
@@ -153,15 +152,9 @@ body {
 }
 
 .wrapper .btn {
-    width: 100%;
+  width: 100%;
   background:transparent;
-  border: none;
-  outline: none;
-  border-radius: 40px;
-  cursor: pointer;
-  font-size: 1px;
-  color: #333;
-  font-weight: 60;
+  cursor: pointer; 
 }
 
 .wrapper .register-link {

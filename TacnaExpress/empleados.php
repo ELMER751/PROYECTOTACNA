@@ -13,6 +13,12 @@
     }
     // Realizar la consulta
     $resultado = mysqli_query($conexion, "SELECT * FROM ruta ORDER BY CODIGO");
+    $user = $_SESSION["username"];
+    $nivel = mysqli_query($conexion, "SELECT * FROM fuser WHERE USUARIO = '$user'");
+    $nivel = mysqli_fetch_assoc($nivel);
+    $nivel = $nivel['NIVEL']; 
+    if ($nivel === "1")
+    {
 ?>
 <!DOCTYPE html>
 <html>
@@ -212,4 +218,12 @@
 <?php
     // Cerrar la conexión a la base de datos
     mysqli_close($conexion);
+    }
+    else{
+        echo "<script>
+        alert('Usted No Tiene Acceso Para Ingresar Aquí, Comuniquese con un Administrador');
+        window.history.back();
+        </script>";
+        mysqli_close($conexion);
+    }
 ?>

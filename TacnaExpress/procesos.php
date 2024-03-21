@@ -692,12 +692,83 @@ session_start();
         
     } 
     else if (isset($_POST["guarda_documento"])) {
-        echo '<script>window.open("Reportes/invoice.php", "_blank");</script>';
-        echo "<script>
-        window.history.back();
-        </script>";
-        exit; 
+        include_once('includes/acceso.php');
+        include_once('Clases/documentos.php');
+        $conexion = connect_db();
+        $newdocu = new Documentos;
+        $newdocu->conectar_db($conexion);
+        $MESP = date('d').date('m');
+        $idemXY=$_POST['trans'];
+        $serieXY = mysqli_query($conexion,"SELECT * FROM ftge2007 WHERE CODI = '$idemXY'");
+        $serieXY = mysqli_fetch_assoc($serieXY);
+        $serieXY = $serieXY['SERIE'];
+        $txtruc = $_POST['rucDni1'];
+        $NumdocGenerado = $_POST['NDOC'];
+        $totbruto = $_POST['subtotal'];
+        $Dscto = NULL;
+        $vvtatot = $_POST['subtotal'];
+        $MonIGV = $_POST['igv_venta'];
+        $totPrecVenta = $_POST['total_venta'];
+        $Date = $_POST['FECHA'];
+        $fecaten = $_POST['fechaP'];
+        $ruc = $txtruc;
+        $cliente = $_POST['nomb1'];
+        $dir = $_POST['dire1'];
+        $condi = $_POST['CONDI'];
+        
+        echo "$MESP $idemXY $serieXY $txtruc";
+        //$nuevo = $newdocu->fcabecer($MESP, $idemXY, $serieXY, $txtruc, 
+        //$NumdocGenerado, $totbruto, $Dscto, $vvtatot, $MonIGV, 
+        //$totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, 
+        //$igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, 
+        //$guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, 
+        //$destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, 
+        //$Observa, $sede);
+        //if($nuevo){
+            //echo '<script>var confirmacion = confirm("DOC NUEVO");
+            //if (confirmacion) {
+            //    window.open("Reportes/invoice.php", "_blank");
+             //   window.history.back();
+            //} else {
+              //  window.history.back();
+            //}</script>';
+           // }
+       // exit; 
+    }
+    else if (isset($_POST['guardar_parametros'])) {
+        include_once('includes/acceso.php');
+        $conexion = connect_db();
+        $nomb = $_POST['nomb'];
+        $dire = $_POST['dire'];
+        $ciudad = $_POST['ciudad'];
+        $pais = $_POST['pais'];
+        $api = isset($_POST["miCheck"]) && $_POST["miCheck"] === "on" ? 1 : 0;
+        $update = mysqli_query($conexion,"UPDATE ftge2007 SET
+        NOMB = '$nomb',
+        DIRE = '$dire',
+        CITY = '$ciudad',
+        PAIS = '$pais',
+        COMC1 = '$api'
+        WHERE CODI = '14'");
+        if($update){
+            echo "<script>
+                alert('Se Modifico Con Éxito');
+                window.location.href = 'parametros_sistema.php';
+            </script>";
+        }
     } 
+    else if(isset($_POST['enviar_doc'])){
+        include_once('includes/acceso.php');
+        $conexion = connect_db();
+        $codi = $_POST['docu'];
+        $cambio = $_POST['NR'];
+        $update = mysqli_query($conexion,"UPDATE ftge2007 SET COMC = '$cambio' WHERE CODI = '$codi'");
+        if($update){
+            echo "<script>
+            window.history.back();
+            </script>";
+        }
+    }
     else{
         echo "Intente de nuevo, algo sucedio mal <a class = 'nav-link' href = 'espresstacna.php'>Volver</a>";
     }

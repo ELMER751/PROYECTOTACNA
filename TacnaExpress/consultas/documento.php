@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conexion->query($sql);
     $result = mysqli_fetch_assoc($result);
     // Verificar si se encontraron resultados
-    if (isset($result['PLAZ'])) {
-        $NR = $result['PLAZ'];
+    if (isset($result['COMC'])) {
+        $NR = $result['COMC'];
         $mensaje = "existe";
         $response = array("nr" => $NR, "mensaje" => $mensaje);
         echo json_encode($response);

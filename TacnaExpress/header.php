@@ -8,7 +8,7 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MENU</title>
-    <link rel="stylesheet" href="../emer/estilos.css">
+    <link rel="stylesheet" href="Css/estilos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -91,7 +91,7 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
       <li><a class="dropdown-item" href="boletas_facturas.php"><img src="img/image11.png" alt="Image 1" width="20px" height="20px"></a></li>
       <li><a class="dropdown-item" href="camiones.php"><img src="img/image2.png" alt="Image 2" width="20px" height="20px"></a></li>
       <li><a class="dropdown-item" href="clientes.php"><img src="img/cliente.jpg" alt="Image 3" width="20px" height="20px"></a></li>
-      <li><a class="dropdown-item" href="calculadora.php"><img src="img/image4.png" alt="Image 4" width="20px" height="20px"></a></li>
+      <li><a class="dropdown-item" href="calc.php"><img src="img/image4.png" alt="Image 4" width="20px" height="20px"></a></li>
       <li><a class="dropdown-item" href="users.php"><img src="img/usuarios..jpg" alt="Image 5" width="20px" height="20px"></a></li>
       <li><a class="dropdown-item" href="d_viaje.php"><img src="img/image6.png" alt="Image 6" width="20px" height="20px"></a></li>
       <div class="boton-modal">
