@@ -4,6 +4,7 @@
 ?>
 <?php
 session_start();
+date_default_timezone_set('America/Lima');
     if (!isset($_SESSION["username"])) {
         header("Location: ingresar_sesion.php");
         exit();
@@ -31,7 +32,9 @@ session_start();
     if (isset($liquidacion['LIQUIDACION'])) {
         $liquidacion = $liquidacion['LIQUIDACION'];
     } else {
-        $liquidacion = date('d').date('m').date('Y').$ruta;
+        date_default_timezone_set('America/Lima');
+        $liquidacion = date('d').date('m').date('Y').$abre;
+        
     }
     $busca = mysqli_query($conexion, "SELECT * FROM datos_fijos WHERE LIQUIDACION = '$liquidacion'");
     $busca = mysqli_fetch_assoc($busca);

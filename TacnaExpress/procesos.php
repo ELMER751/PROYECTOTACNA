@@ -645,7 +645,7 @@ session_start();
         $direccion_llegada_moq = null;
         $direccion_llegada_tacna = null;
         $licencia = $_POST['LICE'];
-        $user = $_SESSION["username"];
+        $user = $_SESSION['username'];
         $cede = mysqli_query($conexion, "SELECT * FROM fuser WHERE USUARIO = '$user'");
         $cede = mysqli_fetch_assoc($cede);
         $cede = $cede['CEDE'];
@@ -691,7 +691,8 @@ session_start();
         $opcionesSeleccionadas = $_POST["opciones"];
         
     } 
-    else if (isset($_POST["guarda_documento"])) {
+    else if (isset($_POST["datos_tabla"])) {
+        date_default_timezone_set('America/Lima');
         include_once('includes/acceso.php');
         include_once('Clases/documentos.php');
         $conexion = connect_db();
@@ -701,22 +702,54 @@ session_start();
         $idemXY=$_POST['trans'];
         $serieXY = mysqli_query($conexion,"SELECT * FROM ftge2007 WHERE CODI = '$idemXY'");
         $serieXY = mysqli_fetch_assoc($serieXY);
-        $serieXY = $serieXY['SERIE'];
-        $txtruc = $_POST['rucDni1'];
-        $NumdocGenerado = $_POST['NDOC'];
-        $totbruto = $_POST['subtotal'];
-        $Dscto = NULL;
-        $vvtatot = $_POST['subtotal'];
-        $MonIGV = $_POST['igv_venta'];
-        $totPrecVenta = $_POST['total_venta'];
-        $Date = $_POST['FECHA'];
-        $fecaten = $_POST['fechaP'];
+        $serieXY = $serieXY['SERIE'] ?? '';
+        $txtruc = $_POST['rucDni1'] ?? '';
+        $NumdocGenerado = $_POST['NDOC'] ?? '';
+        $totbruto = $_POST['subtotal'] ?? '';
+        $Dscto = "0";
+        $vvtatot = $_POST['subtotal'] ?? '';
+        $MonIGV = $_POST['igv_venta'] ?? '';
+        $totPrecVenta = $_POST['total_venta'] ?? '';
+        $Date = $_POST['FECHA'] ?? date('Y-m-d');
+        $fecaten = $_POST['fechaP'] ?? '';
         $ruc = $txtruc;
-        $cliente = $_POST['nomb1'];
-        $dir = $_POST['dire1'];
-        $condi = $_POST['CONDI'];
-        
-        echo "$MESP $idemXY $serieXY $txtruc";
+        $cliente = $_POST['nomb1'] ?? '';
+        $dir = $_POST['dire1'] ?? '';
+        $condi = $_POST['CONDI'] ?? '';
+        $igv = $_POST['IGV'] ?? '';
+        $USR = $_POST['user'] ?? '';
+        $time = $_POST['hor'] ?? date('H:i:s');
+        $fec = $_POST['fech'] ?? date('Y-m-d');
+        $dscto = "0";
+        $incremento = mysqli_query($conexion,"SELECT * FROM condiciones WHERE CODI = '$condi'");
+        $incremento = mysqli_fetch_assoc($incremento);
+        $incremento = $incremento['NDIAS'] ?? '';
+        $tipc = "S/.";
+        $montoTipc = 1;
+        $guia = NULL;
+        $numfacbol = NULL;
+        $rucdniR = $_POST['rucDni2'] ?? '';
+        $nombR = $_POST['nomb2'] ?? '';
+        $dirR = $_POST['dire2'] ?? '';
+        $rucdniC = $_POST['rucDni3'] ?? '';
+        $nombC = $_POST['nomb3'] ?? '';
+        $dirC = $_POST['dire3'] ?? '';
+        $destino = $_POST['datosDestino'] ?? '';
+        $ODESORI = $_POST['Dale'] ?? '';
+        $placa = $_POST['placa'] ?? '';
+        $lice = $_POST['lic'] ?? '';
+        $conductor = $_POST['CHOFER'] ?? '';
+        $masigv = 0;
+        $CtaCorriente = 0;
+        $Observa = $_POST['observacion'] ?? '';
+        $user = $_SESSION['username'];
+        $sede = mysqli_query($conexion, "SELECT * FROM fuser WHERE USUARIO = '$user'");
+        $sede = mysqli_fetch_assoc($sede);
+        $sede = $sede['CEDE'] ?? '';
+        $orden = 0;
+        $codt = "000000";
+        $boni ="0";
+        //echo "$MESP $idemXY $serieXY $txtruc $NumdocGenerado $totbruto $Dscto $vvtatot $MonIGV $totPrecVenta $Date $fecaten $ruc $cliente $dir $condi $igv $USR $time $fec $dscto $incremento $tipc $montoTipc $guia $numfacbol $rucdniR $nombR $dirR $rucdniC $nombC $dirC $destino $ODESORI $placa $lice $conductor $masigv $CtaCorriente $Observa $user $sede";
         //$nuevo = $newdocu->fcabecer($MESP, $idemXY, $serieXY, $txtruc, 
         //$NumdocGenerado, $totbruto, $Dscto, $vvtatot, $MonIGV, 
         //$totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, 
@@ -725,15 +758,31 @@ session_start();
         //$destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, 
         //$Observa, $sede);
         //if($nuevo){
+            //$Numdocg = $NumdocGenerado + 1;
+            //$numdocs = mysqli_query($conexion, "UPDATE ftge2007 SET COMC = '$Numdocg' WHERE CODI = '$idemXY'");
+            $datos_tabla = json_decode($_POST["datos_tabla"], true);
+            foreach ($datos_tabla as $fila) {
+                $orden = $orden + 1;
+                $item = $fila["item"];
+                $descripcion = $fila["descripcion"];
+                $cantidad = $fila["cantidad"];
+                $precio_igv = $fila["precio_igv"];
+                $precio_total = $fila["precio_total"];
+                echo "$orden";
+                $movi = mysqli_query("INSERT INTO FMOVIMIE
+                 (     MESP,           NORD,            IDEM,              IDEM2,               DOC1,                 CODT,           CANT,          boni,            COST,           PREC,             DSCT,              MONT_DSCT,            MONDSCTIGV,           VVTA,          VVTAIGV,               FECH,                    FEC_EXP,     CHKDESC,    idaigv,           COSP,            usuario,               IGVE,                IDELT,          COD_FACT,          VAL_FACT,          DESCFB) VALUES
+                 (    '$MESP',         '$orden',       '$idemXY',         '$serieXY',        '$NumdocGenerado',       '$codt',      '$cantidad',     '$boni',      '$precio_igv',   '$precio_igv',   '$dscto',              '0.00',             '0.00',           '$precio_total', '$precio_total',       '$fecaten',               '$fecaten',       '1',       '1',             '',               $USR,                $igv,                  '',              '',                '',        '$descripcion' )");
+            }
+
             //echo '<script>var confirmacion = confirm("DOC NUEVO");
             //if (confirmacion) {
-            //    window.open("Reportes/invoice.php", "_blank");
-             //   window.history.back();
+             //   window.open("Reportes/invoice.php", "_blank");
+             //  window.history.back();
             //} else {
-              //  window.history.back();
+            //  window.history.back();
             //}</script>';
-           // }
-       // exit; 
+        //}
+        //exit; 
     }
     else if (isset($_POST['guardar_parametros'])) {
         include_once('includes/acceso.php');

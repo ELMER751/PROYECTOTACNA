@@ -5,6 +5,7 @@
 <?php
 
 session_start();
+date_default_timezone_set('America/Lima');
     if (!isset($_SESSION["username"])) {
         header("Location: ingresar_sesion.php");
         exit();
@@ -210,10 +211,10 @@ session_start();
                                 ?>   
                               </select>
                             <br>
-                              <input type="checkbox" name="Dale" id="Dale1" onclick="toggleCheckboxes(this)">
+                              <input type="checkbox" name="Dale" id="Dale1" value="O" onclick="toggleCheckboxes(this)">
                               <label>Destino</label>
                             <br>
-                              <input type="checkbox" name="Dale" id="Dale2" onclick="toggleCheckboxes(this)">
+                              <input type="checkbox" name="Dale" id="Dale2" value="F" onclick="toggleCheckboxes(this)">
                               <label>Oficina</label>                 
                         </div>
                       </div>
@@ -323,7 +324,7 @@ session_start();
                       </div>
                     <div style="display: inline-block">
                       <div class = "contenido" style="display: inline-block">
-                        <button type="submit" name="guarda_documento"onclick="submitFormWithoutRequired()" onkeypress="image1.click()" class="btn" id="image1" ><img src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
+                        <button type="submit" name="guarda_documento" onclick="tabla()" onkeypress="image1.click()" class="btn" id="image1" ><img src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
                         <button type="submit" name="refrescar" class="btn" onclick="submitFormWithoutRequired()"><img id="image2" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
                         <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image3" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
                       </div>
@@ -349,13 +350,36 @@ session_start();
                       <br>
                       <label>Total Venta :</label>
                       <input id="total_venta" type="text" name="total_venta" readonly oninput="validarCodigo(this)" required style="width: 7ch;" readonly>
+                      <input type="hidden" name="datos_tabla" id="datos_tabla">
                       </div>
                     </div>
                   </form>
                 </div>
               </div>                                   
               <script>
-                
+                function tabla(){  
+                  document.getElementById("miFormulario").addEventListener("submit", function(event) {
+                    event.preventDefault(); // Evitar el envío del formulario por defecto
+                    // Obtener los datos de la tabla y convertirlos a un objeto JSON
+                    var datosTabla = [];
+                    var filas = document.getElementById("grillaBody").querySelectorAll("tr");
+                    filas.forEach(function(fila) {
+                        var filaData = {
+                            item: fila.cells[0].innerText,
+                            descripcion: fila.cells[1].innerText,
+                            cantidad: fila.cells[2].innerText,
+                            precio_igv: fila.cells[3].innerText,
+                            precio_total: fila.cells[4].innerText
+                        };
+                        datosTabla.push(filaData);
+                    });
+
+                    // Convertir el objeto JSON a una cadena y asignarlo al campo oculto
+                    document.getElementById("datos_tabla").value = JSON.stringify(datosTabla);
+                    // Enviar el formulario
+                    this.submit();
+                  });}
+
                 function confirmaruser(event){
                   if (event.keyCode === 13) {
                     event.preventDefault(); // Evitar el envío del formulario
@@ -373,7 +397,12 @@ session_start();
                                 alert(response.respuesta); // Mostrar respuesta en una alerta (solo para depuración)
                                 document.getElementById("user").value = response.user || "";
                                 document.getElementById("fech").value = document.getElementById("FECHA").value;
-                                document.getElementById("hor").value = "<?php date_default_timezone_set('America/Lima'); echo date('H:i:s');?>";
+                                var now = new Date();
+                                var hours = now.getHours() < 10 ? '0' + now.getHours() : now.getHours();
+                                var minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
+                                var seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
+                                var horaActual = hours + ":" + minutes + ":" + seconds;
+                                document.getElementById("hor").value = horaActual;
                                 document.getElementById("image1").focus();
                               } else {
                                 alert(response.respuesta);
