@@ -1,181 +1,128 @@
 <?php
-	include_once('../includes/acceso.php');
-	$conexion = connect_db();
-	$datos = mysqli_query($conexion,"SELECT * FROM FUSER WHERE DNI='72663800'");
-	$datos = mysqli_fetch_assoc($datos);
-	$ruc=$datos['CODUSUARIO'] ?? '';
-	$dire = $datos['NOMBRES'] ?? '';
+date_default_timezone_set('America/Lima');
+# Incluir librerías y establecer conexión #
+include_once('../includes/acceso.php');
 
-	mysqli_close($conexion);
-	# Incluyendo librerias necesarias #
-	require "./code128.php";
+$conexion = connect_db(); // Establecer conexión con la base de datos
 
-	$pdf = new PDF_Code128('P','mm','Letter');
-	$pdf->SetMargins(17,17,17);
-	$pdf->AddPage();
+# Obtener datos del código proporcionado #
+$cod = $_GET['cod'];
+$datos = mysqli_query($conexion, "SELECT * FROM fmovimpfd WHERE IDBF = '$cod'");
+$parametros = mysqli_query($conexion, "SELECT * FROM ftge2007 WHERE CODI = '14'");
+$datos = mysqli_fetch_assoc($datos);
+$parametros = mysqli_fetch_assoc($parametros);
 
-	# Logo de la empresa formato png #
-	$pdf->Image('./img/carro.png',165,12,35,35,'PNG');
+# Obtener información relevante de la empresa #
+$nombempresa = $parametros['NOMB'] ?? '';
+$ruc = $parametros['RUC'] ?? '';
+$dire = $parametros['DIRE'] ?? '';
+$fono = $parametros['FONO'] ?? '';
+$email = $parametros['EMAIL'] ?? '';
+$cajero = $datos['NOMBEMP'] ?? '';
+$numfac = $datos['DOC1'] ?? '';
 
-	# Encabezado y datos de la empresa #
-	$pdf->SetFont('Arial','B',16);
-	$pdf->SetTextColor(32,100,210);
-	$pdf->Cell(150,10,iconv("UTF-8", "ISO-8859-1",strtoupper("TACNA EXPRESS")),0,0,'L');
+mysqli_close($conexion); // Cerrar conexión con la base de datos
 
-	$pdf->Ln(9);
+require('code128.php');
 
-	$pdf->SetFont('Arial','',10);
-	$pdf->SetTextColor(39,39,51);
-	$pdf->Cell(150,9,iconv("UTF-8", "ISO-8859-1","RUC: $ruc"),0,0,'L');
+// Clase extendida de FPDF para agregar código de barras
+require('fpdf.php');
 
-	$pdf->Ln(5);
+class PDF extends FPDF {
+    function Code128($x, $y, $code, $w, $h) {
+        $barcode = new PDF_Code128();
+        $barcode->SetFont('Arial', '', 8);
+        $barcode->Code128($x, $y, $code, $w, $h);
+    }
+}
 
-	$pdf->Cell(150,9,iconv("UTF-8", "ISO-8859-1","Direccion San Salvador, El Salvador"),0,0,'L');
+// Función para leer el archivo CSV y devolver los datos como un array
+function leerCSV($archivo) {
+    $csv = array_map('str_getcsv', file($archivo));
+    $keys = array_shift($csv);
+    $datos = array();
+    foreach ($csv as $fila) {
+        $datos[] = array_combine($keys, $fila);
+    }
+    return $datos;
+}
 
-	$pdf->Ln(5);
+// Leer datos del archivo CSV
+$datos_factura = leerCSV('datos_factura.csv');
 
-	$pdf->Cell(150,9,iconv("UTF-8", "ISO-8859-1","Teléfono: 00000000"),0,0,'L');
+// Crear instancia de FPDF
+$pdf = new PDF();
+$pdf->AddPage();
 
-	$pdf->Ln(5);
+// Logo de la empresa
+$pdf->Image('img/logo.png',10,8,33);
 
-	$pdf->Cell(150,9,iconv("UTF-8", "ISO-8859-1","Email: correo@ejemplo.com"),0,0,'L');
+// Configurar fuente
+$pdf->SetFont('Arial','B',12);
 
-	$pdf->Ln(10);
+// Título de la factura
+$pdf->Cell(130,5,utf8_decode('SD'),0,0);
+$pdf->Cell(59,5,utf8_decode('SD'),0,1); // Salto de línea
 
-	$pdf->SetFont('Arial','',10);
-	$pdf->Cell(30,7,iconv("UTF-8", "ISO-8859-1","Fecha de emisión:"),0,0);
-	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(116,7,iconv("UTF-8", "ISO-8859-1",date("d/m/Y", strtotime("13-09-2022"))." ".date("h:s A")),0,0,'L');
-	$pdf->SetFont('Arial','B',10);
-	$pdf->SetTextColor(39,39,51);
-	$pdf->Cell(35,7,iconv("UTF-8", "ISO-8859-1",strtoupper("Factura Nro.")),0,0,'C');
+// Datos de la factura (RUC, Dirección, Fecha)
+$pdf->SetFont('Arial','',10);
+$pdf->Cell(130,5,utf8_decode('RUC: '),0,0);
+$pdf->Cell(59,5,utf8_decode('Fecha: '),0,1); // Salto de línea
+$pdf->Cell(130,5,utf8_decode('Dirección: '),0,1); // Salto de línea
 
-	$pdf->Ln(7);
+// Datos del cliente
+$pdf->Cell(130,5,utf8_decode('Cliente: '),0,0);
+$pdf->Cell(59,5,utf8_decode('Teléfono: '),0,1); // Salto de línea
+$pdf->Cell(130,5,utf8_decode('Dirección: '),0,1); // Salto de línea
 
-	$pdf->SetFont('Arial','',10);
-	$pdf->Cell(12,7,iconv("UTF-8", "ISO-8859-1","Cajero:"),0,0,'L');
-	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(134,7,iconv("UTF-8", "ISO-8859-1","Carlos Alfaro"),0,0,'L');
-	$pdf->SetFont('Arial','B',10);
-	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(35,7,iconv("UTF-8", "ISO-8859-1",strtoupper("1")),0,0,'C');
+// Encabezado de la tabla de productos
+$pdf->SetFont('Arial','B',10);
+$pdf->Cell(90,7,utf8_decode('Descripción'),1,0,'C');
+$pdf->Cell(15,7,utf8_decode('Cantidad'),1,0,'C');
+$pdf->Cell(25,7,utf8_decode('Precio Unit.'),1,0,'C');
+$pdf->Cell(19,7,utf8_decode('Descuento'),1,0,'C');
+$pdf->Cell(32,7,utf8_decode('Total'),1,1,'C'); // Salto de línea
 
-	$pdf->Ln(10);
+// Detalles de los productos
+$pdf->SetFont('Arial','S',10);
+$total = 0;
+foreach ($datos_factura as $producto) {
+    $pdf->Cell(90,7,utf8_decode('S'),1,0);
+    $pdf->Cell(15,7,utf8_decode('S'),1,0,'C');
+    $pdf->Cell(25,7,utf8_decode('$'.' SD'),1,0,'C');
+    $pdf->Cell(19,7,utf8_decode('$'.'SD '),1,0,'C');
+    $subtotal = 0;
+    $pdf->Cell(32,7,utf8_decode('$'),1,1,'C'); // Salto de línea
+    $total += $subtotal;
+}
 
-	$pdf->SetFont('Arial','',10);
-	$pdf->SetTextColor(39,39,51);
-	$pdf->Cell(13,7,iconv("UTF-8", "ISO-8859-1","Cliente:"),0,0);
-	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(60,7,iconv("UTF-8", "ISO-8859-1","Carlos Alfaro"),0,0,'L');
-	$pdf->SetTextColor(39,39,51);
-	$pdf->Cell(8,7,iconv("UTF-8", "ISO-8859-1","Doc: "),0,0,'L');
-	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(60,7,iconv("UTF-8", "ISO-8859-1","DNI: 00000000"),0,0,'L');
-	$pdf->SetTextColor(39,39,51);
-	$pdf->Cell(7,7,iconv("UTF-8", "ISO-8859-1","Tel:"),0,0,'L');
-	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(35,7,iconv("UTF-8", "ISO-8859-1","00000000"),0,0);
-	$pdf->SetTextColor(39,39,51);
+// Total
+$pdf->Cell(169,7,utf8_decode('Total'),1,0,'C');
+$pdf->Cell(32,7,utf8_decode('$'),1,1,'C'); // Salto de línea
 
-	$pdf->Ln(7);
+// Convertir el total a texto
+$total_letras = 'S';
 
-	$pdf->SetTextColor(39,39,51);
-	$pdf->Cell(6,7,iconv("UTF-8", "ISO-8859-1","Dir:"),0,0);
-	$pdf->SetTextColor(97,97,97);
-	$pdf->Cell(109,7,iconv("UTF-8", "ISO-8859-1","$dire"),0,0);
+// Total en letras
+$pdf->Ln(12);
+$pdf->SetFont('Arial','SD',10);
+$pdf->Cell(30,7,utf8_decode('Son: '),0,0);
+$pdf->Cell(0,7,utf8_decode('SD'),0,1);
 
-	$pdf->Ln(9);
+// Condición de venta
+$pdf->Ln(9);
+$pdf->Cell(40,7,utf8_decode('Condición de venta: '),0,0);
+$pdf->Cell(60,7,utf8_decode(''),0,1);
 
-	# Tabla de productos #
-	$pdf->SetFont('Arial','',8);
-	$pdf->SetFillColor(23,83,201);
-	$pdf->SetDrawColor(23,83,201);
-	$pdf->SetTextColor(255,255,255);
-	$pdf->Cell(90,8,iconv("UTF-8", "ISO-8859-1","Descripción"),1,0,'C',true);
-	$pdf->Cell(15,8,iconv("UTF-8", "ISO-8859-1","Cant."),1,0,'C',true);
-	$pdf->Cell(25,8,iconv("UTF-8", "ISO-8859-1","Precio"),1,0,'C',true);
-	$pdf->Cell(19,8,iconv("UTF-8", "ISO-8859-1","Desc."),1,0,'C',true);
-	$pdf->Cell(32,8,iconv("UTF-8", "ISO-8859-1","Subtotal"),1,0,'C',true);
+// Observaciones
+$pdf->Ln(9);
+$pdf->Cell(27,7,utf8_decode('Observaciones: '),0,0);
+$pdf->MultiCell(0,7,utf8_decode('SD'),0,'L');
 
-	$pdf->Ln(8);
+// Generar código de barras
+$pdf->Ln(9);
+$pdf->Code128(90, 200,'23123' , 50, 10);
 
-	
-	$pdf->SetTextColor(39,39,51);
-
-
-
-	/*----------  Detalles de la tabla  ----------*/
-	$pdf->Cell(90,7,iconv("UTF-8", "ISO-8859-1","Nombre de producto a vender"),'L',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1","7"),'L',0,'C');
-	$pdf->Cell(25,7,iconv("UTF-8", "ISO-8859-1","$10 USD"),'L',0,'C');
-	$pdf->Cell(19,7,iconv("UTF-8", "ISO-8859-1","$0.00 USD"),'L',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","$70.00 USD"),'LR',0,'C');
-	$pdf->Ln(7);
-	/*----------  Fin Detalles de la tabla  ----------*/
-
-
-	
-	$pdf->SetFont('Arial','B',9);
-	
-	# Impuestos & totales #
-	$pdf->Cell(100,7,iconv("UTF-8", "ISO-8859-1",''),'T',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'T',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","SUBTOTAL"),'T',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","+ $70.00 USD"),'T',0,'C');
-
-	$pdf->Ln(7);
-
-	$pdf->Cell(100,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","IVA (13%)"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","+ $0.00 USD"),'',0,'C');
-
-	$pdf->Ln(7);
-
-	$pdf->Cell(100,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-
-
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","TOTAL A PAGAR"),'T',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","$70.00 USD"),'T',0,'C');
-
-	$pdf->Ln(7);
-
-	$pdf->Cell(100,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","TOTAL PAGADO"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","$100.00 USD"),'',0,'C');
-
-	$pdf->Ln(7);
-
-	$pdf->Cell(100,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","CAMBIO"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","$30.00 USD"),'',0,'C');
-
-	$pdf->Ln(7);
-
-	$pdf->Cell(100,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","USTED AHORRA"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","$0.00 USD"),'',0,'C');
-
-	$pdf->Ln(12);
-
-	$pdf->SetFont('Arial','',9);
-
-	$pdf->SetTextColor(39,39,51);
-	$pdf->MultiCell(0,9,iconv("UTF-8", "ISO-8859-1","*** Precios de productos incluyen impuestos. Para poder realizar un reclamo o devolución debe de presentar esta factura ***"),0,'C',false);
-
-	$pdf->Ln(9);
-
-	# Codigo de barras #
-	$pdf->SetFillColor(39,39,51);
-	$pdf->SetDrawColor(23,83,201);
-	$pdf->Code128(72,$pdf->GetY(),"COD000001V0001",70,20);
-	$pdf->SetXY(12,$pdf->GetY()+21);
-	$pdf->SetFont('Arial','',12);
-	$pdf->MultiCell(0,5,iconv("UTF-8", "ISO-8859-1","COD000001V0001"),0,'C',false);
-
-	# Nombre del archivo PDF #
-	$pdf->Output("I","Factura_Nro_1.pdf",true);
+// Salida del PDF
+$pdf->Output();
+?>

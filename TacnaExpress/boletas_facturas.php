@@ -43,7 +43,7 @@ date_default_timezone_set('America/Lima');
     }
     $busca = mysqli_query($conexion, "SELECT * FROM datos_fijos WHERE LIQUIDACION = '$liquidacion'");
     $busca = mysqli_fetch_assoc($busca);
-    if ($busca['CODIGO_CAMION']  != ""){
+    if (isset($busca['CODIGO_CAMION'])){
       $partes = explode("-", $busca['CODIGO_CAMION']);
       $marca = trim($partes[0]);
       $placa = trim($partes[1]);
@@ -320,7 +320,7 @@ date_default_timezone_set('America/Lima');
                       <input id="observacion" type="text" name="observacion" onkeypress = "return handleEnter(event, 'pass')" style="width: 110ch;">
                     </div>
                       <div id="letras" style="display: none;">
-                      <a id="total_ventaEnLetras"></a>
+                      <a id="total_ventaEnLetras" name='total_ventaEnLetras'></a>
                       </div>
                     <div style="display: inline-block">
                       <div class = "contenido" style="display: inline-block">
@@ -351,6 +351,7 @@ date_default_timezone_set('America/Lima');
                       <label>Total Venta :</label>
                       <input id="total_venta" type="text" name="total_venta" readonly oninput="validarCodigo(this)" required style="width: 7ch;" readonly>
                       <input type="hidden" name="datos_tabla" id="datos_tabla">
+                      <input type="hidden" name="letras" id="letrass">
                       </div>
                     </div>
                   </form>
@@ -447,6 +448,7 @@ date_default_timezone_set('America/Lima');
                     var montoEnLetras = EnLetras(total_venta, "S/.");
                     console.log(montoEnLetras);
                     document.getElementById('total_ventaEnLetras').textContent = montoEnLetras;
+                    document.getElementById('letrass').value = montoEnLetras;
                     mostrarletra();
                 }
                 function mostrarletra(){

@@ -21,6 +21,7 @@ date_default_timezone_set('America/Lima');
     $cede = $cede['CEDE'];
     $ruta = mysqli_query($conexion, "SELECT * FROM ruta WHERE CODIGO = '$cede'");
     $ruta = mysqli_fetch_assoc($ruta);
+    $abre = $ruta['ABREVIATURA'];
     $partida = $ruta['DIRECCION'];
     $ruta = $ruta['ABREVIATURA'];
     $liquidacion = mysqli_query($conexion, "SELECT * FROM DATOS_FIJOS WHERE FEC_TRANS = '$fec_trans' AND CEDE = '$cede'");

@@ -745,21 +745,35 @@ session_start();
         $user = $_SESSION['username'];
         $sede = mysqli_query($conexion, "SELECT * FROM fuser WHERE USUARIO = '$user'");
         $sede = mysqli_fetch_assoc($sede);
+        $usuario = $sede['NOMBRES'] ?? ''; 
         $sede = $sede['CEDE'] ?? '';
+        $marca = $_POST['marca'] ?? '';
         $orden = 0;
         $codt = "000000";
         $boni ="0";
+        $letras = $_POST['letras'];
+        $dirpartida = $_POST['punto_partida'];
+        $dirllegada = $_POST['punto_llegada'];
+        $certifi = $_POST['certificado'];         
+        $confivehi = $_POST['conf'];         
+        $peso = $_POST['peso'];
+        $IDBF = mysqli_query($conexion,"SELECT MAX(IDBF) AS ultimo_code FROM fmovimpfd ");
+        $IDBF = mysqli_fetch_assoc($IDBF);
+        $IDBF = $IDBF['ultimo_code'];
+        $IDBF = $IDBF + 1;
         //echo "$MESP $idemXY $serieXY $txtruc $NumdocGenerado $totbruto $Dscto $vvtatot $MonIGV $totPrecVenta $Date $fecaten $ruc $cliente $dir $condi $igv $USR $time $fec $dscto $incremento $tipc $montoTipc $guia $numfacbol $rucdniR $nombR $dirR $rucdniC $nombC $dirC $destino $ODESORI $placa $lice $conductor $masigv $CtaCorriente $Observa $user $sede";
-        //$nuevo = $newdocu->fcabecer($MESP, $idemXY, $serieXY, $txtruc, 
-        //$NumdocGenerado, $totbruto, $Dscto, $vvtatot, $MonIGV, 
-        //$totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, 
-        //$igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, 
-        //$guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, 
-        //$destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, 
-        //$Observa, $sede);
-        //if($nuevo){
-            //$Numdocg = $NumdocGenerado + 1;
-            //$numdocs = mysqli_query($conexion, "UPDATE ftge2007 SET COMC = '$Numdocg' WHERE CODI = '$idemXY'");
+        $nuevo = $newdocu->fcabecer($MESP, $idemXY, $serieXY, $txtruc, 
+        $NumdocGenerado, $totbruto, $Dscto, $vvtatot, $MonIGV, 
+        $totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, 
+        $igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, 
+        $guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, 
+        $destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, 
+        $Observa, $sede);
+
+        if($nuevo){
+            $Numdocg = $NumdocGenerado + 1;
+            $numdocs = mysqli_query($conexion, "UPDATE ftge2007 SET COMC = '$Numdocg' WHERE CODI = '$idemXY'");
+            
             $datos_tabla = json_decode($_POST["datos_tabla"], true);
             foreach ($datos_tabla as $fila) {
                 $orden = $orden + 1;
@@ -768,21 +782,24 @@ session_start();
                 $cantidad = $fila["cantidad"];
                 $precio_igv = $fila["precio_igv"];
                 $precio_total = $fila["precio_total"];
+                $afecigv = $igv*0.01;
                 echo "$orden";
-                $movi = mysqli_query("INSERT INTO FMOVIMIE
-                 (     MESP,           NORD,            IDEM,              IDEM2,               DOC1,                 CODT,           CANT,          boni,            COST,           PREC,             DSCT,              MONT_DSCT,            MONDSCTIGV,           VVTA,          VVTAIGV,               FECH,                    FEC_EXP,     CHKDESC,    idaigv,           COSP,            usuario,               IGVE,                IDELT,          COD_FACT,          VAL_FACT,          DESCFB) VALUES
-                 (    '$MESP',         '$orden',       '$idemXY',         '$serieXY',        '$NumdocGenerado',       '$codt',      '$cantidad',     '$boni',      '$precio_igv',   '$precio_igv',   '$dscto',              '0.00',             '0.00',           '$precio_total', '$precio_total',       '$fecaten',               '$fecaten',       '1',       '1',             '',               $USR,                $igv,                  '',              '',                '',        '$descripcion' )");
+                $totbrutoI = $precio_total - $precio_total*($igv*0.01);
+                $movi = mysqli_query($conexion,"INSERT INTO fmovimie(     MESP,           NORD,            IDEM,              IDEM2,               DOC1,                 CODT,           CANT,          boni,            COST,           PREC,             DSCT,              MONT_DSCT,            MONDSCTIGV,           VVTA,          VVTAIGV,               FECH,                    FEC_EXP,     CHKDESC,    IDAIGV,           COSP,            USUARIO,               IGVE,                IDELT,          COD_FACT,          VAL_FACT,          DESCFB) VALUES
+                                                                    (    '$MESP',         '$orden',       '$idemXY',         '$serieXY',        '$NumdocGenerado',       '$codt',      '$cantidad',     '$boni',      '$precio_igv',   '$precio_igv',   '$dscto',              '0.00',             '0.00',           '$precio_total', '$precio_total',       '$fecaten',               '$fecaten',       '1',       '1',             '',             '$USR',              '$igv',                  '',              '',                '',        '$descripcion' )");
+                $imprimir = mysqli_query($conexion, "INSERT INTO fmovimpfd  (     IDBF,           IDEM,            IDEM2,               DOC1,                  FEC_ADMI,                NOMBEMP,           DIREEMP,           RUC,            NORD,            CANT,             UNIDA,         DESCP,           DSCTO,            VIGV,           PUNIT,         PTOTA,           MLETRA,              FECEMI,             TOTBRUTO,         TOTALDSCTO,      TOTALVENTA,     MONTOIGV,        PRECIOVETA,          AFECTOIGV,          USUARIO,          MONEDA,             NGUIA,              NFACBOL,              RUCDNIR,             NOMBRE,           DIRERE,            RUCDNIC,             NOMBC,            DIREC,               DESTINO,               ODEOF,               PLACA,             MARCA,           CERTIFICADO,            LIC,             CONFVHEICU,             PESO,              CHOFCONDU,                    OBSERV,                  DIRPARTIDA,              DIRLLEGADA,                 CEDE,                    CONDI)VALUES
+                                                                            (    '$IDBF',       '$idemXY',       '$serieXY',       '$NumdocGenerado',         '$fecaten',              '$cliente',          '$dir',          '$ruc',        '$orden',      '$cantidad',          'UND',     '$descripcion','     $Dscto',          '$igv',      '$precio_igv', '$precio_total',   '$letras',          '$fecaten',         '$totbrutoI',         '$Dscto',    '$vvtatot',      '$MonIGV',       '$totPrecVenta',     '$afecigv',        '$usuario',        '$tipc',            '',                   '',                '$rucdniR',          '$nombR',          '$dirR',          '$rucdniC',           '$nombC',         '$dirC',             '$destino',          '$ODESORI',           '$placa',         '$marca',            '$certifi',         '$lice',          '$confivehi',           '$peso',           '$conductor',                 '$Observa',             '$dirpartida',            '$dirllegada',              '$sede',                 '$condi')");
             }
 
-            //echo '<script>var confirmacion = confirm("DOC NUEVO");
-            //if (confirmacion) {
-             //   window.open("Reportes/invoice.php", "_blank");
-             //  window.history.back();
-            //} else {
-            //  window.history.back();
-            //}</script>';
-        //}
-        //exit; 
+            echo "<script>var confirmacion = confirm('DOC NUEVO');
+            if (confirmacion) {
+               window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
+               window.history.back();
+            } else {
+              window.history.back();
+            }</script>";
+        }
+        exit; 
     }
     else if (isset($_POST['guardar_parametros'])) {
         include_once('includes/acceso.php');
