@@ -41,6 +41,7 @@
 
 	$pdf = new PDF_Code128('P','mm','A4');
 	$pdf->SetMargins(5,10,0);
+	$pdf->SetAutoPageBreak(true, 10); // Activar salto de página automático con una distancia de 10 mm desde la parte inferior
 	$pdf->AddPage();
 
 	# Logo de la empresa formato png #
@@ -53,8 +54,7 @@ $pdf->Cell(190,10,iconv("UTF-8", "ISO-8859-1",strtoupper("$nombempresa")),0,1,'C
 
 $pdf->SetFont('Arial','',8);
 $pdf->SetTextColor(39,39,51);
-
-$pdf->SetAutoPageBreak(0); // Desactivar salto de página automático
+ // Desactivar salto de página automático
 $pdf->SetMargins(5, 0, 0); // Establecer los márgenes globales de la página a 0
 
 $pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","$dire"),0,1,'C'); // Datos centrados
@@ -186,33 +186,33 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
     $pdf->Ln(7);
     
     $pdf->SetFont('Arial','',10);
-	$pdf->Cell(27,7,iconv("UTF-8", "ISO-8859-1","Observación  : "),0,0);
+	$pdf->Cell(27,5,iconv("UTF-8", "ISO-8859-1","Observación  : "),0,0);
     $pdf->SetTextColor(97,97,97);
-	$pdf->Cell(145,7,iconv("UTF-8", "ISO-8859-1","$observacion"),0,1,'L');
+	$pdf->Cell(145,5,iconv("UTF-8", "ISO-8859-1","$observacion"),0,1,'L');
     
     $pdf->SetTextColor(39,39,51);
-	$pdf->Cell(10,7,iconv("UTF-8", "ISO-8859-1","SON "),0,0);
+	$pdf->Cell(10,5,iconv("UTF-8", "ISO-8859-1","SON "),0,0);
     $pdf->SetTextColor(97,97,97);
-	$pdf->Cell(145,7,iconv("UTF-8", "ISO-8859-1","$LETRAS"),0,1,'L');
+	$pdf->Cell(145,5,iconv("UTF-8", "ISO-8859-1","$LETRAS"),0,1,'L');
     
     $pdf->SetTextColor(39,39,51);
-	$pdf->Cell(22,7,iconv("UTF-8", "ISO-8859-1","Remitente  : "),0,0);
+	$pdf->Cell(22,5,iconv("UTF-8", "ISO-8859-1","Remitente  : "),0,0);
     $pdf->SetTextColor(97,97,97);
-	$pdf->Cell(145,7,iconv("UTF-8", "ISO-8859-1","$remitente"),0,1,'L');
+	$pdf->Cell(145,5,iconv("UTF-8", "ISO-8859-1","$remitente"),0,1,'L');
    
     $pdf->SetTextColor(39,39,51);
-	$pdf->Cell(21,7,iconv("UTF-8", "ISO-8859-1","Dirección  : "),0,0);
+	$pdf->Cell(21,5,iconv("UTF-8", "ISO-8859-1","Dirección  : "),0,0);
     $pdf->SetTextColor(97,97,97);
-	$pdf->Cell(145,7,iconv("UTF-8", "ISO-8859-1","$puntoP"),0,1,'L');
+	$pdf->Cell(145,5,iconv("UTF-8", "ISO-8859-1","$puntoP"),0,1,'L');
     $pdf->SetTextColor(39,39,51);
-	$pdf->Cell(27,7,iconv("UTF-8", "ISO-8859-1","Consignatario  : "),0,0);
+	$pdf->Cell(27,5,iconv("UTF-8", "ISO-8859-1","Consignatario  : "),0,0);
     $pdf->SetTextColor(97,97,97);
-	$pdf->Cell(145,7,iconv("UTF-8", "ISO-8859-1","$consig"),0,1,'L');
+	$pdf->Cell(145,5,iconv("UTF-8", "ISO-8859-1","$consig"),0,1,'L');
     
     $pdf->SetTextColor(39,39,51);
-	$pdf->Cell(24,7,iconv("UTF-8", "ISO-8859-1","Dir. Entrega  : "),0,0);
+	$pdf->Cell(24,5,iconv("UTF-8", "ISO-8859-1","Dir. Entrega  : "),0,0);
     $pdf->SetTextColor(97,97,97);
-	$pdf->Cell(145,7,iconv("UTF-8", "ISO-8859-1","$puntoL"),0,0,'L');
+	$pdf->Cell(145,5,iconv("UTF-8", "ISO-8859-1","$puntoL"),0,0,'L');
     $pdf->Ln(10);
 	/*----------  Fin Detalles de la tabla  ----------*/
 
@@ -221,19 +221,19 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
 	$pdf->SetFont('Arial','B',9);
 	
 	# Impuestos & totales #
-    $pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-    $pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Total gravado :"),'T',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. $totalg"),'T',0,'C');
+    $pdf->Cell(121,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
+    $pdf->Cell(15,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
+	$pdf->Cell(32,4,iconv("UTF-8", "ISO-8859-1","Total gravado :"),'T',0,'C');
+	$pdf->Cell(34,4,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($totalg, 2)),'T',0,'C');
 
-	$pdf->Ln(7);
+	$pdf->Ln(4);
 
-	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Total No Gravado :"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. 0.00"),'',0,'C');
+	$pdf->Cell(121,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
+	$pdf->Cell(15,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
+	$pdf->Cell(32,4,iconv("UTF-8", "ISO-8859-1","Total No Gravado :"),'',0,'C');
+	$pdf->Cell(34,4,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
 
-	$pdf->Ln(7);
+	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
@@ -242,38 +242,40 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Total Exonerado"),'T',0,'C');
 	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'T',0,'C');
 
-	$pdf->Ln(7);
+	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Total IGV 18% :"),'',0,'C');
 	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. $montoigv"),'',0,'C');
 
-	$pdf->Ln(7);
+	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Importe total :"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. $precioV.00"),'',0,'C');
+	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
 
-	$pdf->Ln(7);
+	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Redondeo : "),'',0,'C');
 	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
-    $pdf->Ln(7);
+    $pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Importe total :"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. $precioV.00"),'',0,'C');
+	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
 	$pdf->Ln(12);
 
 	$pdf->SetFont('Arial','',9);
 
 	$pdf->SetTextColor(39,39,51);
-	$pdf->MultiCell(0,9,iconv("UTF-8", "ISO-8859-1","*** Precios de productos incluyen impuestos. Para poder realizar un reclamo o devolución debe de presentar esta factura ***"),0,'C',false);
+	$pdf->MultiCell(0,3.5,iconv("UTF-8", "ISO-8859-1","Representacion Impresa de la Boleta Electronica
+	Podrá ser consultada en : www.transporteexpresotacna.com
+  Autorizado mediante resolución :RS 155_2017 ANEXO IV/SUNAT"),0,'C',false);
 
 	$pdf->Ln(9);
 
@@ -286,8 +288,6 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
 	$pdf->MultiCell(0,5,iconv("UTF-8", "ISO-8859-1","COD000001V0001"),0,'C',false);
 
 	# Nombre del archivo PDF #
-	$pdf->Output("I","Factura_Nro_1.pdf",true);
-
-	//$delete = mysqli_query($conexion,"DELETE FROM fmovimpfd");
+	$pdf->Output("I","Factura_F".$serie."N°".$numfac.".pdf",true);
 	mysqli_close($conexion);
 	?>

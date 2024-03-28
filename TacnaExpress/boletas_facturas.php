@@ -138,7 +138,7 @@ date_default_timezone_set('America/Lima');
                             ?>
                           </select>    
                           <a>N° Doc :</a>
-                          <input id="NDOC" type="text" oninput="validarCodigo(this)" name="NDOC" value="<?php echo $ultimo_codigo+1; ?>" required style="width: 12ch;" onkeypress="return handleEnter(event, 'IGV')">
+                          <input id="NDOC" type="text" oninput="validarCodigo(this)" name="NDOC" required style="width: 12ch;" onkeypress="return handleEnter(event, 'IGV')">
                           <button type="submit" class="btn" onclick="mostrarInterfaz(1)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
                             <div id="interfazBusqueda1" style="display: none;">
                               <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="600" height="400" frameborder="0"></iframe>
@@ -358,6 +358,28 @@ date_default_timezone_set('America/Lima');
                 </div>
               </div>                                   
               <script>
+                function change_trans(){
+                  var seleccion = document.getElementById("trans").value;
+                        // Hacer algo con la selección, por ejemplo, mostrarla en la consola
+                        console.log("Seleccionaste: " + seleccion);
+                    // Realizar la solicitud AJAX
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "consultas/documento.php", true);
+                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                if (response.mensaje === "existe") {
+                                    document.getElementById('NDOC').value = parseInt(response.nr) + 1;            
+                                } else {
+                                        // Si el usuario no existe, solo da el foco
+                                    document.getElementById('NDOC').value = 1;
+                                 }
+                            }
+                        };
+                        xhr.send("miSelector=" + seleccion);
+                        return false;
+                }
                 function tabla(){  
                   document.getElementById("miFormulario").addEventListener("submit", function(event) {
                     event.preventDefault(); // Evitar el envío del formulario por defecto

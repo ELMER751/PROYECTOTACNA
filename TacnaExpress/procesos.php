@@ -775,6 +775,7 @@ session_start();
             $numdocs = mysqli_query($conexion, "UPDATE ftge2007 SET COMC = '$Numdocg' WHERE CODI = '$idemXY'");
             
             $datos_tabla = json_decode($_POST["datos_tabla"], true);
+            $delete = mysqli_query($conexion,"DELETE FROM fmovimpfd");
             foreach ($datos_tabla as $fila) {
                 $orden = $orden + 1;
                 $item = $fila["item"];
