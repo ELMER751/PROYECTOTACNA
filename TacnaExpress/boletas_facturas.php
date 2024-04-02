@@ -99,7 +99,8 @@ date_default_timezone_set('America/Lima');
               
               }
               input[readonly] {
-        background-color: lightgray; /* Cambia el fondo a gris claro */
+              background-color: lightgray; /* Cambia el fondo a gris claro */
+            
     }
             </style>
             <body>
@@ -140,7 +141,7 @@ date_default_timezone_set('America/Lima');
                           <a>N° Doc :</a>
                           <input id="NDOC" type="text" oninput="validarCodigo(this)" name="NDOC" required style="width: 12ch;" onkeypress="return handleEnter(event, 'IGV')">
                           <button type="submit" class="btn" onclick="mostrarInterfaz(1)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
-                            <div id="interfazBusqueda1" style="display: none;">
+                            <div id="interfazBusqueda1" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                               <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="600" height="400" frameborder="0"></iframe>
                             </div>
                           <label>fec.Emisión</label>
@@ -152,7 +153,7 @@ date_default_timezone_set('America/Lima');
                           <label>RUC/DNI :</label>
                           <input id="rucDni1" type="text" oninput="validarCodigo(this)" onkeypress="return dniruc(1)" name="rucDni1" required >
                           <button type="submit" class="btn" onclick="mostrarInterfaz(2)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
-                            <div id="interfazBusqueda2" style="display: none;">
+                            <div id="interfazBusqueda2" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                               <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA2" width="600" height="400" frameborder="0"></iframe>
                             </div>
                           <label>Señor :</label>
@@ -168,7 +169,7 @@ date_default_timezone_set('America/Lima');
                             <label>RUC/DNI :</label>
                             <input id="rucDni2" type="text" oninput="validarCodigo(this)" name="rucDni2" onkeypress="return dniruc(2)" required style="width: 30ch;" >
                             <button type="submit" class="btn" onclick="mostrarInterfaz(3)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
-                            <div id="interfazBusqueda3" style="display: none;">
+                            <div id="interfazBusqueda3" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                               <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA3" width="600" height="400" frameborder="0"></iframe>
                             </div>
                           <br>
@@ -184,7 +185,7 @@ date_default_timezone_set('America/Lima');
                             <label>RUC/DNI :</label>
                             <input id="rucDni3" type="text" oninput="validarCodigo(this)" name="rucDni3" onkeypress="return dniruc(3)" required style="width: 30ch;">
                             <button type="submit" class="btn" onclick="mostrarInterfaz(4)"><img id="image" src="img/buscar.png" alt="image" width="30px" height="30px"></button>
-                            <div id="interfazBusqueda4" style="display: none;">
+                            <div id="interfazBusqueda4" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                               <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA4" width="600" height="400" frameborder="0"></iframe>
                             </div>
                           <br>
@@ -566,16 +567,16 @@ date_default_timezone_set('America/Lima');
                     function mostrarInterfaz(a) {
                       event.preventDefault(); // Evitar el envío del formulario por defecto
                         if(a===1){
-                        document.getElementById("interfazBusqueda1").style.display = "block";
+                        document.getElementById("interfazBusqueda1").style.display = "flex";
                         }
                         else if(a===2){
-                        document.getElementById("interfazBusqueda2").style.display = "block";
+                        document.getElementById("interfazBusqueda2").style.display = "flex";
                         }
                         else if(a===3){
-                        document.getElementById("interfazBusqueda3").style.display = "block";
+                        document.getElementById("interfazBusqueda3").style.display = "flex";
                         }
                         else if(a===4){
-                        document.getElementById("interfazBusqueda4").style.display = "block";
+                        document.getElementById("interfazBusqueda4").style.display = "flex";
                         }
                       
                     }

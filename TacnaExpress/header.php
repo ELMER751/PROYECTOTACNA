@@ -98,7 +98,7 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
         <label for="btn-modal">
         <a><img src="img/config.jpg" alt="Image 7" width="20px" height="20px"></a>
         </label>
-    </div>
+      </div>
     
       </ul>
     </div>
@@ -118,3 +118,4 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
     </div>
         </body>
 </html>
+

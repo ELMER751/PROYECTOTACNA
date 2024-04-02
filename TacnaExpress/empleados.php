@@ -125,7 +125,7 @@
             <button type="button" onclick="agregarOpcion()">Agregar</button>
             <button type="button" onclick="eliminarOpcion()">Eliminar</button>
             </div>
-            <div id="interfazBusqueda" style="display: none;">
+            <div id="interfazBusqueda" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                 <iframe src="busca_prueba.php?tabla=vftge2007&response=A&codi=EMPLE" width="600" height="400" frameborder="0"></iframe>
             </div>
         </div>
@@ -143,7 +143,7 @@
     <script>
     function mostrarInterfaz() {
         event.preventDefault(); // Evitar el envío del formulario por defecto
-        document.getElementById("interfazBusqueda").style.display = "block";
+        document.getElementById("interfazBusqueda").style.display = "flex";
       }
 
       document.addEventListener('DOMContentLoaded', function() {
