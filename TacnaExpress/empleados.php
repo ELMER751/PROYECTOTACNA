@@ -4,6 +4,7 @@
         header("Location: ingresar_sesion.php");
         exit();
     }
+    //include_once('header.php');
     include_once('includes/acceso.php');
     $conexion = connect_db();
     // Verificar la conexión
@@ -43,7 +44,6 @@
         <h1> Registrar Empleado </h1>
         <div class="input-box">
             <input id="Nombre_d_Usuario" type="text" name="Nombre_d_Usuario" placeholder="Nombre de Usuario" maxlength="3" required oninput="this.value = this.value.toUpperCase()" onkeypress="verificarUsuario(event)">
-<div class="input-box" id="mensaje"></div>
     <script>
         function verificarUsuario(event) {
     // Verificar si se presionó la tecla Enter (código ASCII 13)
@@ -82,11 +82,11 @@
             <input id="Contraseñaa" type="password" name="Contraseñaa" placeholder="Contraseña" required>
         </div>
         <div style="display: flex;">
-            <select name="Nivel" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+            <select name="Nivel" style="flex: 1; height: 100%; background: white; border: none; outline: none; border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px; margin-right: 10px;">
                 <option value="1" style="background-color: black; color: white; ">Administrador</option>
                 <option value="0" style="background-color: black; color: white; ">Operador</option>  
             </select>
-            <select name="Sede" style="flex: 1; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px; margin-right: 10px;">
+            <select name="Sede" style="flex: 1; height: 100%; background: white; border: none; outline: none; border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px; margin-right: 10px;">
                 <?php
                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
                     if ($resultado) {

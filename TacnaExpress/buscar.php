@@ -54,7 +54,7 @@ function obtener_registros($dato, $tabla) {
             
             if ($titulo === "") {
                 if($codi === "BUSCA1") {
-                $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(' . $id . ');">SELECCIONAR</a></td>';
+                $tabla_html .= '<td><a style="border: 0px solid white; font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(' . $id . ');">SELECCIONAR</a></td>';
                 ?>
                     <script>
                     function seleccionarDocumento(id) {
@@ -72,7 +72,7 @@ function obtener_registros($dato, $tabla) {
                     $nomb = $jaladato[1];
                     $dire = $jaladato[6];
                     $rucdni = $jaladato[5];
-                    $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
+                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
                     ?>
                     <script>
                         function seleccionarDocumento(nomb1, dire1, rucdni1) {
@@ -93,7 +93,7 @@ function obtener_registros($dato, $tabla) {
                     $nomb = $jaladato[1];
                     $dire = $jaladato[6];
                     $rucdni = $jaladato[5];
-                    $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
+                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
                     ?>
                     <script>
                         function seleccionarDocumento(nomb2, dire2, rucdni2) {
@@ -114,7 +114,7 @@ function obtener_registros($dato, $tabla) {
                     $nomb = $jaladato[1];
                     $dire = $jaladato[6];
                     $rucdni = $jaladato[5];
-                    $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
+                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
                     ?>
                     <script>
                         function seleccionarDocumento(nomb3, dire3, rucdni3) {
@@ -133,7 +133,7 @@ function obtener_registros($dato, $tabla) {
                 }
                 else if ($codi === "EMPLE") {
                     $docu = $jaladato[0];
-                    $tabla_html .= '<td><a style="border: 0px solid white;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $docu . '\');">SELECCIONAR</a></td>';
+                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $docu . '\');">SELECCIONAR</a></td>';
                 ?>
                     <script>
                         function seleccionarDocumento(docu) {

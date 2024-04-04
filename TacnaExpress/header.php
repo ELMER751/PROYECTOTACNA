@@ -105,7 +105,7 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
   </div>
 </nav>
 </header>
-<input type="checkbox" id="btn-modal">
+<input type="checkbox" id="btn-modal" style ="display:none;">
 <div class="container-modal">
         <div class="content-modal">
             <a>PARAMETROS</a>

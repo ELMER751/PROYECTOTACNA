@@ -1,6 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit();}
+//include_once('header.php');
 ?>
 <?php
 ?>

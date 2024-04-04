@@ -1,42 +1,76 @@
+<?php 
+    include_once('header.php');
+?>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Venta</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.win.css' rel='stylesheet'>
-    <link rel="stylesheet" href="css/loginnn.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
-<div class="wrapper">
- <form method="POST" action="re_venta.php">
- <h1> Registro de Venta </h1>
- <?php 
-
- ?>
-<div class="input-box">
-<input id="Usuario" type="text" name = "Usuario" placeholder=" Vendedor " required> 
-<select class="input-box" name="Documento" id="Documento" placeholder="Documento">
-            <option value="pdf">PDF</option>
-            <option value="word">Word</option>
-        </select>
-<input id="Nro" type="text" name = "Nro" placeholder= "Numero de Venta" required>    
-</div>
-
-<div class="input-box">
-<input id="Cliente" type="text" name = "Cliente" placeholder= "Cliente" required> 
-        <select class="input-box" name="Tipo_Venta" id="Tipo_Venta">
-            <option value="factura">Factura</option>
-            <option value="boleta">Boleta</option>
-        </select>
-<input id="Fecha" type="text" name = "Fecha" placeholder= "Fecha" required>
-</div>
-<button type="submit" value="registra"class="btn">Registrar Venta</button>
-</form>
-
-</body>
+    <head>
+    <title>Registro de Ventas</title>
+    <html lang="es">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/boleta1.css">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    
+        <body>
+                <div class="wrapper">
+                  <form class ="formulario" id="miFormulario" method="POST" action="procesos.php?pagina_anterior=<?php echo urlencode($_SERVER['PHP_SELF']); ?>">
+                    <h1>Generación de Documentos</h1>
+                        <div class="contenido">
+                            <div class="contenido">
+                                <label>De :</label>
+                                <input type="date" name="fechai" id="fechai" style="width: 12ch;" value="<?php echo date('Y-m-01');?>">
+                                <label>Al :</label>
+                                <input type="date" name="fechaf" id="fechaf" style="width: 12ch;" value="<?php echo date('Y-m-d');?>">
+                                <input type="checkbox" name = "dale" value ="control">
+                                <a>Imprime Lista de Control</a>
+                            </div>
+                            <div class="contenido" style="text-align: left;">
+                            <input style="" type="radio" name="dale1" id="control1">
+                            <label for="control1">Buscar Por Razón Social</label>
+                            <br>
+                            <input style="" type="radio" name="dale1" id="control2">
+                            <label for="control2">Buscar Por Nombre</label>
+                            <br>
+                            <select style="width: 50ch;" name="datosDestino" id="datosDestino">
+                                    <option value="">SELECCIONE</option>
+                                        
+                                    </select>
+                            </div>
+                        <div class="contenido"> 
+                            <div class="contenido" style="display: inline-block; width: 200px;">
+                                <label>Condición</label>
+                                <br>
+                                <input type="checkbox" name="Contado" id="Contado" value="Contado">
+                                <label for="Contado">Contado</label>
+                                <br>
+                                <input type="checkbox" name="Credito" id="Credito" value="Credito">
+                                <label for="Credito">Crédito</label>
+                                <br>
+                                <input type="checkbox" name="PagoB" id="PagoB" value="PagoB">
+                                <label for="PagoB">Pago débito</label>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="contenido" style="display: inline-block; width: 200px;">
+                                <label>Documento</label>
+                                <br>
+                                <input type="checkbox" name="Factura" id= "Factura" value="Factura">
+                                <label for="Factura">Factura</label>
+                                <br>
+                                <input type="checkbox" name="Boleta" id="Boleta" value="Boleta">
+                                <label for="Boleta">Boleta</label>
+                                <br>
+                                <br>
+                            </div>
+                        </div>                            
+                      </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+        </body>
+   
 </html>
+                
+                    

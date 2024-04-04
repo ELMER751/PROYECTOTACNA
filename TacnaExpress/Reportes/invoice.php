@@ -88,7 +88,7 @@ $pdf->SetXY(125, $posY + 7);
 $pdf->Cell(100,6,iconv("UTF-8", "ISO-8859-1","FACTURA ELECTRONICA"),0,1,'C'); 
 
 $pdf->SetXY(125, $posY + 14); // Ajustar posición vertical para el siguiente Cell
-$pdf->Cell(100,6,iconv("UTF-8", "ISO-8859-1","F $serie N° $numfac"),0,1,'C'); 
+$pdf->Cell(100,6,iconv("UTF-8", "ISO-8859-1","F" .$serie. " N°" .str_pad($numfac, 6, '0', STR_PAD_LEFT).""),0,1,'C'); 
 
 $pdf->SetMargins(7,5,5);	
 $pdf->Ln(7);
@@ -169,7 +169,7 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
         $pdf->Cell(111, 7, iconv("UTF-8", "ISO-8859-1", "$nombreP"), 'LT', 0, 'C');
         $pdf->Cell(15, 7, iconv("UTF-8", "ISO-8859-1", "$cantidadP"), 'LT', 0, 'C');
         $pdf->Cell(25, 7, iconv("UTF-8", "ISO-8859-1", "$precioP"), 'LT', 0, 'C');
-        $pdf->Cell(19, 7, iconv("UTF-8", "ISO-8859-1", "$pigvP"), 'LT', 0, 'C');
+        $pdf->Cell(19, 7, iconv("UTF-8", "ISO-8859-1","$pigvP"), 'LT', 0, 'C');
         
         // Verificar si es el último elemento del arreglo
         if ($indice == $longitud - 1) {
@@ -230,8 +230,8 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
 
 	$pdf->Cell(121,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,4,iconv("UTF-8", "ISO-8859-1","Total No Gravado :"),'',0,'C');
-	$pdf->Cell(34,4,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
+	$pdf->Cell(38,4,iconv("UTF-8", "ISO-8859-1","Total No Gravado :"),'',0,'C');
+	$pdf->Cell(21,4,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
 
 	$pdf->Ln(4);
 
@@ -239,35 +239,35 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 
 
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Total Exonerado"),'T',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'T',0,'C');
+	$pdf->Cell(36,7,iconv("UTF-8", "ISO-8859-1","Total Exonerado :"),'T',0,'C');
+	$pdf->Cell(25,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'T',0,'C');
 
 	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Total IGV 18% :"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. $montoigv"),'',0,'C');
+	$pdf->Cell(33,7,iconv("UTF-8", "ISO-8859-1","Total IGV 18% :"),'',0,'C');
+	$pdf->Cell(31,7,iconv("UTF-8", "ISO-8859-1","S/. $montoigv"),'',0,'C');
 
 	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Importe total :"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
+	$pdf->Cell(34.5,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
 
 	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
-	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Redondeo : "),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
+	$pdf->Cell(29,7,iconv("UTF-8", "ISO-8859-1","Redondeo : "),'',0,'C');
+	$pdf->Cell(39,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
     $pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Importe total :"),'',0,'C');
-	$pdf->Cell(34,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
+	$pdf->Cell(35,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
 	$pdf->Ln(12);
 
 	$pdf->SetFont('Arial','',9);

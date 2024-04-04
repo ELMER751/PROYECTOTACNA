@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
-* {
-  margin: 6px;
-  padding: 6px;
+*:not(.wrapper) {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
 body {
+  margin: 6px;
+  padding-top: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,37 +15,62 @@ body {
   background-size: cover;
 }
 .wrapper {
+  margin: 6px;
   align-items: center; /* Centrar elementos horizontalmente */
-  background: #c6d4db;
-  color: #000000;
+  background: rgb(23, 16, 85);
+  color: #050505;
   border-radius: 10px;
-  padding: 30px 40px;
   display: inline-flex;
   flex-direction: column; /* Alinear los elementos en una columna */
-  
+
 }
 .wrapper .contenido {
-  border: 2px solid rgba(17, 16, 16, 0.2);
+  margin: 6px;
+  padding: 6px;
+  margin: 6px;
+  padding: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
   position: relative;
 }
+
+
+
+.wrapper .contenido select {
+  margin: 6px;
+  
+}
+.wrapper .contenido label {
+  display: inline-block;
+  text-align: right; /* Alinea el texto a la derecha */
+  margin-right: 5px; /* Espacio entre la etiqueta y el input */
+}
 .formulario{
-  display: block;
-  background-color: #030303;
+  margin: 6px;
+  padding: 6px;
+  display: inline-block;
+  background-color: #c6d4db;
 }
 .wrapper h1 {
   font-size: 36px;
   text-align: center;
 }
-
+.wrapper input{
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+.wrapper select{
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
 .wrapper .input-box {
-  border: 2px solid rgba(22, 21, 21, 0.2);
+  margin: 6px;
+  padding: 6px;
+  display:flex;
+  border: 2px solid rgba(0, 0, 0, 0.2);
   display: flex; /* Mostrar los elementos de entrada y selección en una fila */
   align-items: center;
   margin: 30px 0;
 }
 
 .wrapper .entrada {
-  border: 2px solid rgba(20, 20, 20, 0.2);
   display: flex; /* Mostrar los elementos de entrada y selección en una fila */
   align-items: center;
   margin: 30px 0;
@@ -56,10 +81,10 @@ body {
   size: 7;
   flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
   height: 50px;
-  background: rgb(20, 20, 20);
+  background: rgb(59, 57, 57);
   border: none;
   outline: none;
-  border: 2px solid rgba(10, 10, 10, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 40px;
   font-size: 16px;
   color: #080808;
@@ -70,12 +95,12 @@ body {
 }
 /* Cambiar color al pasar el ratón por encima */
 .wrapper .input-box select:hover {
-    background-color: rgb(25, 25, 26);
+    background-color: rgb(57, 60, 61);
   }
   
   /* Cambiar color cuando el select está enfocado */
   .wrapper .input-box select:focus {
-    background-color: black;
+    background-color: rgb(27, 26, 26);
   }
 .wrapper .input-box select{
     flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
@@ -83,28 +108,28 @@ body {
     background: transparent;
     border: none;
     outline: none;
-    border: 2px solid rgba(26, 25, 25, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 40px;
     font-size: 16px;
-    color: #0e0d0d;
+    color: #161616;
   
 }
 .wrapper .input-box input
  {
   flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
   height: 50px;
-  background: white;
+  background: transparent;
   border: none;
   outline: none;
-  border: 2px solid rgba(12, 12, 12, 0.2);
+  border: 2px solid rgba(29, 26, 26, 0.2);
   border-radius: 40px;
   font-size: 16px;
-  color: #070707;
+  color: #000000;
   padding: 20px 45px 20px 20px;
 }
 
 .wrapper .input-box input::placeholder {
-  color: #131212;
+  color: #000000;
 }
 
 .wrapper .input-box i {
@@ -123,12 +148,12 @@ body {
 }
 
 .remember-forgot label input {
-  accent-color: #0f0f0f;
+  accent-color: #000000;
   margin-right: 3px;
 }
 
 .remember-forgot a {
-  color: #020202;
+  color: #000000;
   text-decoration: none;
 }
 
@@ -137,17 +162,15 @@ body {
 }
 
 .wrapper .btn {
-  width: 100%;
-  height: 45px;
-  background: transparent;
+  background:transparent;
   border: none;
   outline: none;
   border-radius: 40px;
-  box-shadow: 0 0 10px transparent;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  font-size: 16px;
-  color: transparent;
-  font-weight: 600;
+  font-size: 1px;
+  color: #333;
+  font-weight: 60;
 }
 
 .wrapper .register-link {
@@ -157,7 +180,7 @@ body {
 }
 
 .register-link p a {
-  color: #111111;
+  color: #050505;
   text-decoration: none;
   font-weight: 600;
 }
@@ -165,4 +188,3 @@ body {
 .register-link p a:hover {
   text-decoration: underline;
 }
-
