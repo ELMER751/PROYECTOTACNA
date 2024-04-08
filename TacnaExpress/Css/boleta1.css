@@ -54,6 +54,9 @@ body {
   font-size: 36px;
   text-align: center;
 }
+.wrapper h5 {
+  text-align: center;
+}
 .wrapper input{
   border: 2px solid rgba(0, 0, 0, 0.2);
 }

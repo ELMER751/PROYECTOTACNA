@@ -136,7 +136,7 @@ date_default_timezone_set('America/Lima');
                               ?>
                             </select>    
                             <a>N° Doc :</a>
-                            <input id="NDOC" type="text" oninput="validarCodigo(this)" name="NDOC" style="width: 12ch;" onkeypress="return handleEnter(event, 'IGV')">
+                            <input id="NDOC" type="text" name="NDOC" style="width: 12ch;" readonly>
                             <button type="submit" class="btn" onclick="mostrarInterfaz(1)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
                               <div id="interfazBusqueda1" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                                 <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="1100" height="300" frameborder="0" style="border: 2px solid rgba(12, 12, 12, 0.2);border-radius: 40px;"></iframe>
@@ -596,7 +596,28 @@ date_default_timezone_set('America/Lima');
                     }
                     window.addEventListener('message', function(event) {
                         if (event.data.id !== undefined) {
-                            document.getElementById('NDOC').value = event.data.id || "";
+                            
+                            var seleccion = (event.data.id || "").toString();
+                            seleccion = seleccion.padStart(6, '0');
+                            document.getElementById('NDOC').value = seleccion;
+                            console.log("Seleccionaste: " + seleccion);
+                              // Realizar la solicitud AJAX
+                                  var xhr = new XMLHttpRequest();
+                                  xhr.open("POST", "consultas/docu.php", true);
+                                  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                  xhr.onreadystatechange = function() {
+                                      if (xhr.readyState === 4 && xhr.status === 200) {
+                                          var response = JSON.parse(xhr.responseText);
+                                          if (response.mensaje === "existe") {
+                                              document.getElementById('lic').value = response.licencia;            
+                                          } else {
+                                                  // Si el usuario no existe, solo da el foco
+                                              document.getElementById('lic').value = "";
+                                          }
+                                      }
+                                  };
+                                  xhr.send("docu=" + seleccion);
+                                  return false;
                         } else if (event.data.rucdni1 !== undefined && event.data.rucdni1 !== "") {
                             document.getElementById('rucDni1').value = event.data.rucdni1 || "";
                             document.getElementById('nomb1').value = event.data.nomb1 || "";

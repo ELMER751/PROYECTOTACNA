@@ -56,17 +56,17 @@ body {
   size: 7;
   flex: 1; /* Permite que los elementos de entrada y selección compartan el espacio disponible por igual */
   height: 50px;
-  background: rgb(20, 20, 20);
+  background: rgb(230, 225, 225);
   border: none;
   outline: none;
   border: 2px solid rgba(10, 10, 10, 0.2);
   border-radius: 40px;
   font-size: 16px;
-  color: #080808;
+  color: #1a1818;
   padding: 20px 45px 20px 20px;
 }
 .wrapper .entrada input[readonly] {
-  color: rgb(202, 156, 156); /* Cambia el color del texto a rojo */
+  color: rgb(160, 160, 160); /* Cambia el color del texto a rojo */
 }
 /* Cambiar color al pasar el ratón por encima */
 .wrapper .input-box select:hover {

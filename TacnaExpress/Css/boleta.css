@@ -15,18 +15,14 @@ body {
   background-size: cover;
 }
 .wrapper {
-  margin: 6px;
   align-items: center; /* Centrar elementos horizontalmente */
-  background: rgb(23, 16, 85);
+  background: transparent;
   color: #050505;
   border-radius: 10px;
   display: inline-flex;
   flex-direction: column; /* Alinear los elementos en una columna */
-
 }
 .wrapper .contenido {
-  margin: 6px;
-  padding: 6px;
   margin: 6px;
   padding: 6px;
   border: 2px solid rgba(0, 0, 0, 0.2);
@@ -48,8 +44,8 @@ body {
 .formulario{
   margin: 6px;
   padding: 6px;
-  display: inline-block;
   background-color: #c6d4db;
+  border-radius: 1pc;
 }
 .wrapper h1 {
   font-size: 36px;

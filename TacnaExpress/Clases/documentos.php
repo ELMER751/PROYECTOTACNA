@@ -15,6 +15,12 @@
 			return $res;
 		}
 
+        public function listaDocEliminado(){
+			$sql = "SELECT * FROM fdoceliminados";
+			$res = mysqli_query($this->con, $sql);
+			return $res;
+		}
+
         public function busca($id){
 			$sql = "SELECT * FROM fcabecer where DOC1='$id'";
 			$res = mysqli_query($this->con, $sql);
@@ -22,11 +28,11 @@
 			return $return ;
 		}
 
-		public function fcabecer($MESP, $idemXY, $serieXY, $txtruc, $NumdocGenerado, $totbruto, $Dscto, $vvtatot, $MonIGV, $totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, $igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, $guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, $destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, $Observa, $sede) {
+		public function fcabecer($NumdocGenerado,$MESP, $idemXY, $serieXY, $txtruc, $totbruto, $Dscto, $vvtatot, $MonIGV, $totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, $igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, $guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, $destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, $Observa, $sede) {
 			$sql = "INSERT INTO FCABECER 
-            (    MESP  ,    IDEM ,    IDEM2 ,    CODI,          DOC1,           MONB,       DSCT,       TOTV,       IGVE,      TOTL,        EMIT,ESTA, FEC1,      FEC2,         NOMEMPRE,     RUCEMPRE,  DIREMPRE,    COND,       IGV,      USUARIO,    HORAREG,   FECREG,    DSCT_FAR,     NDIAS,          MONEDA,     TIP_CAMB,       DOCAUTORI,     NAUTORIZA,       RUCDNIRE,     NOMBRE,       DIRERE,   RUCDNICO,       NOMBCO,     DIRECO,      RUTADES,     ODESORI,        PLACA,         LIC,       CHOFCOND,      MASIGV,        IDCTE,              OBSERV,      SEDE)
+            (    MESP  ,    IDEM ,    IDEM2 ,    CODI,          DOC1,           MONB,       DSCT,       TOTV,       IGVE,      TOTL,        EMIT,ESTA,        FEC1,      FEC2,         NOMEMPRE,     RUCEMPRE,  DIREMPRE,    COND,       IGV,      USUARIO,    HORAREG,   FECREG,    DSCT_FAR,     NDIAS,          MONEDA,     TIP_CAMB,       DOCAUTORI,     NAUTORIZA,       RUCDNIRE,     NOMBRE,       DIRERE,   RUCDNICO,       NOMBCO,     DIRECO,      RUTADES,     ODESORI,        PLACA,         LIC,       CHOFCOND,      MASIGV,        IDCTE,              OBSERV,      SEDE)
             VALUES
-            (   '$MESP', '$idemXY', '$serieXY', '$txtruc', '$NumdocGenerado', '$totbruto', '$Dscto', '$vvtatot', '$MonIGV', '$totPrecVenta', '1', '', '$Date', '$fecaten',      '$cliente',     '$ruc',     '$dir', '$condi',   '$igv',     '$USR',     '$time',    '$fec',     '$dscto', '$incremento',    '$tipc',    '$montoTipc',   '$guia',     '$numfacbol',      '$rucdniR',     '$nombR',   '$dirR', '$rucdniC',     '$nombC',   '$dirC',    '$destino',   '$ODESORI',     '$placa',       '$lice',  '$conductor',  '$masigv',      '$CtaCorriente',    '$Observa', '$sede')";
+            (   '$MESP', '$idemXY', '$serieXY', '$txtruc', '$NumdocGenerado', '$totbruto', '$Dscto', '$vvtatot', '$MonIGV', '$totPrecVenta', '1', 'EMITIDO', '$Date', '$fecaten',      '$cliente',     '$ruc',     '$dir', '$condi',   '$igv',     '$USR',     '$time',    '$fec',     '$dscto', '$incremento',    '$tipc',    '$montoTipc',   '$guia',     '$numfacbol',      '$rucdniR',     '$nombR',   '$dirR', '$rucdniC',     '$nombC',   '$dirC',    '$destino',   '$ODESORI',     '$placa',       '$lice',  '$conductor',  '$masigv',      '$CtaCorriente',    '$Observa', '$sede')";
 			$res = mysqli_query($this->con, $sql);
 			if ($res) {
 				return true;

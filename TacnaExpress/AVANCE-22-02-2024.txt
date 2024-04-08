@@ -178,3 +178,45 @@ INSERT INTO FTGE2007 (CODI, NOMB, DIRE, FECH, FONO, ACTI, FLC, CITY, PAIS, COND,
 ('63', 'B-H-002', NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('200', 'C:\Sys_ExpTacna', NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('300', 'COPIAS BF', NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+
+
+
+
+08-04-2024
+
+$idemXY = $result['trans'] ?? '';
+$Numdoc = $result['DOC1'] ?? '';
+$txtruc = $result['rucDni1'] ?? ''; 
+$totbruto = $result['subtotal'] ?? '';
+$vvtatot = $result['subtotal'] ?? '';
+$MonIGV = $result['igv_venta'] ?? '';
+$totPrecVenta = $result['total_venta'] ?? '';
+$Date = $result['FECHA'] ?? date('Y-m-d');
+$fecaten = $result['fechaP'] ?? '';
+$cliente = $result['nomb1'] ?? '';
+$dir = $result['dire1'] ?? '';
+$condi = $result['CONDI'] ?? '';
+$igv = $result['IGV'] ?? '';
+$USR = $result['user'] ?? '';
+$time = $result['hor'] ?? date('H:i:s');
+$fec = $result['fech'] ?? date('Y-m-d');
+$rucdniR = $result['rucDni2'] ?? '';
+$nombR = $result['nomb2'] ?? '';
+$dirR = $result['dire2'] ?? '';
+$rucdniC = $result['rucDni3'] ?? '';
+$nombC = $result['nomb3'] ?? '';
+$dirC = $result['dire3'] ?? '';
+$destino = $result['datosDestino'] ?? '';
+$ODESORI = $result['Dale'] ?? '';
+$placa = $result['placa'] ?? '';
+$lice = $result['lic'] ?? '';
+$conductor = $result['CHOFER'] ?? '';
+$Observa = $result['observacion'] ?? '';
+$marca = $result['marca'] ?? '';
+$letras = $result['letras'];
+$dirpartida = $result['punto_partida'];
+$dirllegada = $result['punto_llegada'];
+$certifi = $result['certificado'];         
+$confivehi = $result['conf'];         
+$peso = $result['peso'];

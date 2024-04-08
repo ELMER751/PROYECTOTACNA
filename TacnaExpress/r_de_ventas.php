@@ -63,8 +63,14 @@
                                 <br>
                                 <br>
                             </div>
-                        </div>                            
+                        </div>  
+                        <div class = "contenido" style="display: inline-block">
+                                <button type="submit" name="imprimir" class="btn" id="image1" ><img src="img/imprime.png" alt="image 1" width="30px" height="30px"></button>
+                                <button type="submit" name="refrescar" class="btn" onclick="submitFormWithoutRequired()"><img id="image2" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
+                                <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image3" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
+                        </div>                       
                       </div>
+                      
                     </form>
                   </div>
                 </div>

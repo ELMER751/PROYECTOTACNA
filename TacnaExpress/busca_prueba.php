@@ -76,7 +76,7 @@ if (!isset($_SESSION["username"])) {
 								console.log('Variable tabla enviada correctamente ' + codi);
 								
 								// Actualiza la sección de resultados con la respuesta del servidor
-								$('#tabla_resultado').html(response);
+								$('#tabla_result0ado').html(response);
 							}
 						});
 					} else {
