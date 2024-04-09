@@ -234,7 +234,7 @@ date_default_timezone_set('America/Lima');
                         <input id="fechaP" type="date" name="fechaP" placeholder="Fecha" value ="<?php echo $busca['FEC_TRANS'] ?? '';?>" required size="7">
                         <br>
                         <label>Certificado :</label>
-                        <input id="cetificado" type="text" oninput="validarCodigo(this)" name="certificado" placeholder="" required value ="<?php echo $camion['CERTIFICADO'] ?? ''?>" style="width: 8ch;">
+                        <input id="certificado" type="text" oninput="validarCodigo(this)" name="certificado" placeholder="" required value ="<?php echo $camion['CERTIFICADO'] ?? ''?>" style="width: 8ch;">
                         &nbsp;<a>Peso :</a>&nbsp;
                         <input id="peso" type="text" name="peso" placeholder="" required value ="<?php echo $camion['CARGA_MAXIMA'] ?? ''?>" style="width: 8ch;">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Chofer :</a>
@@ -308,10 +308,30 @@ date_default_timezone_set('America/Lima');
                                     </tr>
                                 </thead>
                                 <tbody id="grillaBody">
-                                    <!-- Aquí se agregarán las filas de la grilla -->
+                                <?php 
+                    $table = mysqli_query($conexion,"SELECT * FROM vfarmamovifd WHERE DOC1 = '000001' AND IDEM = '40'");
+                    while ($row=mysqli_fetch_array($table)){
+                        $item=$row['NORD'];
+                        $desc=$row['DESCFB'];
+                        $can=$row['CANT'];
+                        $pre=$row['COST'];
+                        $cos=$row['VVTA'];
+                        ?>
+                        <tr>
+                            <td><?php echo $item; ?></td>
+                            <td><?php echo $desc; ?></td>
+                            <td><?php echo $can; ?></td>
+                            <td><?php echo $pre; ?></td>
+                            <td><?php echo $cos; ?></td>
+                            <td><button type="button" id="btnEliminar" class ="eliminar">ELIMINAR</td>
+                        </tr>
+                <?php
+                    }
+                ?>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
                       </div>
                       <div>
                         <label>Observacíon</label>
@@ -520,7 +540,6 @@ date_default_timezone_set('America/Lima');
                        if(document.getElementById('total').value > 0){
                             var formData = obtenerValoresFormulario();
                             var numeroFilas = document.getElementById('grilla').rows.length;
-
                             // Asignar el número de filas como el valor de norden
                             formData.orden = numeroFilas;
                             // Llamada a la función para agregar la fila a la grilla
@@ -596,27 +615,61 @@ date_default_timezone_set('America/Lima');
                     }
                     window.addEventListener('message', function(event) {
                         if (event.data.id !== undefined) {
-                            
                             var seleccion = (event.data.id || "").toString();
                             seleccion = seleccion.padStart(6, '0');
-                            document.getElementById('NDOC').value = seleccion;
+                            
                             console.log("Seleccionaste: " + seleccion);
                               // Realizar la solicitud AJAX
-                                  var xhr = new XMLHttpRequest();
-                                  xhr.open("POST", "consultas/docu.php", true);
-                                  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                                  xhr.onreadystatechange = function() {
-                                      if (xhr.readyState === 4 && xhr.status === 200) {
-                                          var response = JSON.parse(xhr.responseText);
-                                          if (response.mensaje === "existe") {
-                                              document.getElementById('lic').value = response.licencia;            
+                                  var xh = new XMLHttpRequest();
+                                  xh.open("POST", "consultas/docu.php", true);
+                                  xh.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                  xh.onreadystatechange = function() {
+                                      if (xh.readyState === 4 && xh.status === 200) {
+                                          var response = JSON.parse(xh.responseText);
+                                            if (response.mensaje === "existe") {
+                                              document.getElementById('NDOC').value = seleccion;
+                                              document.getElementById('trans').value = response.idemXY;
+                                              document.getElementById('rucDni1').value = response.txtruc;
+                                              document.getElementById('subtotal').value = response.totbruto;
+                                              document.getElementById('igv_venta').value = response.MonIGV;
+                                              document.getElementById('total_venta').value = response.totPrecVenta;
+                                              document.getElementById('FECHA').value = response.Date;
+                                              document.getElementById('fechaP').value = response.fecaten;
+                                              document.getElementById('nomb1').value = response.cliente;
+                                              document.getElementById('dire1').value = response.dir;
+                                              document.getElementById('CONDI').value = response.condi;
+                                              document.getElementById('IGV').value = response.igv;
+                                              document.getElementById('user').value = response.USR;
+                                              document.getElementById('hor').value = response.time;
+                                              document.getElementById('fech').value = response.fec;
+                                              document.getElementById('rucDni2').value = response.rudDniR;
+                                              document.getElementById('nomb2').value = response.nombR;
+                                              document.getElementById('dire2').value = response.dirR;
+                                              document.getElementById('rucDni3').value = response.rucdniC;
+                                              document.getElementById('nomb3').value = response.nombC;
+                                              document.getElementById('dire3').value = response.dirC;
+                                              document.getElementById('datosDestino').value = response.destino;
+                                              document.getElementById('Dale1').value = response.ODESORI;
+                                              document.getElementById('Dale2').value = response.ODESORI;
+                                              document.getElementById('placa').value = response.placa;
+                                              document.getElementById('miSelector').value = response.conductor;
+                                              document.getElementById('observacion').value = response.Observa;
+                                              document.getElementById('marca').value = response.marca;
+                                              document.getElementById('letras').value = response.letras; 
+                                              document.getElementById('lic').value = response.lice; 
+                                              document.getElementById('punto_partida').value = response.dirpartida; 
+                                              document.getElementById('punto_llegada').value = response.dirllegada; 
+                                              document.getElementById('certificado').value = response.certifi; 
+                                              document.getElementById('conf').value = response.confivehi; 
+                                              document.getElementById('peso').value = response.peso;            
                                           } else {
                                                   // Si el usuario no existe, solo da el foco
-                                              document.getElementById('lic').value = "";
+                                              alert('Error al Cargar Documento');
+                                              window.location.href = 'boletas_facturas.php';
                                           }
                                       }
                                   };
-                                  xhr.send("docu=" + seleccion);
+                                  xh.send("docu=" + seleccion);
                                   return false;
                         } else if (event.data.rucdni1 !== undefined && event.data.rucdni1 !== "") {
                             document.getElementById('rucDni1').value = event.data.rucdni1 || "";

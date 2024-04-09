@@ -33,26 +33,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dirR = $result['DIRERE'];
         $rucdniC = $result['RUCDNICO'];
         $nombC = $result['NOMBCO'];
-        $dirC = $result['DIRECO'] ?? '';
-        $destino = $result['RUTADES'] ?? '';
-        $ODESORI = $result['ODESORI'] ?? '';
-        $placa = $result['PLACA'] ?? '';
-        $lice = $result['LIC'] ?? '';
-        $conductor = $result['CHOFCOND'] ?? '';
-        $Observa = $result['OBSERV'] ?? '';
-
-        //
-        $marca = $result['marca'];
-        $letras = $result['letras'];
-        $dirpartida = $result['punto_partida'];
-        $dirllegada = $result['punto_llegada'];
-        $certifi = $result['certificado'];         
-        $confivehi = $result['conf'];         
-        $peso = $result['peso'];
-
-
+        $dirC = $result['DIRECO'] ;
+        $destino = $result['RUTADES'] ;
+        $ODESORI = $result['ODESORI'];
+        $placa = $result['PLACA'];
+        $lice = $result['LIC'];
+        $conductor = $result['CHOFCOND'];
+        $sqli = "SELECT * FROM fmovimpfde WHERE DOC1 = '$ndoc'AND IDEM = '$idemXY'";
+        $result = $conexion->query($sqli);
+        $result = mysqli_fetch_assoc($result);
+        $letras = $result['MLETRA'];
+        $dirpartida = $result['DIRPARTIDA'];
+        $dirllegada = $result['DIRLLEGADA'];
+        $Observa = $result['OBSERV'];
+        $marca = $result['MARCA'];
+        $certifi = $result['CERTIFICADO'];         
+        $confivehi = $result['CONFVHEICU'];         
+        $peso = $result['PESO'];
         $mensaje = "existe";
-        $response = array( "mensaje" => $mensaje);
+        $response = array(
+            "idemXY" => $idemXY,
+            "Numdoc" => $Numdoc,
+            "txtruc" => $txtruc,
+            "totbruto" => $totbruto,
+            "vvtatot" => $vvtatot,
+            "MonIGV" => $MonIGV,
+            "totPrecVenta" => $totPrecVenta,
+            "Date" => $Date,
+            "fecaten" => $fecaten,
+            "cliente" => $cliente,
+            "dir" => $dir,
+            "condi" => $condi,
+            "igv" => $igv,
+            "USR" => $USR,
+            "time" => $time,
+            "fec" => $fec,
+            "rucdniR" => $rucdniR,
+            "nombR" => $nombR,
+            "dirR" => $dirR,
+            "rucdniC" => $rucdniC,
+            "nombC" => $nombC,
+            "dirC" => $dirC,
+            "destino" => $destino,
+            "ODESORI" => $ODESORI,
+            "placa" => $placa,
+            "lice" => $lice,
+            "conductor" => $conductor,
+            "Observa" => $Observa,
+            "marca" => $marca,
+            "letras" => $letras,
+            "dirpartida" => $dirpartida,
+            "dirllegada" => $dirllegada,
+            "certifi" => $certifi,
+            "confivehi" => $confivehi,
+            "peso" => $peso,
+            "mensaje" => $mensaje
+        );
         echo json_encode($response);
     } else {
         $idemXY = "";
@@ -91,7 +127,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confivehi = "";
         $peso = "";
         $mensaje = "";
-        $response = array( "mensaje" => $mensaje);
+        $response = array(
+            "idemXY" => $idemXY,
+            "Numdoc" => $Numdoc,
+            "txtruc" => $txtruc,
+            "totbruto" => $totbruto,
+            "vvtatot" => $vvtatot,
+            "MonIGV" => $MonIGV,
+            "totPrecVenta" => $totPrecVenta,
+            "Date" => $Date,
+            "fecaten" => $fecaten,
+            "cliente" => $cliente,
+            "dir" => $dir,
+            "condi" => $condi,
+            "igv" => $igv,
+            "USR" => $USR,
+            "time" => $time,
+            "fec" => $fec,
+            "rucdniR" => $rucdniR,
+            "nombR" => $nombR,
+            "dirR" => $dirR,
+            "rucdniC" => $rucdniC,
+            "nombC" => $nombC,
+            "dirC" => $dirC,
+            "destino" => $destino,
+            "ODESORI" => $ODESORI,
+            "placa" => $placa,
+            "lice" => $lice,
+            "conductor" => $conductor,
+            "Observa" => $Observa,
+            "marca" => $marca,
+            "letras" => $letras,
+            "dirpartida" => $dirpartida,
+            "dirllegada" => $dirllegada,
+            "certifi" => $certifi,
+            "confivehi" => $confivehi,
+            "peso" => $peso,
+            "mensaje" => $mensaje
+        );
         echo json_encode($response);
     }
 }
