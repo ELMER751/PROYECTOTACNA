@@ -14,6 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($result['DOC1'])) {
         $idemXY = $result['IDEM'];
         $Numdoc = $result['DOC1'];
+        $table = mysqli_query($conexion,"SELECT * FROM vfarmamovifd WHERE DOC1 = '$ndoc' AND IDEM = '$idemXY'");
+        $table=mysqli_fetch_array($table);
+        $table = array($table);
         $txtruc = $result['CODI']; 
         $totbruto = $result['MONB'];
         $vvtatot = $result['MONB'];
@@ -87,7 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "certifi" => $certifi,
             "confivehi" => $confivehi,
             "peso" => $peso,
-            "mensaje" => $mensaje
+            "mensaje" => $mensaje,
+            "table" => $table
         );
         echo json_encode($response);
     } else {
@@ -127,6 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confivehi = "";
         $peso = "";
         $mensaje = "";
+        $table = "";
         $response = array(
             "idemXY" => $idemXY,
             "Numdoc" => $Numdoc,
@@ -163,7 +168,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "certifi" => $certifi,
             "confivehi" => $confivehi,
             "peso" => $peso,
-            "mensaje" => $mensaje
+            "mensaje" => $mensaje,
+            "table" => $table
         );
         echo json_encode($response);
     }

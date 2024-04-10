@@ -307,31 +307,12 @@ date_default_timezone_set('America/Lima');
                                         <th>PrecioTotal</th>
                                     </tr>
                                 </thead>
-                                <tbody id="grillaBody">
-                                <?php 
-                    $table = mysqli_query($conexion,"SELECT * FROM vfarmamovifd WHERE DOC1 = '000001' AND IDEM = '40'");
-                    while ($row=mysqli_fetch_array($table)){
-                        $item=$row['NORD'];
-                        $desc=$row['DESCFB'];
-                        $can=$row['CANT'];
-                        $pre=$row['COST'];
-                        $cos=$row['VVTA'];
-                        ?>
-                        <tr>
-                            <td><?php echo $item; ?></td>
-                            <td><?php echo $desc; ?></td>
-                            <td><?php echo $can; ?></td>
-                            <td><?php echo $pre; ?></td>
-                            <td><?php echo $cos; ?></td>
-                            <td><button type="button" id="btnEliminar" class ="eliminar">ELIMINAR</td>
-                        </tr>
-                <?php
-                    }
-                ?>
+                                <tbody id="grillaBody" >
+                                
                                 </tbody>
-                            </table>
+                                </table>
+                          </div>
                         </div>
-                    </div>
                       </div>
                       <div>
                         <label>Observacíon</label>
@@ -376,6 +357,10 @@ date_default_timezone_set('America/Lima');
                   </div>
                 </div>                                    
               <script>
+                function hola(){
+                  var ndoc = document.getElementById('NDOC').value;
+                  return ndoc;
+                }
                 function change_trans(){
                   var seleccion = document.getElementById("trans").value;
                         // Hacer algo con la selección, por ejemplo, mostrarla en la consola
@@ -628,6 +613,7 @@ date_default_timezone_set('America/Lima');
                                           var response = JSON.parse(xh.responseText);
                                             if (response.mensaje === "existe") {
                                               document.getElementById('NDOC').value = seleccion;
+                                              $ndoc = seleccion;
                                               document.getElementById('trans').value = response.idemXY;
                                               document.getElementById('rucDni1').value = response.txtruc;
                                               document.getElementById('subtotal').value = response.totbruto;
@@ -642,7 +628,7 @@ date_default_timezone_set('America/Lima');
                                               document.getElementById('user').value = response.USR;
                                               document.getElementById('hor').value = response.time;
                                               document.getElementById('fech').value = response.fec;
-                                              document.getElementById('rucDni2').value = response.rudDniR;
+                                              document.getElementById('rucDni2').value = response.rucdniR;
                                               document.getElementById('nomb2').value = response.nombR;
                                               document.getElementById('dire2').value = response.dirR;
                                               document.getElementById('rucDni3').value = response.rucdniC;
@@ -661,7 +647,38 @@ date_default_timezone_set('America/Lima');
                                               document.getElementById('punto_llegada').value = response.dirllegada; 
                                               document.getElementById('certificado').value = response.certifi; 
                                               document.getElementById('conf').value = response.confivehi; 
-                                              document.getElementById('peso').value = response.peso;            
+                                              document.getElementById('peso').value = response.peso;
+                                              //var divEliminar = document.getElementById("grillaContainer");
+                                              //divEliminar.parentNode.removeChild(divEliminar); 
+                                              $table = response.table; 
+                                              console.log($table);
+                                              for (let i = 0; i < $table.length; i++) {
+                                                const item = $table[i];
+                                                var grillaBody = document.getElementById('grillaBody');
+                                                var newRow = grillaBody.insertRow();
+                                                
+                                                // Crear celdas y asignarles el contenido del item
+                                                newRow.insertCell(0).textContent = item['NORD'];
+                                                newRow.insertCell(1).textContent = item['DESCFB'];
+                                                newRow.insertCell(2).textContent = item['CANT'];
+                                                newRow.insertCell(3).textContent = item['PREC'];
+                                                newRow.insertCell(4).textContent = item['VVTA'];
+
+                                                // Crear celda para el botón eliminar
+                                                var cellEliminar = newRow.insertCell(5);
+                                                var btnEliminar = document.createElement("button");
+                                                btnEliminar.textContent = "ELIMINAR";
+                                                btnEliminar.className = "eliminar";
+
+                                                // Agregar evento de click al botón eliminar
+                                                btnEliminar.addEventListener('click', function() {
+                                                  event.preventDefault(); 
+                                                  eliminarFilaGrilla(this);
+                                                  calcularTotales();
+                                                });
+
+                                                cellEliminar.appendChild(btnEliminar);
+                                            }         
                                           } else {
                                                   // Si el usuario no existe, solo da el foco
                                               alert('Error al Cargar Documento');
