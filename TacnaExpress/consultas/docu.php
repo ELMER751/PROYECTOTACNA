@@ -14,9 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($result['DOC1'])) {
         $idemXY = $result['IDEM'];
         $Numdoc = $result['DOC1'];
-        $table = mysqli_query($conexion,"SELECT * FROM vfarmamovifd WHERE DOC1 = '$ndoc' AND IDEM = '$idemXY'");
-        $table=mysqli_fetch_array($table);
-        $table = array($table);
+        $resultado = mysqli_query($conexion, "SELECT * FROM vfarmamovifd WHERE DOC1 = '$ndoc' AND IDEM = '$idemXY'");
+        $table = array();
+        while ($fila = mysqli_fetch_array($resultado)) {
+            $table[] = $fila;
+        }
         $txtruc = $result['CODI']; 
         $totbruto = $result['MONB'];
         $vvtatot = $result['MONB'];

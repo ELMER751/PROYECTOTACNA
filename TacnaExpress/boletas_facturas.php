@@ -650,34 +650,33 @@ date_default_timezone_set('America/Lima');
                                               document.getElementById('peso').value = response.peso;
                                               //var divEliminar = document.getElementById("grillaContainer");
                                               //divEliminar.parentNode.removeChild(divEliminar); 
+                                              const tabla = document.getElementById("grillaBody");
+                                              // Establece el contenido HTML de la tabla como una cadena vacía
+                                              tabla.innerHTML = "";
+                                              
                                               $table = response.table; 
-                                              console.log($table);
+                                              console.log($table);  
                                               for (let i = 0; i < $table.length; i++) {
-                                                const item = $table[i];
                                                 var grillaBody = document.getElementById('grillaBody');
                                                 var newRow = grillaBody.insertRow();
-                                                
-                                                // Crear celdas y asignarles el contenido del item
+                                                const item = response.table[i];
                                                 newRow.insertCell(0).textContent = item['NORD'];
                                                 newRow.insertCell(1).textContent = item['DESCFB'];
                                                 newRow.insertCell(2).textContent = item['CANT'];
                                                 newRow.insertCell(3).textContent = item['PREC'];
                                                 newRow.insertCell(4).textContent = item['VVTA'];
-
-                                                // Crear celda para el botón eliminar
-                                                var cellEliminar = newRow.insertCell(5);
-                                                var btnEliminar = document.createElement("button");
+                                                const cellEliminar = newRow.insertCell(5);
+                                                const btnEliminar = document.createElement("button");
                                                 btnEliminar.textContent = "ELIMINAR";
                                                 btnEliminar.className = "eliminar";
-
                                                 // Agregar evento de click al botón eliminar
-                                                btnEliminar.addEventListener('click', function() {
-                                                  event.preventDefault(); 
-                                                  eliminarFilaGrilla(this);
-                                                  calcularTotales();
+                                                btnEliminar.addEventListener('click', function(event) {
+                                                    event.preventDefault(); 
+                                                    eliminarFilaGrilla(this);
+                                                    calcularTotales();
                                                 });
-
                                                 cellEliminar.appendChild(btnEliminar);
+                                                
                                             }         
                                           } else {
                                                   // Si el usuario no existe, solo da el foco

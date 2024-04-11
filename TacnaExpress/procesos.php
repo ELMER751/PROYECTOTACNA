@@ -702,9 +702,10 @@ session_start();
         $idemXY=$_POST['trans'];
         $serieXY = mysqli_query($conexion,"SELECT * FROM ftge2007 WHERE CODI = '$idemXY'");
         $serieXY = mysqli_fetch_assoc($serieXY);
+        $NumdocGenerado = $serieXY['COMC'];
         $doc=$_POST['NDOC'] ?? '';
         $doc=str_pad($doc, 6, '0', STR_PAD_LEFT);
-        $xd->buscar_docu($doc,$idemXY);
+        $xd = $newdocu->buscar_docu($doc,$idemXY);
         $serieXY = $serieXY['SERIE'] ?? '';
         $txtruc = $_POST['rucDni1'] ?? ''; 
         $totbruto = $_POST['subtotal'] ?? '';
@@ -765,10 +766,13 @@ session_start();
         $IDBF = $IDBF + 1;
         if($xd){
             $NumdocGenerado = $doc;
-            $modifica->modificar_fcabecer($MESP, $idemXY, $serieXY, $txtruc, $NumdocGenerado, $totbruto, $Dscto, $vvtatot, $MonIGV, $totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, $igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, $guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, $destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, $Observa, $sede);
+            $modifica = $newdocu->modificar_fcabecer($MESP, $idemXY, $serieXY, $txtruc, $NumdocGenerado, $totbruto, $Dscto, $vvtatot, $MonIGV, $totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, $igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, $guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, $destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, $Observa, $sede);
             if($modifica){
                 $datos_tabla = json_decode($_POST["datos_tabla"], true);
                         $delete = mysqli_query($conexion,"DELETE FROM fmovimpfd");
+                        $delete = mysqli_query($conexion,"DELETE FROM fmovimie WHERE DOC1 = '$NumdocGenerado' AND IDEM='$idemXY'");
+                        $delete = mysqli_query($conexion,"DELETE FROM fmovimpfde WHERE DOC1 = '$NumdocGenerado' AND IDEM='$idemXY'");
+                        
                         foreach ($datos_tabla as $fila) {
                             $orden = $orden + 1;
                             $item = $fila["item"];
@@ -779,56 +783,57 @@ session_start();
                             $afecigv = $igv*0.01;
                             echo "$orden";
                             $totbrutoI = $precio_total - $precio_total*($igv*0.01);
-                            $movi = mysqli_query($conexion, "UPDATE fmovimie SET MESP = '$MESP', NORD = '$orden', IDEM = '$idemXY', IDEM2 = '$serieXY', CODT = '$codt', CANT = '$cantidad', boni = '$boni', COST = '$precio_igv', PREC = '$precio_igv', DSCT = '$dscto', MONT_DSCT = '0.00', MONDSCTIGV = '0.00', VVTA = '$precio_total', VVTAIGV = '$precio_total', FECH = '$fecaten', FEC_EXP = '$fecaten', CHKDESC = '1', IDAIGV = '1', COSP = '', USUARIO = '$USR', IGVE = '$igv', IDELT = '', COD_FACT = '', VAL_FACT = '', DESCFB = '$descripcion' WHERE DOC1 = '$NumdocGenerado'");
-
+                            $movi = mysqli_query($conexion,"INSERT INTO fmovimie(     MESP,           NORD,            IDEM,              IDEM2,               DOC1,                 CODT,           CANT,          boni,            COST,           PREC,             DSCT,              MONT_DSCT,            MONDSCTIGV,           VVTA,          VVTAIGV,               FECH,                    FEC_EXP,     CHKDESC,    IDAIGV,           COSP,            USUARIO,               IGVE,                IDELT,          COD_FACT,          VAL_FACT,          DESCFB) VALUES
+                                                                                (    '$MESP',         '$orden',       '$idemXY',         '$serieXY',        '$NumdocGenerado',       '$codt',      '$cantidad',     '$boni',      '$precio_igv',   '$precio_igv',   '$dscto',              '0.00',             '0.00',           '$precio_total', '$precio_total',       '$fecaten',               '$fecaten',       '1',       '1',             '',             '$USR',              '$igv',                  '',              '',                '',        '$descripcion' )");
                             $imprimir = mysqli_query($conexion, "INSERT INTO fmovimpfd  (     IDBF,           IDEM,            IDEM2,               DOC1,                  FEC_ADMI,                NOMBEMP,           DIREEMP,           RUC,            NORD,            CANT,             UNIDA,         DESCP,           DSCTO,            VIGV,           PUNIT,         PTOTA,           MLETRA,              FECEMI,             TOTBRUTO,         TOTALDSCTO,      TOTALVENTA,     MONTOIGV,        PRECIOVETA,          AFECTOIGV,          USUARIO,          MONEDA,             NGUIA,              NFACBOL,              RUCDNIR,             NOMBRE,           DIRERE,            RUCDNIC,             NOMBC,            DIREC,               DESTINO,               ODEOF,               PLACA,             MARCA,           CERTIFICADO,            LIC,             CONFVHEICU,             PESO,              CHOFCONDU,                    OBSERV,                  DIRPARTIDA,              DIRLLEGADA,                 CEDE,                    CONDI)VALUES
-                                                                                        (    '$IDBF',       '$idemXY',       '$serieXY',       '$NumdocGenerado',         '$fecaten',              '$cliente',          '$dir',          '$ruc',        '$orden',      '$cantidad',          'UND',     '$descripcion','     $Dscto',          '$igv',      '$precio_igv', '$precio_total',   '$letras',          '$fecaten',         '$totbrutoI',         '$Dscto',    '$vvtatot',      '$MonIGV',       '$totPrecVenta',     '$afecigv',        '$usuario',        '$tipc',            '',                   '',                '$rucdniR',          '$nombR',          '$dirR',          '$rucdniC',           '$nombC',         '$dirC',             '$destino',          '$ODESORI',           '$placa',         '$marca',            '$certifi',         '$lice',          '$confivehi',           '$peso',           '$conductor',                 '$Observa',             '$dirpartida',            '$dirllegada',              '$sede',                 '$condi')");
-                            $imprimR = mysqli_query($conexion, "UPDATE fmovimpfde SET IDBF = '$IDBF', IDEM = '$idemXY', IDEM2 = '$serieXY', FEC_ADMI = '$fecaten', NOMBEMP = '$cliente', DIREEMP = '$dir', RUC = '$ruc', NORD = '$orden', CANT = '$cantidad', UNIDA = 'UND', DESCP = '$descripcion', DSCTO = '$Dscto', VIGV = '$igv', PUNIT = '$precio_igv', PTOTA = '$precio_total', MLETRA = '$letras', FECEMI = '$fecaten', TOTBRUTO = '$totbrutoI', TOTALDSCTO = '$Dscto', TOTALVENTA = '$vvtatot', MONTOIGV = '$MonIGV', PRECIOVETA = '$totPrecVenta', AFECTOIGV = '$afecigv', USUARIO = '$usuario', MONEDA = '$tipc', NGUIA = '', NFACBOL = '', RUCDNIR = '$rucdniR', NOMBRE = '$nombR', DIRERE = '$dirR', RUCDNIC = '$rucdniC', NOMBC = '$nombC', DIREC = '$dirC', DESTINO = '$destino', ODEOF = '$ODESORI', PLACA = '$placa', MARCA = '$marca', CERTIFICADO = '$certifi', LIC = '$lice', CONFVHEICU = '$confivehi', PESO = '$peso', CHOFCONDU = '$conductor', OBSERV = '$Observa', DIRPARTIDA = '$dirpartida', DIRLLEGADA = '$dirllegada', CEDE = '$sede', CONDI = '$condi' WHERE DOC1 = '$NumdocGenerado'");                                                         
-                        }
+                                                                                         (    '$IDBF',       '$idemXY',       '$serieXY',       '$NumdocGenerado',         '$fecaten',              '$cliente',          '$dir',          '$ruc',        '$orden',      '$cantidad',          'UND',     '$descripcion','     $Dscto',          '$igv',      '$precio_igv', '$precio_total',   '$letras',          '$fecaten',         '$totbrutoI',         '$Dscto',    '$vvtatot',      '$MonIGV',       '$totPrecVenta',     '$afecigv',        '$usuario',        '$tipc',            '',                   '',                '$rucdniR',          '$nombR',          '$dirR',          '$rucdniC',           '$nombC',         '$dirC',             '$destino',          '$ODESORI',           '$placa',         '$marca',            '$certifi',         '$lice',          '$confivehi',           '$peso',           '$conductor',                 '$Observa',             '$dirpartida',            '$dirllegada',              '$sede',                 '$condi')");
+                            $imprimR = mysqli_query($conexion, "INSERT INTO fmovimpfde  (     IDBF,           IDEM,            IDEM2,               DOC1,                  FEC_ADMI,                NOMBEMP,           DIREEMP,           RUC,            NORD,            CANT,             UNIDA,         DESCP,           DSCTO,            VIGV,           PUNIT,         PTOTA,           MLETRA,              FECEMI,             TOTBRUTO,         TOTALDSCTO,      TOTALVENTA,     MONTOIGV,        PRECIOVETA,          AFECTOIGV,          USUARIO,          MONEDA,             NGUIA,              NFACBOL,              RUCDNIR,             NOMBRE,           DIRERE,            RUCDNIC,             NOMBC,            DIREC,               DESTINO,               ODEOF,               PLACA,             MARCA,           CERTIFICADO,            LIC,             CONFVHEICU,             PESO,              CHOFCONDU,                    OBSERV,                  DIRPARTIDA,              DIRLLEGADA,                 CEDE,                    CONDI)VALUES
+                                                                                        (    '$IDBF',       '$idemXY',       '$serieXY',          '$NumdocGenerado',               '$fecaten',              '$cliente',          '$dir',          '$ruc',        '$orden',      '$cantidad',          'UND',     '$descripcion','     $Dscto',          '$igv',      '$precio_igv', '$precio_total',   '$letras',          '$fecaten',         '$totbrutoI',         '$Dscto',    '$vvtatot',      '$MonIGV',       '$totPrecVenta',     '$afecigv',        '$usuario',        '$tipc',            '',                   '',                '$rucdniR',          '$nombR',          '$dirR',          '$rucdniC',           '$nombC',         '$dirC',             '$destino',          '$ODESORI',           '$placa',         '$marca',            '$certifi',         '$lice',          '$confivehi',           '$peso',           '$conductor',                 '$Observa',             '$dirpartida',            '$dirllegada',              '$sede',                 '$condi')");                                                            
+                            }
                         if($idemXY ==="40" || $idemXY ==="101" || $idemXY ==="43"){
                             echo "<script>
                             var confirmacion = confirm('Documento Correctamente Modificado ¿Desea Imprimir?');
                                     if (confirmacion) {
                                     window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
-                                    window.location.href('espresstacna.php');
+                                    window.location.href = 'espresstacna.php';
                                     } else {
-                                    window.location.href('espresstacna.php');
+                                    window.location.href  = 'espresstacna.php';
                                     }</script>";}
                         else if($idemXY ==="50" || $idemXY ==="102"){
                             echo "<script>
                             var confirmacion = confirm('Documento Correctamente Modificado ¿Desea Imprimir?');
                                     if (confirmacion) {
                                     window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
-                                    window.location.href('espresstacna.php');
+                                    window.location.href  = 'espresstacna.php';
                                     } else {
-                                    window.location.href('espresstacna.php');
+                                    window.location.href = 'espresstacna.php';
                                     }</script>";}
                         else if($idemXY ==="50" || $idemXY ==="102"){
                             echo "<script>
                             var confirmacion = confirm('Documento Correctamente Modificado ¿Desea Imprimir?');
                                     if (confirmacion) {
                                     window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
-                                    window.location.href('espresstacna.php');
+                                    window.location.href = 'espresstacna.php';
                                     } else {
-                                    window.location.href('espresstacna.php');
+                                        window.location.href = 'espresstacna.php';
                                     }</script>";}
                         else if($idemXY ==="103" || $idemXY ==="44" || $idemXY ==="45"){
                             echo "<script>
                             var confirmacion = confirm('Documento Correctamente Modificado ¿Desea Imprimir?');
                                     if (confirmacion) {
                                     window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
-                                    window.location.href('espresstacna.php');
+                                    window.location.href = 'espresstacna.php';
                                     } else {
-                                    window.location.href('espresstacna.php');
+                                        window.location.href = 'espresstacna.php';
                                     }</script>";}
                         else if($idemXY ==="60" || $idemXY ==="103"){
                             echo "<script>
                             var confirmacion = confirm('Documento Correctamente Modificado ¿Desea Imprimir?');
                                     if (confirmacion) {
-                                    window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
-                                    window.location.href('espresstacna.php');
+                                        window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
+                                        window.location.href = 'espresstacna.php';
                                     } else {
-                                    window.location.href('espresstacna.php');
+                                        window.location.href = 'espresstacna.php';
                                     }</script>";}               
             }
             else{
@@ -838,7 +843,6 @@ session_start();
             
         }
         else{
-            $NumdocGenerado = $serieXY['COMC'] ?? '0';
             $NumdocGenerado = intval($NumdocGenerado) + 1;
             //echo "$MESP $idemXY $serieXY $txtruc $NumdocGenerado $totbruto $Dscto $vvtatot $MonIGV $totPrecVenta $Date $fecaten $ruc $cliente $dir $condi $igv $USR $time $fec $dscto $incremento $tipc $montoTipc $guia $numfacbol $rucdniR $nombR $dirR $rucdniC $nombC $dirC $destino $ODESORI $placa $lice $conductor $masigv $CtaCorriente $Observa $user $sede";
             if ($idemXY === "" && $condi === "" && $destino === ""){
@@ -886,10 +890,10 @@ session_start();
                         }
                         echo "<script>var confirmacion = confirm('¿Desa Imprimir Factura?');
                         if (confirmacion) {
-                        window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
-                            window.location.href('espresstacna.php');
+                            window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
+                            window.location.href = 'espresstacna.php';
                         } else {
-                            window.location.href('espresstacna.php');
+                            window.location.href = 'espresstacna.php';
                         }</script>";
                     }
                     else{

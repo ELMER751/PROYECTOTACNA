@@ -48,51 +48,51 @@
 	$pdf->Image('./img/carro.png',10,12,50,25,'PNG');
 
     $pdf->SetFont('Arial','B',12);
-$pdf->SetTextColor(0,0,0);
+	$pdf->SetTextColor(0,0,0);
 
-$pdf->Cell(190,10,iconv("UTF-8", "ISO-8859-1",strtoupper("$nombempresa")),0,1,'C'); // Empresa centrada
+	$pdf->Cell(190,10,iconv("UTF-8", "ISO-8859-1",strtoupper("$nombempresa")),0,1,'C'); // Empresa centrada
 
-$pdf->SetFont('Arial','',8);
-$pdf->SetTextColor(39,39,51);
- // Desactivar salto de página automático
-$pdf->SetMargins(5, 0, 0); // Establecer los márgenes globales de la página a 0
+	$pdf->SetFont('Arial','',8);
+	$pdf->SetTextColor(39,39,51);
+	// Desactivar salto de página automático
+	$pdf->SetMargins(5, 0, 0); // Establecer los márgenes globales de la página a 0
 
-$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","$dire"),0,1,'C'); // Datos centrados
+	$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","$dire"),0,1,'C'); // Datos centrados
 
-$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","Arequipa - Arequipa - Arequipa"),0,1,'C'); // Datos centrados
+	$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","Arequipa - Arequipa - Arequipa"),0,1,'C'); // Datos centrados
 
-$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","TACNA: Calle Mollendo N° 59 - Tacna - Tacna - Tacna"),0,1,'C'); // Datos centrados
+	$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","TACNA: Calle Mollendo N° 59 - Tacna - Tacna - Tacna"),0,1,'C'); // Datos centrados
 
-$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","ILO: Calle Callao N° 642 - Ilo - Ilo - Ilo"),0,1,'C'); // Datos centrados
+	$pdf->Cell(190,3,iconv("UTF-8", "ISO-8859-1","ILO: Calle Callao N° 642 - Ilo - Ilo - Ilo"),0,1,'C'); // Datos centrados
 
-// Obtener la altura de la imagen
-$alturaImagen = 25; // ajusta según sea necesario
+	// Obtener la altura de la imagen
+	$alturaImagen = 25; // ajusta según sea necesario
 
-// Calcular posición Y del cuadro dinámico
-$posY = 12; // ajusta según sea necesario
+	// Calcular posición Y del cuadro dinámico
+	$posY = 12; // ajusta según sea necesario
 
-// Calcular posición X de los Cell alineados a la derecha
-$posX = 142; // ajusta según sea necesario
+	// Calcular posición X de los Cell alineados a la derecha
+	$posX = 142; // ajusta según sea necesario
 
-// Cuadro dinámico
-// Cuadro dinámico
-$pdf->Rect($posX, $posY, 65, 22); // Dibuja un rectángulo en la posición y tamaño especificados
-$pdf->SetFont('Arial','B',14);
-// Ajustar posición de los Cell alineados a la derecha
-$posY = 14;
-$pdf->SetXY(152, $posY);
-$pdf->Cell(50,6,iconv("UTF-8", "ISO-8859-1","R U C  :  $ruc"),0,1,'R'); 
+	// Cuadro dinámico
+	// Cuadro dinámico
+	$pdf->Rect($posX, $posY, 65, 22); // Dibuja un rectángulo en la posición y tamaño especificados
+	$pdf->SetFont('Arial','B',14);
+	// Ajustar posición de los Cell alineados a la derecha
+	$posY = 14;
+	$pdf->SetXY(152, $posY);
+	$pdf->Cell(50,6,iconv("UTF-8", "ISO-8859-1","R U C  :  $ruc"),0,1,'R'); 
 
-// Ajustar posición de los demás Cell para que estén dentro del cuadro
-$pdf->SetXY(125, $posY + 7);
-$pdf->Cell(100,6,iconv("UTF-8", "ISO-8859-1","FACTURA ELECTRONICA"),0,1,'C'); 
+	// Ajustar posición de los demás Cell para que estén dentro del cuadro
+	$pdf->SetXY(125, $posY + 7);
+	$pdf->Cell(100,6,iconv("UTF-8", "ISO-8859-1","FACTURA ELECTRONICA"),0,1,'C'); 
 
-$pdf->SetXY(125, $posY + 14); // Ajustar posición vertical para el siguiente Cell
-$pdf->Cell(100,6,iconv("UTF-8", "ISO-8859-1","F" .$serie. " N°" .str_pad($numfac, 6, '0', STR_PAD_LEFT).""),0,1,'C'); 
+	$pdf->SetXY(125, $posY + 14); // Ajustar posición vertical para el siguiente Cell
+	$pdf->Cell(100,6,iconv("UTF-8", "ISO-8859-1","F" .$serie. " N°" .str_pad($numfac, 6, '0', STR_PAD_LEFT).""),0,1,'C'); 
 
-$pdf->SetMargins(7,5,5);	
-$pdf->Ln(7);
-$pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño especificados
+	$pdf->SetMargins(7,5,5);	
+	$pdf->Ln(7);
+	$pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño especificados
 	$pdf->SetFont('Arial','',10);
 	$pdf->Cell(14,7,iconv("UTF-8", "ISO-8859-1","Señor   : "),0,0);
     $pdf->SetTextColor(97,97,97);
@@ -224,14 +224,14 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
     $pdf->Cell(121,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
     $pdf->Cell(15,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,4,iconv("UTF-8", "ISO-8859-1","Total gravado :"),'T',0,'C');
-	$pdf->Cell(34,4,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($totalg, 2)),'T',0,'C');
+	$pdf->Cell(0,4,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($totalg, 2)),'T',0,'R');
 
 	$pdf->Ln(4);
 
 	$pdf->Cell(121,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,4,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(38,4,iconv("UTF-8", "ISO-8859-1","Total No Gravado :"),'',0,'C');
-	$pdf->Cell(21,4,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
+	$pdf->Cell(0,4,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'R');
 
 	$pdf->Ln(4);
 
@@ -240,34 +240,34 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
 
 
 	$pdf->Cell(36,7,iconv("UTF-8", "ISO-8859-1","Total Exonerado :"),'T',0,'C');
-	$pdf->Cell(25,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'T',0,'C');
+	$pdf->Cell(0,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'T',0,'R');
 
 	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(33,7,iconv("UTF-8", "ISO-8859-1","Total IGV 18% :"),'',0,'C');
-	$pdf->Cell(31,7,iconv("UTF-8", "ISO-8859-1","S/. $montoigv"),'',0,'C');
+	$pdf->Cell(0,7,iconv("UTF-8", "ISO-8859-1","S/. $montoigv"),'',0,'R');
 
 	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Importe total :"),'',0,'C');
-	$pdf->Cell(34.5,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
+	$pdf->Cell(0,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'R');
 
 	$pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(29,7,iconv("UTF-8", "ISO-8859-1","Redondeo : "),'',0,'C');
-	$pdf->Cell(39,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'C');
+	$pdf->Cell(0,7,iconv("UTF-8", "ISO-8859-1","S/. 00.00"),'',0,'R');
     $pdf->Ln(4);
 
 	$pdf->Cell(121,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(15,7,iconv("UTF-8", "ISO-8859-1",''),'',0,'C');
 	$pdf->Cell(32,7,iconv("UTF-8", "ISO-8859-1","Importe total :"),'',0,'C');
-	$pdf->Cell(35,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'C');
+	$pdf->Cell(0,7,iconv("UTF-8", "ISO-8859-1","S/. " . number_format($precioV, 2)),'',0,'R');
 	$pdf->Ln(12);
 
 	$pdf->SetFont('Arial','',9);
@@ -282,12 +282,12 @@ $pdf->Rect(5, 41, 202, 30); // Dibuja un rectángulo en la posición y tamaño e
 	# Codigo de barras #
 	$pdf->SetFillColor(39,39,51);
 	$pdf->SetDrawColor(23,83,201);
-	$pdf->Code128(72,$pdf->GetY(),"COD000001V0001",70,20);
+	$pdf->Code128(72,$pdf->GetY(),"COD".str_pad($numfac, 6, '0', STR_PAD_LEFT)."V".$serie."",70,20);
 	$pdf->SetXY(12,$pdf->GetY()+21);
 	$pdf->SetFont('Arial','',12);
-	$pdf->MultiCell(0,5,iconv("UTF-8", "ISO-8859-1","COD000001V0001"),0,'C',false);
+	$pdf->MultiCell(0,5,iconv("UTF-8", "ISO-8859-1","COD".str_pad($numfac, 6, '0', STR_PAD_LEFT)."V".$serie.""),0,'C',false);
 
 	# Nombre del archivo PDF #
-	$pdf->Output("I","Factura_F".$serie."N°".$numfac.".pdf",true);
+	$pdf->Output("I","Factura_F".$serie."N°".str_pad($numfac, 6, '0', STR_PAD_LEFT).".pdf",true);
 	mysqli_close($conexion);
 	?>
