@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensaje = "existe";
         $response = array("nr" => $NR, "mensaje" => $mensaje);
         echo json_encode($response);
+
     } else {
         $NR = "";
         $mensaje = "";

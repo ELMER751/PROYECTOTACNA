@@ -5,6 +5,9 @@
 <?php
 include_once('header.php');
 include_once('includes/acceso.php');
+$conexion = connect_db();
+$datos_doc = mysqli_query($conexion, "SELECT * from  FDOCELIMINADOS ORDER BY FECHA");
+
 
 ?>
 <!DOCTYPE html>
@@ -24,15 +27,17 @@ include_once('includes/acceso.php');
 <div class="container p-12">
         <div class="row">
         <div class="container p-4">
-        <h4>DOCUMENTOS ELIMINADOS</h4>
+        
     </div>
 
     <div class="card card-body">
+    <h4>DOCUMENTOS ELIMINADOS</h4>
+    <br>
 <table class="table table-bordered">
 <thead>
                 <tr>
-                    <th>ITEMS</th>
                     <th>NDOC</th>
+                    <th>IDEM</th>
                     <th>USUARIO</th>
                     <th>FECHA</th>
                     <th>HORA</th>
@@ -41,21 +46,18 @@ include_once('includes/acceso.php');
             <tbody>
                 <?php
                     while ($row=mysqli_fetch_array($datos_doc)){
-                        $nom=$row['vendedor'];
-                        $und=$row['documento'];
-                        $can=$row['nro_venta'];
-                        $pre=$row['cliente'];
-                        $cos=$row['tipo_venta'];
-                        $sas=$row['fecha'];
+                        $ndoc=$row['NDOC'];
+                        $idem=$row['IDEM'];
+                        $usr=$row['USUARIO'];
+                        $fecha=$row['FECHA'];
+                        $hora=$row['HORA'];
                         ?>
                         <tr>
-                            <td><?php echo $nom; ?></td>
-                            <td><?php echo $und; ?></td>
-                            <td><?php echo $can; ?></td>
-                            <td><?php echo $pre; ?></td>
-                            <td><?php echo $cos; ?></td>
-                            <td><?php echo $sas; ?></td>
-                            <td><a href="elimina_doc.php?codigo=<?php echo $id; ?>" class="btn btn-info">Eliminar</a></td>
+                            <td><?php echo $ndoc; ?></td>
+                            <td><?php echo $idem; ?></td>
+                            <td><?php echo $usr; ?></td>
+                            <td><?php echo $fecha; ?></td>
+                            <td><?php echo $hora; ?></td>
                         </tr>
                 <?php
                     }

@@ -72,17 +72,19 @@ function obtener_registros($dato, $tabla) {
                     $nomb = $jaladato[1];
                     $dire = $jaladato[6];
                     $rucdni = $jaladato[5];
-                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
+                    $ruc = $jaladato[4];
+                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\',\'' . $ruc . '\');">SELECCIONAR</a></td>';
                     ?>
                     <script>
-                        function seleccionarDocumento(nomb1, dire1, rucdni1) {
+                        function seleccionarDocumento(nomb1, dire1, rucdni1, ruc1) {
                             var currentPage = document.location.pathname;
                             var buscaUrl = currentPage.substring(currentPage.lastIndexOf('/') + 1, currentPage.length);
                             var url = buscaUrl + '?codigo=' + rucdni1;
                             window.parent.postMessage({
                                 nomb1: nomb1,
                                 dire1: dire1,
-                                rucdni1: rucdni1
+                                rucdni1: rucdni1,
+                                ruc1: ruc1
                             }, window.location.origin); // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
                             window.parent.cerrarInterfaz(); // Cierra la interfaz de búsqueda en la página principal
                         }
@@ -93,17 +95,19 @@ function obtener_registros($dato, $tabla) {
                     $nomb = $jaladato[1];
                     $dire = $jaladato[6];
                     $rucdni = $jaladato[5];
-                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
+                    $ruc = $jaladato[4];
+                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\', \'' . $ruc . '\');">SELECCIONAR</a></td>';
                     ?>
                     <script>
-                        function seleccionarDocumento(nomb2, dire2, rucdni2) {
+                        function seleccionarDocumento(nomb2, dire2, rucdni2, ruc2) {
                             var currentPage = document.location.pathname;
                             var buscaUrl = currentPage.substring(currentPage.lastIndexOf('/') + 1, currentPage.length);
                             var url = buscaUrl + '?codigo=' + rucdni2;
                             window.parent.postMessage({
                                 nomb2: nomb2,
                                 dire2: dire2,
-                                rucdni2: rucdni2
+                                rucdni2: rucdni2,
+                                ruc2: ruc2
                             }, window.location.origin); // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
                             window.parent.cerrarInterfaz(); // Cierra la interfaz de búsqueda en la página principal
                         }
@@ -114,17 +118,19 @@ function obtener_registros($dato, $tabla) {
                     $nomb = $jaladato[1];
                     $dire = $jaladato[6];
                     $rucdni = $jaladato[5];
-                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\');">SELECCIONAR</a></td>';
+                    $ruc = $jaladato[4];
+                    $tabla_html .= '<td><a style="border: 0px solid white;font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\'' . $nomb . '\', \'' . $dire . '\', \'' . $rucdni . '\', \'' . $ruc . '\');">SELECCIONAR</a></td>';
                     ?>
                     <script>
-                        function seleccionarDocumento(nomb3, dire3, rucdni3) {
+                        function seleccionarDocumento(nomb3, dire3, rucdni3, ruc3) {
                             var currentPage = document.location.pathname;
                             var buscaUrl = currentPage.substring(currentPage.lastIndexOf('/') + 1, currentPage.length);
                             var url = buscaUrl + '?codigo=' + rucdni3;
                             window.parent.postMessage({
                                 nomb3: nomb3,
                                 dire3: dire3,
-                                rucdni3: rucdni3
+                                rucdni3: rucdni3,
+                                ruc3: ruc3
                             }, window.location.origin); // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
                             window.parent.cerrarInterfaz(); // Cierra la interfaz de búsqueda en la página principal
                         }

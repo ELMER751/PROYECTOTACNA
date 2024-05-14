@@ -76,7 +76,7 @@ if(!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit(
             <a class="nav-link" href="logout.php">Salir</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="https://sosnetperu.com/index.html">Acerca</a>
+            <a class="nav-link" href="https://sosnetperu.com/index.html" target="_blank">Acerca</a>
         </li>
     </div>
   </div>

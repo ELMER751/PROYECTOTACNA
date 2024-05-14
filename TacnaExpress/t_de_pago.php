@@ -40,7 +40,7 @@ if (!isset($_SESSION["username"])) {header("Location: ingresar_sesion.php");exit
                     </div>
                     <div style="display: flex;">
                         <p>Tipo de Condición :</p>
-                        <select name="TC"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                        <select name="TC"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                             <option value="1" style="background-color: black; color: white;">Venta</option>
                             <option value="2" style="background-color: black; color: white;">Compra</option>
                         </select>

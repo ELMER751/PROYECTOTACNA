@@ -147,7 +147,7 @@ date_default_timezone_set('America/Lima');
                             <input id="IGV" type="number" name="IGV"  value ="<?php echo $igv ?? '18';?>" oninput="validarIGV(this)" required style="width: 7.5ch; text-align: right;" max="100" onkeypress="return handleEnter(event, 'rucDni1')">
                           </div>
                           <div>
-                            <label>RUC/DNI :</label>
+                            <label id="label1">RUC/DNI :</label>
                             <input id="rucDni1" type="text" oninput="validarCodigo(this)" onkeypress="return dniruc(1)" name="rucDni1" required >
                             <button type="submit" class="btn" onclick="mostrarInterfaz(2)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
                               <div id="interfazBusqueda2" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
@@ -163,7 +163,7 @@ date_default_timezone_set('America/Lima');
                           <div class="contenido" style="display: inline-block">
                             <b><a>Remitente</a></b>
                             <br>
-                              <label>RUC/DNI :</label>
+                              <label id="label2">RUC/DNI :</label>
                               <input id="rucDni2" type="text" oninput="validarCodigo(this)" name="rucDni2" onkeypress="return dniruc(2)" required style="width: 30ch;" >
                               <button type="submit" class="btn" onclick="mostrarInterfaz(3)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
                               <div id="interfazBusqueda3" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
@@ -179,7 +179,7 @@ date_default_timezone_set('America/Lima');
                           <div class="contenido" style="display: inline-block">
                             <b><a>Cosignatario</a></b>
                             <br>
-                              <label>RUC/DNI :</label>
+                              <label id="label3">RUC/DNI :</label>
                               <input id="rucDni3" type="text" oninput="validarCodigo(this)" name="rucDni3" onkeypress="return dniruc(3)" required style="width: 30ch;">
                               <button type="submit" class="btn" onclick="mostrarInterfaz(4)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
                               <div id="interfazBusqueda4" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100; ">
@@ -357,11 +357,32 @@ date_default_timezone_set('America/Lima');
                   </div>
                 </div>                                    
               <script>
+  
                 function hola(){
                   var ndoc = document.getElementById('NDOC').value;
                   return ndoc;
                 }
                 function change_trans(){
+                  var seleccion = document.getElementById("trans").value;
+                  
+                  if(seleccion == 40 || seleccion == 101 || seleccion == 43){
+                    console.log(seleccion);
+                    document.getElementById("rucDni1").maxLength = 20;
+                    document.getElementById("rucDni2").maxLength = 20;
+                    document.getElementById("rucDni3").maxLength = 20;
+                    document.getElementById("label1").textContent = "RUC :";
+                    document.getElementById("label2").textContent = "RUC :";
+                    document.getElementById("label3").textContent = "RUC :";
+                  }
+                  else{
+                    document.getElementById("rucDni1").maxLength = 8;
+                    document.getElementById("rucDni2").maxLength = 8;
+                    document.getElementById("rucDni3").maxLength = 8;
+                    document.getElementById("label1").textContent = "DNI :";
+                    document.getElementById("label2").textContent = "DNI :";
+                    document.getElementById("label3").textContent = "DNI :";
+                  }
+                  /*Para consultar numero de documento 
                   var seleccion = document.getElementById("trans").value;
                         // Hacer algo con la selección, por ejemplo, mostrarla en la consola
                         console.log("Seleccionaste: " + seleccion);
@@ -381,7 +402,7 @@ date_default_timezone_set('America/Lima');
                             }
                         };
                         xhr.send("miSelector=" + seleccion);
-                        return false;
+                        return false;*/
                 }
                 function tabla(){  
                   document.getElementById("miFormulario").addEventListener("submit", function(event) {
@@ -599,6 +620,7 @@ date_default_timezone_set('America/Lima');
                         document.getElementById("interfazBusqueda4").style.display = "none";     
                     }
                     window.addEventListener('message', function(event) {
+                        var docu = document.getElementById('trans').value;
                         if (event.data.id !== undefined) {
                             var seleccion = (event.data.id || "").toString();
                             seleccion = seleccion.padStart(6, '0');
@@ -688,15 +710,27 @@ date_default_timezone_set('America/Lima');
                                   xh.send("docu=" + seleccion);
                                   return false;
                         } else if (event.data.rucdni1 !== undefined && event.data.rucdni1 !== "") {
-                            document.getElementById('rucDni1').value = event.data.rucdni1 || "";
+                            if(docu == 40 || docu == 101 || docu == 43){
+                              document.getElementById('rucDni1').value = event.data.ruc1 || "";}
+                            else{
+                              document.getElementById('rucDni1').value = event.data.rucdni1 || "";
+                            }
                             document.getElementById('nomb1').value = event.data.nomb1 || "";
                             document.getElementById('dire1').value = event.data.dire1 || "";
                         } else if (event.data.rucdni2 !== undefined && event.data.rucdni2 !== "") {
-                            document.getElementById('rucDni2').value = event.data.rucdni2 || "";
+                            if(docu == 40 || docu == 101 || docu == 43){
+                                document.getElementById('rucDni2').value = event.data.ruc2 || "";}
+                              else{
+                                document.getElementById('rucDni2').value = event.data.rucdni2 || "";
+                              }
                             document.getElementById('nomb2').value = event.data.nomb2 || "";
                             document.getElementById('dire2').value = event.data.dire2 || "";
                         } else if (event.data.rucdni3 !== undefined && event.data.rucdni3 !== "") {
-                            document.getElementById('rucDni3').value = event.data.rucdni3 || "";
+                            if(docu == 40 || docu == 101 || docu == 43){
+                                document.getElementById('rucDni3').value = event.data.ruc3 || "";}
+                            else{
+                                document.getElementById('rucDni3').value = event.data.rucdni3 || "";
+                              }
                             document.getElementById('nomb3').value = event.data.nomb3 || "";
                             document.getElementById('dire3').value = event.data.dire3 || "";
                             document.getElementById('punto_llegada').value = event.data.dire3 || "";

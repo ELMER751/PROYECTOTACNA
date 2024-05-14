@@ -808,15 +808,6 @@ session_start();
                                     } else {
                                     window.location.href = 'espresstacna.php';
                                     }</script>";}
-                        else if($idemXY ==="50" || $idemXY ==="102"){
-                            echo "<script>
-                            var confirmacion = confirm('Documento Correctamente Modificado ¿Desea Imprimir?');
-                                    if (confirmacion) {
-                                    window.open('Reportes/invoice.php?cod=$IDBF', '_blank');
-                                    window.location.href = 'espresstacna.php';
-                                    } else {
-                                        window.location.href = 'espresstacna.php';
-                                    }</script>";}
                         else if($idemXY ==="103" || $idemXY ==="44" || $idemXY ==="45"){
                             echo "<script>
                             var confirmacion = confirm('Documento Correctamente Modificado ¿Desea Imprimir?');
