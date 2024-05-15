@@ -64,6 +64,7 @@ date_default_timezone_set('America/Lima');
                 <title>Note de Credito</title>
             </head>
             <style>
+              
               table {
                   border-collapse: collapse;
                   width: 100%;
@@ -95,6 +96,12 @@ date_default_timezone_set('America/Lima');
               border: 1px solid black;
               
               }
+              .styled-div {
+                  background-color: white;
+                  border: 1px solid black;
+                  padding: 20px; /* Espacio interior */
+                  margin: 20px;  /* Espacio exterior */
+              }
               input[readonly] {
               background-color: lightgray; /* Cambia el fondo a gris claro */
             
@@ -108,15 +115,14 @@ date_default_timezone_set('America/Lima');
                       <div class="contenido">
                         <div class="contenido">
                           <div>    
-                            <label>N° Doc :</label>
-                            <input id="NDOC" type="text" name="NDOC" style="width: 12ch;" readonly>
+                            <label>N° Nota :</label>
+                            <input id="NDOCNOTA" type="text" name="NDOCNOTA" style="width: 12ch;" readonly>
                             <button type="submit" class="btn" onclick="mostrarInterfaz(1)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
                               <div id="interfazBusqueda1" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
-                                <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="1100" height="300" frameborder="0" style="border: 2px solid rgba(12, 12, 12, 0.2);border-radius: 40px;"></iframe>
+                                <iframe src="busca_prueba.php?tabla=VBUSCADOCNOT&response=A&codi=BUSCA5" width="1100" height="300" frameborder="0" style="border: 2px solid rgba(12, 12, 12, 0.2);border-radius: 40px;"></iframe>
                               </div>
                               <label>Transacc :</label>
                             <select style="width: 16ch;" id ="trans" name ="trans" onchange = "change_trans()">
-                                <option value="">SELECCIONE</option>
                                 <option value="">NOTA CRED - TAC</option>
                             
                             </select>
@@ -131,7 +137,7 @@ date_default_timezone_set('America/Lima');
                             <b><a>Datos del Documento</a></b>
                             <br>
                             <label>Transacc :</label>
-                            <select style="width: 16ch;" id ="trans" name ="trans" onchange = "change_trans()">
+                            <select style="width: 16ch;" id ="transs" name ="transs" onchange = "change_trans()">
                             <option value="">SELECCIONE</option>
                               <?php
                                 if ($tran) {
@@ -146,23 +152,17 @@ date_default_timezone_set('America/Lima');
                             </select>
                             <label>N° Doc :</label>
                             <input id="NDOC" type="text" name="NDOC" style="width: 12ch;" readonly>
-                            <button type="submit" class="btn" onclick="mostrarInterfaz(1)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
-                              <div id="interfazBusqueda1" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
+                            <button type="submit" class="btn" onclick="mostrarInterfaz(2)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
+                              <div id="interfazBusqueda2" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                                 <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="1100" height="300" frameborder="0" style="border: 2px solid rgba(12, 12, 12, 0.2);border-radius: 40px;"></iframe>
                               </div>
                               <label>fec.Emisión</label>
-                            <input id="FECHA" type="date" name="FECHA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" required style="width: 12ch;">                 
-                              <label id="label2">RUC/DNI :</label>
-                              <input id="rucDni2" type="text" oninput="validarCodigo(this)" name="rucDni2" onkeypress="return dniruc(2)" required style="width: 30ch;" >
-                              <button type="submit" class="btn" onclick="mostrarInterfaz(3)"><img id="image" src="img/buscar.png" alt="image" width="20px" height="20px"></button>
-                              <div id="interfazBusqueda3" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
-                                <iframe src="busca_prueba.php?tabla=fmclinic&response=A&codi=BUSCA3" width="1500" height="300" frameborder="0" style="border: 2px solid rgba(12, 12, 12, 0.2);border-radius: 40px;"></iframe>
-                              </div>
+                            <input id="FECHAA" type="date" name="FECHAA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" readonly style="width: 12ch;">                 
                             <br>
                                 <label>Señor :</label>
-                                <input id="nomb2" type="text" name="nomb2" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'dire2')">
+                                <input readonly id="nomb2" type="text" name="nomb2" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'dire2')">
                                 <label>Dirección :</label>
-                                <input id="dire2" type="text" name="dire2" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'rucDni3')">
+                                <input readonly id="dire2" type="text" name="dire2" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'rucDni3')">
                             <br>
                                 <label>Condición :</label>
                                 <select style="width: 16ch;" name="CONDI" id="CONDI">
@@ -179,7 +179,7 @@ date_default_timezone_set('America/Lima');
                                 ?>   
                                 </select>
                                 <label id="label1">RUC/DNI :</label>
-                                <input id="rucDni1" type="text" oninput="validarCodigo(this)" onkeypress="return dniruc(1)" name="rucDni1" required >
+                                <input readonly id="rucDni1" type="text" oninput="validarCodigo(this)" onkeypress="return dniruc(1)" name="rucDni1" required >
                                 <label>Transacc :</label>
                                 <select style="width: 45ch;" id ="motivodev" name ="motivodev">
                                     <option value=""> </option>
@@ -192,23 +192,24 @@ date_default_timezone_set('America/Lima');
                                     <option value="07">07 DEVOLUCION POR ITEM</option>
                                 </select>
                             </div>
-
-                          <div id="grillaContainer">
-                            <table id="grilla">
-                                <thead>
-                                    <tr>
-                                        <th>ITEM</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio.IGV</th>
-                                        <th>PrecioTotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="grillaBody" >
-                                
-                                </tbody>
-                                </table>
-                          </div>          
+                            <div class="styled-div">
+                              <div id="grillaContainer">
+                                <table id="grilla">
+                                    <thead>
+                                        <tr>
+                                            <th>ITEM</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio.IGV</th>
+                                            <th>PrecioTotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="grillaBody" >
+                                    
+                                    </tbody>
+                                    </table>
+                              </div>
+                            </div>          
                       <div class="contenido">
                         <b><a>Ingrese datos a registrar en el detalle</a></b>
                         <br>                
@@ -224,21 +225,23 @@ date_default_timezone_set('America/Lima');
                         <button type="button" id="btnAgregarItem" onkeypress=" btnAgregarItem.click()">Agregar </button>
                         <br>
                         </br>
-                        <div id="grillaContainer">
-                            <table id="grilla">
-                                <thead>
-                                    <tr>
-                                        <th>ITEM</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio.IGV</th>
-                                        <th>PrecioTotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="grillaBody" >
-                                
-                                </tbody>
-                                </table>
+                        <div class="styled-div">
+                          <div id="grillaContainer">
+                              <table id="grilla">
+                                  <thead>
+                                      <tr>
+                                          <th>ITEM</th>
+                                          <th>Descripción</th>
+                                          <th>Cantidad</th>
+                                          <th>Precio.IGV</th>
+                                          <th>PrecioTotal</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="grillaBody" >
+                                  
+                                  </tbody>
+                                  </table>
+                            </div>
                           </div>
                         </div>
                       </div>

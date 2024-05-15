@@ -3,7 +3,7 @@
 	include_once('../includes/acceso.php');
 	$conexion = connect_db();
 	$cod=$_GET['cod'];
-	$datos = mysqli_query($conexion,"SELECT * FROM fmovimpfd WHERE IDBF = '$cod'");
+	$datos = mysqli_query($conexion,"SELECT * FROM fmovimpfde WHERE IDBF = '$cod'");
 	$parametros = mysqli_query($conexion,"SELECT * FROM ftge2007 WHERE CODI = '14'");
 	$datos = mysqli_fetch_assoc($datos);
 	$parametros = mysqli_fetch_assoc($parametros);

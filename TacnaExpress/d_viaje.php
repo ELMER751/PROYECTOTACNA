@@ -66,7 +66,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Camión :</p>
-                            <select name="CAMION"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="CAMION"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                                 <option value="" <?php if($busca['CODIGO_CAMION'] == "") echo 'selected' ; ?>>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
@@ -85,7 +85,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Chofer :</p>
-                            <select name="CHOFER" id ="miSelector" onchange = "change_chofer()" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="CHOFER" id ="miSelector" onchange = "change_chofer()" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                             <option value="" <?php if($busca['CODIGO_CHOFER'] == "") echo 'selected' ; ?>>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
@@ -108,7 +108,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Copiloto :</p>
-                            <select name="COPI"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="COPI"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                             <option value="" <?php if($busca['CODIGO_COPILOTO'] == "") echo 'selected' ; ?>>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
@@ -127,7 +127,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Liquidador :</p>
-                            <select name="LIQUIDADOR" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="LIQUIDADOR" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                             <option value="" <?php if($busca['CODIGO_LIQUIDADOR'] == "") echo 'selected' ;?>>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
@@ -213,7 +213,7 @@ date_default_timezone_set('America/Lima');
         <!DOCTYPE html>
         <html>
             <head>
-            <title>Tipos de pago</title>
+            <title>IDENTIFICACIÓN UNIDAD</title>
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -235,7 +235,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Camión :</p>
-                            <select name="CAMION"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="CAMION"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                                 <option value="" selected>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
@@ -254,7 +254,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Chofer :</p>
-                            <select name="CHOFER" id ="miSelector" onchange = "change_chofer()" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="CHOFER" id ="miSelector" onchange = "change_chofer()" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                             <option value="" selected>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
@@ -277,7 +277,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Copiloto :</p>
-                            <select name="COPI"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="COPI"  style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                             <option value="" selected>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección
@@ -296,7 +296,7 @@ date_default_timezone_set('America/Lima');
                         </div>
                         <div class="input-box">
                             <p>Liquidador :</p>
-                            <select name="LIQUIDADOR" id ="miSelector" onchange = "change_chofer()" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(255,255,255, .2); border-radius: 40px; font-size: 16px; color: white; padding: 10px 45px 10px 10px;">
+                            <select name="LIQUIDADOR" id ="miSelector" onchange = "change_chofer()" style="flex: 1; margin-right: 10px; height: 100%; background: transparent; border: none; outline: none; border: 2px solid rgba(0,0,0, .2); border-radius: 40px; font-size: 16px; color: black; padding: 10px 45px 10px 10px;">
                             <option value="" selected>-- SELECCIONE --</option>
                                 <?php
                                     // Iterar sobre los resultados de la consulta y generar opciones para el elemento de selección

@@ -322,9 +322,9 @@ date_default_timezone_set('America/Lima');
                         <a id="total_ventaEnLetras" name='total_ventaEnLetras'></a>
                         </div>
                       <div style="display: inline-block">
-                        <div class = "contenido" style="display: inline-block">
+                        <div id= "botonera" class = "contenido" style="display: inline-block">
                           <button type="submit" name="guarda_documento" onclick="tabla()" onkeypress="image1.click()" class="btn" id="image1" ><img src="img/guardar.png" alt="image 1" width="30px" height="30px"></button>
-                          <button type="submit" name="refrescar" class="btn" onclick="submitFormWithoutRequired()"><img id="image2" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
+                          <button type="submit" name="iniciar" class="btn" onclick="submitFormWithoutRequired()"><img id="image2" src="img/eliminar.png" alt="image 2" width="30px" height="30px"></button>
                           <button type="submit" name="volver" class="btn" onclick="submitFormWithoutRequired()"><img id="image3" src="img/salir.png" alt="Image 4" width="30px" height="30px"></button>
                         </div>
                       &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -623,9 +623,10 @@ date_default_timezone_set('America/Lima');
                         var docu = document.getElementById('trans').value;
                         if (event.data.id !== undefined) {
                             var seleccion = (event.data.id || "").toString();
+                            var idem = (event.data.idem || "").toString();
                             seleccion = seleccion.padStart(6, '0');
-                            
-                            console.log("Seleccionaste: " + seleccion);
+                            var idemp = seleccion + " " + idem;
+                            console.log("Seleccionaste: " + idemp);
                               // Realizar la solicitud AJAX
                                   var xh = new XMLHttpRequest();
                                   xh.open("POST", "consultas/docu.php", true);
@@ -670,6 +671,87 @@ date_default_timezone_set('America/Lima');
                                               document.getElementById('certificado').value = response.certifi; 
                                               document.getElementById('conf').value = response.confivehi; 
                                               document.getElementById('peso').value = response.peso;
+                                              const input = document.getElementById('pass');
+                                              input.removeAttribute('required');
+                                              const contenedor = document.getElementById('botonera');
+                                              contenedor.innerHTML = ''; // Elimina todos los elementos dentro del contenedor
+                                              // Crear el primer botón
+                                              const boton1 = document.createElement('button');
+                                              boton1.type = 'submit';
+                                              boton1.name = 'guarda_documento';
+                                              boton1.className = 'btn';
+                                              boton1.id = 'image1';
+                                              boton1.onclick = function() { tabla(); };
+                                              boton1.onkeypress = function() { document.getElementById('image1').click(); };
+                                              const img1 = document.createElement('img');
+                                              img1.src = 'img/imprime.png';
+                                              img1.alt = 'image 1';
+                                              img1.width = 30;
+                                              img1.height = 30;
+                                              boton1.appendChild(img1);
+                                              contenedor.appendChild(boton1);
+
+                                              const boton4 = document.createElement('button');
+                                              boton4.type = 'submit';
+                                              boton4.name = 'gene_documento';
+                                              boton4.className = 'btn';
+                                              boton4.id = 'image4';
+                                              boton4.onclick = function() { tabla(); };
+                                              boton4.onkeypress = function() { document.getElementById('image1').click(); };
+                                              const img4 = document.createElement('img');
+                                              img4.src = 'img/genepdf.png';
+                                              img4.alt = 'image 4';
+                                              img4.width = 30;
+                                              img4.height = 30;
+                                              boton4.appendChild(img4);
+                                              contenedor.appendChild(boton4);
+
+                                              const boton5 = document.createElement('button');
+                                              boton5.type = 'submit';
+                                              boton5.name = 'anula_documento';
+                                              boton5.className = 'btn';
+                                              boton5.id = 'image5';
+                                              boton5.onclick = function() { tabla(); };
+                                              boton5.onkeypress = function() { document.getElementById('image1').click(); };
+                                              const img5 = document.createElement('img');
+                                              img5.src = 'img/anular.png';
+                                              img5.alt = 'image 1';
+                                              img5.width = 30;
+                                              img5.height = 30;
+                                              boton5.appendChild(img5);
+                                              contenedor.appendChild(boton5);
+
+                                              const boton2 = document.createElement('button');
+                                              boton2.type = 'submit';
+                                              boton2.name = 'iniciar';
+                                              boton2.className = 'btn';
+                                              boton2.onclick = function() { submitFormWithoutRequired(); };
+
+                                              const img2 = document.createElement('img');
+                                              img2.id = 'image2';
+                                              img2.src = 'img/eliminar.png';
+                                              img2.alt = 'image 2';
+                                              img2.width = 30;
+                                              img2.height = 30;
+                                              boton2.appendChild(img2);
+                                              contenedor.appendChild(boton2);
+
+                                              // Crear el tercer botón
+                                              const boton3 = document.createElement('button');
+                                              boton3.type = 'submit';
+                                              boton3.name = 'volver';
+                                              boton3.className = 'btn';
+                                              boton3.onclick = function() { submitFormWithoutRequired(); };
+
+                                              const img3 = document.createElement('img');
+                                              img3.id = 'image3';
+                                              img3.src = 'img/salir.png';
+                                              img3.alt = 'image 4';
+                                              img3.width = 30;
+                                              img3.height = 30;
+                                              boton3.appendChild(img3);
+                                              contenedor.appendChild(boton3);
+
                                               //var divEliminar = document.getElementById("grillaContainer");
                                               //divEliminar.parentNode.removeChild(divEliminar); 
                                               const tabla = document.getElementById("grillaBody");
@@ -707,7 +789,7 @@ date_default_timezone_set('America/Lima');
                                           }
                                       }
                                   };
-                                  xh.send("docu=" + seleccion);
+                                  xh.send("docu=" + idemp);
                                   return false;
                         } else if (event.data.rucdni1 !== undefined && event.data.rucdni1 !== "") {
                             if(docu == 40 || docu == 101 || docu == 43){

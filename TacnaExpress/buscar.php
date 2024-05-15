@@ -54,14 +54,15 @@ function obtener_registros($dato, $tabla) {
             
             if ($titulo === "") {
                 if($codi === "BUSCA1") {
-                $tabla_html .= '<td><a style="border: 0px solid white; font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(' . $id . ');">SELECCIONAR</a></td>';
+                    $idem = $jaladato[4];
+                    $tabla_html .= '<td><a style="border: 0px solid white; font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\''. $id . '\',\'' . $idem . '\');">SELECCIONAR</a></td>';
                 ?>
                     <script>
-                    function seleccionarDocumento(id) {
+                    function seleccionarDocumento(id, idem) {
                         var currentPage = document.location.pathname;
                         var buscaUrl = currentPage.substring(currentPage.lastIndexOf('/') + 1, currentPage.length);
                         var url = buscaUrl + '?codigo=' + id;
-                        window.parent.postMessage({ id: id }, window.location.origin); // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
+                        window.parent.postMessage({ id: id, idem: idem }, window.location.origin); // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
                         window.parent.cerrarInterfaz(); // Cierra la interfaz de búsqueda en la página principal
                         
                     }
@@ -136,6 +137,22 @@ function obtener_registros($dato, $tabla) {
                         }
                     </script>
                 <?php
+                }
+                else if($codi === "BUSCA5"){
+                    $idem = $jaladato[4];
+                    $tabla_html .= '<td><a style="border: 0px solid white; font-size: 8px;" class="btn btn-info add-new" href="javascript:void(0);" onclick="seleccionarDocumento(\''. $id . '\',\'' . $idem . '\');">SELECCIONAR</a></td>';
+                    ?>
+                        <script>
+                        function seleccionarDocumento(id, idem) {
+                            var currentPage = document.location.pathname;
+                            var buscaUrl = currentPage.substring(currentPage.lastIndexOf('/') + 1, currentPage.length);
+                            var url = buscaUrl + '?codigo=' + id;
+                            window.parent.postMessage({ id: id, idem: idem }, window.location.origin); // Reemplaza 'http://tu-sitio.com' con el dominio de tu sitio
+                            window.parent.cerrarInterfaz(); // Cierra la interfaz de búsqueda en la página principal
+                            
+                        }
+                        </script>
+                    <?php
                 }
                 else if ($codi === "EMPLE") {
                     $docu = $jaladato[0];

@@ -4,9 +4,11 @@ $conexion = connect_db();
 // Realizar una consulta
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener el nombre de usuario enviado por AJAX
-    $ndoc = $_POST["docu"];
+    
+    $nd = $_POST["docu"];
+    list($ndoc, $idem) = explode(' ', $nd);
     // Consultar si el nombre de usuario ya existe en la tabla fuser
-    $sql = "SELECT * FROM fcabecer WHERE DOC1 = '$ndoc'";
+    $sql = "SELECT * FROM fcabecer WHERE DOC1 = '$ndoc'  and IDEM = '$idem'";
     $result = $conexion->query($sql);
     $result = mysqli_fetch_assoc($result);
 
