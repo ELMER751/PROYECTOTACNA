@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Lima');
     if (!isset($_SESSION["username"])) {
         header("Location: ingresar_sesion.php");
         exit();
@@ -695,8 +696,30 @@ session_start();
         $opcionesSeleccionadas = $_POST["opciones"];
         
     } 
+    else if (isset($_POST["datos_tabla_nota"])){
+        include_once('includes/acceso.php');
+        include_once('Clases/documentos.php');
+        $conexion = connect_db();
+        $newdocu = new Documentos;
+        $newdocu->conectar_db($conexion);
+        $idemXY="103";
+        $serieXY = mysqli_query($conexion,"SELECT * FROM ftge2007 WHERE CODI = '$idemXY'");
+        $serieXY = mysqli_fetch_assoc($serieXY);
+        $NumdocGenerado = $serieXY['COMC'];
+        $doc=$_POST['NDOC'] ?? '';
+        $doc=str_pad($doc, 6, '0', STR_PAD_LEFT);
+        $xd = $newdocu->buscar_docu($doc,$idemXY);
+        $serieXY = $serieXY['SERIE'] ?? '';
+        $txtruc = $_POST['rucDni1'] ?? ''; 
+        $totbruto = $_POST['subtotal'] ?? '';
+        $Dscto = "0";
+        $vvtatot = $_POST['subtotal'] ?? '';
+        $MonIGV = $_POST['igv_venta'] ?? '';
+        $totPrecVenta = $_POST['total_venta'] ?? '';
+        $Date = $_POST['FECHA'] ?? date('Y-m-d');
+    }
     else if (isset($_POST["datos_tabla"])) {
-        date_default_timezone_set('America/Lima');
+        
         include_once('includes/acceso.php');
         include_once('Clases/documentos.php');
         $conexion = connect_db();
