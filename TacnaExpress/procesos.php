@@ -703,10 +703,12 @@ date_default_timezone_set('America/Lima');
         $newdocu = new Documentos;
         $newdocu->conectar_db($conexion);
         $idemXY="103";
+        $idem = $_POST['transs'];
         $serieXY = mysqli_query($conexion,"SELECT * FROM ftge2007 WHERE CODI = '$idemXY'");
         $serieXY = mysqli_fetch_assoc($serieXY);
         $NumdocGenerado = $serieXY['COMC'];
-        $doc=$_POST['NDOC'] ?? '';
+        $docn = $_POST['NDOC'];
+        $doc=$_POST['NDOCNOTA'] ?? '';
         $doc=str_pad($doc, 6, '0', STR_PAD_LEFT);
         $xd = $newdocu->buscar_docu($doc,$idemXY);
         $serieXY = $serieXY['SERIE'] ?? '';
@@ -717,6 +719,112 @@ date_default_timezone_set('America/Lima');
         $MonIGV = $_POST['igv_venta'] ?? '';
         $totPrecVenta = $_POST['total_venta'] ?? '';
         $Date = $_POST['FECHA'] ?? date('Y-m-d');
+        $fecaten = $_POST['fechaP'] ?? '';
+        $ruc = $txtruc;
+        $cliente = $_POST['nomb1'] ?? '';
+        $dir = $_POST['dire1'] ?? '';
+        $condi = $_POST['CONDI'] ?? '';
+        $igv = $_POST['IGV'] ?? '';
+        $USR = $_POST['user'] ?? '';
+        $time = $_POST['hor'] ?? date('H:i:s');
+        $fec = $_POST['fech'] ?? date('Y-m-d');
+        $dscto = "0";
+        $incremento = mysqli_query($conexion,"SELECT * FROM condiciones WHERE CODI = '$condi'");
+        $incremento = mysqli_fetch_assoc($incremento);
+        $incremento = $incremento['NDIAS'] ?? '';
+        $tipc = "S/.";
+        $montoTipc = 1;
+        $guia = NULL;
+        $numfacbol = NULL;
+        $rucdniR = $_POST['rucDni2'] ?? '';
+        $nombR = $_POST['nomb2'] ?? '';
+        $dirR = $_POST['dire2'] ?? '';
+        $rucdniC = $_POST['rucDni3'] ?? '';
+        $nombC = $_POST['nomb3'] ?? '';
+        $dirC = $_POST['dire3'] ?? '';
+        $destino = $_POST['datosDestino'] ?? '';
+        $ODESORI = $_POST['Dale'] ?? '';
+        $placa = $_POST['placa'] ?? '';
+        $lice = $_POST['lic'] ?? '';
+        $conductor = $_POST['CHOFER'] ?? '';
+        $masigv = 0;
+        $CtaCorriente = 0;
+        $Observa = $_POST['observacion'] ?? '';
+        $user = $_SESSION['username'];
+        $sede = mysqli_query($conexion, "SELECT * FROM fuser WHERE USUARIO = '$user'");
+        $sede = mysqli_fetch_assoc($sede);
+        $usuario = $sede['NOMBRES'] ?? ''; 
+        $sede = $sede['CEDE'] ?? '';
+        $marca = $_POST['marca'] ?? '';
+        $orden = 0;
+        $codt = "000000";
+        $boni ="0";
+        $letras = $_POST['letras'] ?? '';
+        $dirpartida = $_POST['punto_partida'] ?? '';
+        $dirllegada = $_POST['punto_llegada'] ?? '';
+        $certifi = $_POST['certificado'] ?? '';         
+        $confivehi = $_POST['conf'] ?? '';         
+        $peso = $_POST['peso'] ?? '';
+        $IDBF = mysqli_query($conexion,"SELECT MAX(IDBF) AS ultimo_code FROM fmovimpfd ");
+        $IDBF = mysqli_fetch_assoc($IDBF);
+        $IDBF = $IDBF['ultimo_code'] ?? '';
+        $IDBF = $IDBF + 1;
+        $MESP = date('d').date('m');
+        $motivo = $_POST['motivodev'];
+        $horaprint = date('H:i:s');
+        $fechaprint = $_POST['FECHA'];
+        $fec2 = $_POST['FECHAA'];
+        if($xd){
+
+        }
+        else{
+            $NumdocGene = intval($NumdocGenerado) + 1;   
+            $NumdocGenerado = str_pad($NumdocGene, 6, '0', STR_PAD_LEFT);
+            $nuevo = $newdocu->fcabecernota($NumdocGenerado,$MESP, $idemXY, $serieXY, $txtruc, 
+            $totbruto, $Dscto, $vvtatot, $MonIGV, 
+            $totPrecVenta, $Date, $fecaten, $cliente, $ruc, $dir, $condi, 
+            $igv, $USR, $time, $fec, $dscto, $incremento, $tipc, $montoTipc, 
+            $guia, $numfacbol, $rucdniR, $nombR, $dirR, $rucdniC, $nombC, $dirC, 
+            $destino, $ODESORI, $placa, $lice, $conductor, $masigv, $CtaCorriente, 
+            $motivo, $sede, $docn, $idem, $fec2);
+
+            $notac = mysqli_query($conexion, "UPDATE `FCABECER`
+            SET `NRO_NOTAC` = '$NumdocGenerado',
+                `VAL_NOTC` = '$totPrecVenta'
+            WHERE `DOC1` = '$doc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    n' AND `IDEM` = '$idem'");
+            $ftge = mysqli_query($conexion,"UPDATE FTGE2007 SET COMC = $NumdocGene WHERE CODI = '$idemXY'");
+            if($nuevo){
+                $numdocs = mysqli_query($conexion, "UPDATE ftge2007 SET COMC = '$NumdocGenerado' WHERE CODI = '$idemXY'");
+                $datos_tabla = json_decode($_POST["datos_tabla_nota"], true);
+                $delete = mysqli_query($conexion,"DELETE FROM fmovimpfd");
+                foreach ($datos_tabla as $fila) {
+                    $orden = $orden + 1;
+                    $item = $fila["item"];
+                    $descripcion = $fila["descripcion"];
+                    $cantidad = $fila["cantidad"];
+                    $precio_igv = $fila["precio_igv"];
+                    $precio_total = $fila["precio_total"];
+                    $afecigv = $igv*0.01;
+                    echo "$orden";
+                    $totbrutoI = $precio_total - $precio_total*($igv*0.01);
+                    $movi = mysqli_query($conexion,"INSERT INTO fmovimie(     MESP,           NORD,            IDEM,              IDEM2,               DOC1,                 CODT,           CANT,          boni,            COST,           PREC,             DSCT,              MONT_DSCT,            MONDSCTIGV,           VVTA,          VVTAIGV,               FECH,                    FEC_EXP,     CHKDESC,    IDAIGV,           COSP,            USUARIO,               IGVE,                IDELT,          COD_FACT,          VAL_FACT,          DESCFB) VALUES
+                                                                        (    '$MESP',         '$orden',       '$idemXY',         '$serieXY',        '$NumdocGenerado',       '$codt',      '$cantidad',     '$boni',      '$precio_igv',   '$precio_igv',   '$dscto',              '0.00',             '0.00',           '$precio_total', '$precio_total',       '$fec2',               '$fecaten',       '1',       '1',             '',             '$USR',                    '$igv',                       '',                  '',                    ''       ,        '$descripcion' )");
+                    $imprimir = mysqli_query($conexion, "INSERT INTO fmovimpfd  (     IDBF,           IDEM,            IDEM2,               DOC1,                  FEC_ADMI,                NOMBEMP,           DIREEMP,           RUC,            NORD,            CANT,             UNIDA,         DESCP,           DSCTO,            VIGV,           PUNIT,         PTOTA,           MLETRA,              FECEMI,             TOTBRUTO,         TOTALDSCTO,      TOTALVENTA,     MONTOIGV,        PRECIOVETA,          AFECTOIGV,          USUARIO,          MONEDA,             NGUIA,              NFACBOL,              RUCDNIR,             NOMBRE,           DIRERE,            RUCDNIC,             NOMBC,            DIREC,               DESTINO,               ODEOF,               PLACA,             MARCA,           CERTIFICADO,            LIC,             CONFVHEICU,             PESO,              CHOFCONDU,                  DIRPARTIDA,              DIRLLEGADA,                 CEDE,    HORAPRINT,    FECPRINT,   DOC2, FECEMI , OBSERV)VALUES
+                                                                                (    '$IDBF',       '$idemXY',       '$serieXY',       '$NumdocGenerado',         '$fecaten',              '$cliente',          '$dir',          '$ruc',        '$orden',      '$cantidad',          'UND',     '$descripcion','     $Dscto',          '$igv',      '$precio_igv', '$precio_total',   '$letras',          '$fecaten',         '$totbrutoI',         '$Dscto',    '$vvtatot',      '$MonIGV',       '$totPrecVenta',     '$afecigv',         '$usuario',       '$tipc',            '',                   '',                '$rucdniR',          '$nombR',          '$dirR',          '$rucdniC',           '$nombC',         '$dirC',             '$destino',          '$ODESORI',           '$placa',         '$marca',            '$certifi',         '$lice',          '$confivehi',           '$peso',           '$conductor',               '$dirpartida',            '$dirllegada',              '$sede','$horaprint','$fechaprint','$docn','$fec2','$motivo')");
+                    $imprimR = mysqli_query($conexion, "INSERT INTO fmovimpfde  (     IDBF,           IDEM,            IDEM2,               DOC1,                  FEC_ADMI,                NOMBEMP,           DIREEMP,           RUC,            NORD,            CANT,             UNIDA,         DESCP,           DSCTO,            VIGV,           PUNIT,         PTOTA,           MLETRA,              FECEMI,             TOTBRUTO,         TOTALDSCTO,      TOTALVENTA,     MONTOIGV,        PRECIOVETA,          AFECTOIGV,          USUARIO,          MONEDA,             NGUIA,              NFACBOL,              RUCDNIR,             NOMBRE,           DIRERE,            RUCDNIC,             NOMBC,            DIREC,               DESTINO,               ODEOF,               PLACA,             MARCA,           CERTIFICADO,            LIC,             CONFVHEICU,             PESO,              CHOFCONDU,                  DIRPARTIDA,              DIRLLEGADA,                 CEDE,   HORAPRINT,     FECPRINT,   DOC2, FECEMI, OBSERV)VALUES
+                                                                                (    '$IDBF',       '$idemXY',       '$serieXY',          '$NumdocGenerado',               '$fecaten',              '$cliente',          '$dir',          '$ruc',        '$orden',      '$cantidad',          'UND',     '$descripcion','     $Dscto',          '$igv',      '$precio_igv', '$precio_total',   '$letras',          '$fecaten',         '$totbrutoI',         '$Dscto',    '$vvtatot',      '$MonIGV',       '$totPrecVenta',     '$afecigv',    '$usuario',        '$tipc',            '',                   '',                '$rucdniR',          '$nombR',          '$dirR',          '$rucdniC',           '$nombC',         '$dirC',             '$destino',          '$ODESORI',           '$placa',         '$marca',            '$certifi',         '$lice',          '$confivehi',           '$peso',           '$conductor',           '$dirpartida',            '$dirllegada',             '$sede','$horaprint','$fechaprint','$docn','$fec2' , '$motivo')");                                                            
+                }
+                echo   "<script>
+                            var confirmacion = confirm('IMPRESION');
+                                    if (confirmacion) {
+                                    window.open('Reportes/NOTA_CREDITO.php?cod=$IDBF', '_blank');
+                                    window.location.href = 'espresstacna.php';
+                                    } else {
+                                    window.location.href  = 'espresstacna.php';
+                                    }
+                        </script>";
+            }
+        }
     }
     else if (isset($_POST["datos_tabla"])) {
         

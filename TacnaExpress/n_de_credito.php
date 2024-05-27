@@ -35,6 +35,7 @@ date_default_timezone_set('America/Lima');
     $documentos= mysqli_query($conexion,"SELECT MAX(DOC1) AS ultimo_codigo FROM fcabecer"); 
     $documentos = mysqli_fetch_assoc($documentos);
     $ultimo_codigo = $documentos["ultimo_codigo"];
+    $motivo = mysqli_query($conexion, "SELECT * FROM MOTIVONC");
     if (isset($liquidacion['LIQUIDACION'])) {
         $liquidacion = $liquidacion['LIQUIDACION'];
     } else {
@@ -103,7 +104,43 @@ date_default_timezone_set('America/Lima');
               input[readonly] {
               background-color: lightgray; /* Cambia el fondo a gris claro */
                 
-    }           
+              }           
+              #customMsgBox {
+                      display: none;
+                      position: fixed;
+                      left: 50%;
+                      top: 50%;
+                      transform: translate(-50%, -50%);
+                      width: 300px;
+                      padding: 20px;
+                      background-color: white;
+                      border: 1px solid #ccc;
+                      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                      z-index: 1000;
+                  }
+                  #customMsgBox .title {
+                      font-weight: bold;
+                      margin-bottom: 10px;
+                  }
+                  #customMsgBox .message {
+                      margin-bottom: 20px;
+                  }
+                  #customMsgBox .buttons {
+                      text-align: right;
+                  }
+                  #customMsgBox .buttons button {
+                      margin-left: 10px;
+                  }
+                  #overlay {
+                      display: none;
+                      position: fixed;
+                      left: 0;
+                      top: 0;
+                      width: 100%;
+                      height: 100%;
+                      background-color: rgba(0, 0, 0, 0.5);
+                      z-index: 999;
+                  }
             </style>
             <body>
                 <div class="wrapper">
@@ -155,13 +192,21 @@ date_default_timezone_set('America/Lima');
                               <div id="interfazBusqueda2" style="width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: rgba(144, 148, 150, 0.8); display: none; justify-content: center; align-items: center; z-index: 100;">
                                 <iframe src="busca_prueba.php?tabla=VBUSCADOC&response=A&codi=BUSCA1" width="1100" height="300" frameborder="0" style="border: 2px solid rgba(12, 12, 12, 0.2);border-radius: 40px;"></iframe>
                               </div>
+                              <div id="overlay"></div>
+                              <div id="customMsgBox" style="display: none">
+                                  <div class="title" id="msgBoxTitle">Alerta</div>
+                                  <div class="message" id="msgBoxMessage">Documento Ya Esta Asociado a Nota de Credito, Verifique</div>
+                                  <div class="buttons">
+                                      <button onclick="closeCustomMsgBox()">Aceptar</button>
+                                  </div>
+                              </div>
                               <label>fec.Emisión</label>
                             <input id="FECHAA" type="date" name="FECHAA" placeholder="Fecha" value ="<?php echo date('Y-m-d');?>" readonly style="width: 12ch;">                 
                                 <label>Señor :</label>
-                                <input readonly id="nomb2" type="text" name="nomb2" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'dire2')">
+                                <input readonly id="nomb1" type="text" name="nomb1" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'dire2')">
                                 <br>
                                 <label>Dirección :</label>
-                                <input readonly id="dire2" type="text" name="dire2" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'CONDI')">
+                                <input readonly id="dire1" type="text" name="dire1" placeholder="" required style="width: 30ch;" onkeypress="return handleEnter(event, 'CONDI')">
                             
                                 <label>Condición :</label>
                                 <select style="width: 16ch;" name="CONDI" id="CONDI">
@@ -182,14 +227,17 @@ date_default_timezone_set('America/Lima');
                                 <br>
                                 <label>Motivo devolución :</label>
                                 <select style="width: 45ch;" id ="motivodev" name ="motivodev">
-                                    <option value=""> </option>
-                                    <option value="01">01 ANULACION DE LA OPERACION</option>
-                                    <option value="02">02 ANULACION POR ERROR EN EL RUC</option>
-                                    <option value="03">03 CORRECION POR ERROR EN LA DESCRIPCION</option>
-                                    <option value="04">04 DESCUENTO GLOBAL</option>
-                                    <option value="05">05 DESCUENTO POR ITEM</option>
-                                    <option value="06">06 DEVOLUCION TOTAL</option>
-                                    <option value="07">07 DEVOLUCION POR ITEM</option>
+                                <option value=""></option>
+                                  <?php
+                                    if ($motivo) {
+                                        while ($fila = mysqli_fetch_assoc($motivo)) {
+                                            echo "<option value='" . $fila['CODMNC'] . "' style='background-color: black; color: white;'>" . $fila['MOTIVONC'] .  "</option>";
+                                        }
+                                        mysqli_free_result($motivo);
+                                    } else {
+                                        echo "Error al ejecutar la consulta: " . mysqli_error($conexion);
+                                    }
+                                  ?>
                                 </select>
                             </div>
                             <div class="styled-div">
@@ -244,10 +292,6 @@ date_default_timezone_set('America/Lima');
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div>
-                        <label>Observacíon</label>
-                        <input id="observacion" type="text" name="observacion" onkeypress = "return handleEnter(event, 'pass')" style="width: 110ch;">
                       </div>
                         <div id="letras" style="display: none;">
                         <a id="total_ventaEnLetras" name='total_ventaEnLetras'></a>
@@ -408,8 +452,8 @@ date_default_timezone_set('America/Lima');
                       // Crear celdas y asignarles el contenido del item
                       newRow.insertCell(0).textContent = item.orden;
                       newRow.insertCell(1).textContent = item.descripcion;
-                      newRow.insertCell(2).textContent = item.cantidad;
-                      newRow.insertCell(3).textContent = item.precioigv;
+                      newRow.insertCell(2).textContent = 1;
+                      newRow.insertCell(3).textContent = item.total;
                       newRow.insertCell(4).textContent = item.total;
                       // Crear celda para el botón eliminar
                       var cellEliminar = newRow.insertCell(5);
@@ -499,6 +543,18 @@ date_default_timezone_set('America/Lima');
                             }
                         });
                     });
+                    function showCustomMsgBox(message, title) {
+                    document.getElementById('msgBoxTitle').innerText = title || 'Mensaje';
+                    document.getElementById('msgBoxMessage').innerText = message;
+                    document.getElementById('overlay').style.display = 'block';
+                    document.getElementById('customMsgBox').style.display = 'block';
+                    }
+
+                    function closeCustomMsgBox() {
+                        document.getElementById('overlay').style.display = 'none';
+                        document.getElementById('customMsgBox').style.display = 'none';
+                    }
+
                     function cerrarInterfaz() {
                         document.getElementById("interfazBusqueda1").style.display = "none";
                         document.getElementById("interfazBusqueda2").style.display = "none";      
@@ -519,43 +575,53 @@ date_default_timezone_set('America/Lima');
                                       if (xh.readyState === 4 && xh.status === 200) {
                                           var response = JSON.parse(xh.responseText);
                                             if (response.mensaje === "existe") {
-                                              document.getElementById('NDOC').value = seleccion;
-                                              $ndoc = seleccion;
-                                              document.getElementById('nomb2').value = response.cliente ;
-                                              document.getElementById('dire2').value = response.dir ;
-                                              document.getElementById('rucDni1').value = response.txtruc ;
-                                              document.getElementById('CONDI').value = response.condi ;
-                                              document.getElementById('FECHAA').value = response.fecaten ;
-                                              document.getElementById('transs').value = response.idemXY ;
-                                              document.getElementById('cant').value = response.totbruto;
-                                              document.getElementById('pigv').value = response.MonIGV;
-                                              document.getElementById('total').value = response.totPrecVenta;
-                                              const tabla = document.getElementById("grillaBody1");
-                                              // Establece el contenido HTML de la tabla como una cadena vacía
-                                              tabla.innerHTML = "";
-                                              $table = response.table; 
-                                              console.log($table);  
-                                              for (let i = 0; i < $table.length; i++) {
-                                                var grillaBody = document.getElementById('grillaBody1');
-                                                var newRow = grillaBody.insertRow();
-                                                const item = response.table[i];
-                                                newRow.insertCell(0).textContent = item['NORD'];
-                                                newRow.insertCell(1).textContent = item['DESCFB'];
-                                                newRow.insertCell(2).textContent = formatNumber(item['CANT']);
-                                                newRow.insertCell(3).textContent = formatNumber(item['PREC']);
-                                                newRow.insertCell(4).textContent = formatNumber(item['VVTA']);
+                                              console.log(response.nota);
+                                              if(response.nota === "no"){
+                                                document.getElementById('NDOC').value = seleccion;
+                                                $ndoc = seleccion;
+                                                document.getElementById('nomb1').value = response.cliente ;
+                                                document.getElementById('dire1').value = response.dir ;
+                                                document.getElementById('rucDni1').value = response.txtruc ;
+                                                document.getElementById('CONDI').value = response.condi ;
+                                                document.getElementById('FECHAA').value = response.fecaten ;
+                                                document.getElementById('transs').value = response.idemXY ;
+                                                document.getElementById('cant').value = response.totbruto;
+                                                document.getElementById('pigv').value = response.MonIGV;
+                                                document.getElementById('total').value = response.totPrecVenta;
+                                                const tabla = document.getElementById("grillaBody1");
+                                                // Establece el contenido HTML de la tabla como una cadena vacía
+                                                tabla.innerHTML = "";
+                                                $table = response.table; 
+                                                console.log($table);  
+                                                for (let i = 0; i < $table.length; i++) {
+                                                  var grillaBody = document.getElementById('grillaBody1');
+                                                  var newRow = grillaBody.insertRow();
+                                                  const item = response.table[i];
+                                                  newRow.insertCell(0).textContent = item['NORD'];
+                                                  newRow.insertCell(1).textContent = item['DESCFB'];
+                                                  newRow.insertCell(2).textContent = formatNumber(item['CANT']);
+                                                  newRow.insertCell(3).textContent = formatNumber(item['PREC']);
+                                                  newRow.insertCell(4).textContent = formatNumber(item['VVTA']);
+                                                }    
+                                              }
+                                              else{
+
+                                                document.getElementById("overlay").style.display = "flex";
+                                                document.getElementById("customMsgBox").style.display = "flex";
+                                              }    
                                             }         
-                                          } else {
+                                           else {
                                                   // Si el usuario no existe, solo da el foco
                                               alert('Error al Cargar Documento');
                                               window.location.href = 'boletas_facturas.php';
-                                          }
-                                      }
+                                          }}
+                                      
                                   };
                                   xh.send("docu=" + idemp);
                                   return false;
                         }
                     });
+
                     function formatNumber(number) {
                         return parseFloat(number).toFixed(2);
                     }

@@ -14,6 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verificar si se encontraron resultados
     if (isset($result['DOC1'])) {
+        if (isset($result['NRO_NOTAC'])) {
+            $nota = "si";
+        }
+        else{
+            $nota = "no";
+        }
         $idemXY = $result['IDEM'];
         $Numdoc = $result['DOC1'];
         $resultado = mysqli_query($conexion, "SELECT * FROM vfarmamovifd WHERE DOC1 = '$ndoc' AND IDEM = '$idemXY'");
@@ -59,6 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $peso = $result['PESO'];
         $mensaje = "existe";
         $response = array(
+            "nota" => $nota,
             "idemXY" => $idemXY,
             "Numdoc" => $Numdoc,
             "txtruc" => $txtruc,
